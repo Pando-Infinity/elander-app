@@ -28,7 +28,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-y-4 sm:gap-y-6">
         <div className="flex items-end justify-between">
-          <p className="text-lg sm:text-2xl font-bold">Utility</p>
+          <p className="text-lg sm:text-2xl font-bold">Utility Hub</p>
           <CommonInput
             className="pr-8 sm:pr-9"
             placeholder="Search"
@@ -47,19 +47,25 @@ export default function Home() {
             icon={<DiamondIcon className="w-8 h-8" />}
             href={PathConstant.BULK}
             label={"Bulk Transfer"}
-            description={"Send tokens to multiple wallets in a single transaction."}
+            description={
+              "Move tokens to one or many wallets with speed and control."
+            }
           />
           <UtilityCard
             icon={<EssentialIcon className="w-8 h-8" />}
             href={PathConstant.SNAPSHOT}
             label={"Snapshot Collection"}
-            description={"Capture a list of NFT holders from any collection instantly."}
+            description={
+              "Generate accurate NFT holder snapshots from any collection in seconds."
+            }
           />
           <UtilityCard
             icon={<SocialIcon className="w-8 h-8" />}
             href={PathConstant.AIRDROP}
             label={"Airdrop"}
-            description={"Distribute tokens to multiple addresses efficiently."}
+            description={
+              "Launch targeted token airdrops with transparent, on-chain distribution."
+            }
           />
         </div>
       </div>

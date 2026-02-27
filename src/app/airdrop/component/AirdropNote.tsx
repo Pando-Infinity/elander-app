@@ -11,14 +11,15 @@ const AirdropNote: FC<ComponentPropsWithoutRef<"div">> = ({
         "p-4 sm:p-6 rounded-lg",
         "flex flex-col gap-y-5",
         "bg-[#2A2A2A] border border-white/20",
-        className
+        className,
       )}
       {...otherProps}
     >
       <span className="text-xs font-medium text-white/60">
-        Distribute tokens or NFTs to eligible wallets with ease.
+        Launch high-impact token airdrops in minutes.
         <br />
-        Powered by on-chain snapshots for accurate and fair distribution.
+        Powered by on-chain snapshots for precise, transparent, and fair
+        distribution.
       </span>
 
       <div className="flex flex-col gap-y-2">
@@ -26,9 +27,9 @@ const AirdropNote: FC<ComponentPropsWithoutRef<"div">> = ({
 
         <span className="flex flex-col text-xs font-medium text-white/60">
           <ul className="list-disc ml-4">
-            <li>Airdrop tokens or NFTs to eligible wallets</li>
-            <li>Use snapshot-based holder lists or custom wallet lists</li>
-            <li>Choose equal or custom amounts per recipient</li>
+            <li>Distribute tokens to qualified wallets at scale</li>
+            <li>Use holder snapshots or upload your own wallet list</li>
+            <li>Send equal amounts or customize every allocation</li>
           </ul>
         </span>
       </div>

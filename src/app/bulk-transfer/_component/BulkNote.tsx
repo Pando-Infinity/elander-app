@@ -12,14 +12,15 @@ const BulkNote: FC<ComponentPropsWithoutRef<"div">> = ({
         "p-4 sm:p-6 rounded-lg",
         "flex flex-col gap-y-5",
         "bg-[#2A2A2A] border border-white/20",
-        className
+        className,
       )}
       {...otherProps}
     >
       <span className="text-xs font-medium text-white/60">
-        This service costs <span className="text-[#F44319]">0.002 SOL</span> per
-        transaction. Send single/multiple tokens to one address. To distribute
-        tokens to many wallets, use 
+        Fast, flexible transfers at just{" "}
+        <span className="text-[#F44319]">0.002 SOL</span> per transaction. Send
+        one or multiple tokens to a single wallet. For large-scale distribution
+        to many wallets, use 
         <span className="text-[#F44319]">E-lander.</span>
       </span>
 
@@ -28,7 +29,7 @@ const BulkNote: FC<ComponentPropsWithoutRef<"div">> = ({
         <div className="flex flex-col gap-y-1">
           <p className="text-xs font-bold text-[#F44319]">Send to One:</p>
           <p className="text-xs font-medium text-white/60">
-            Transfer multiple assets to a single wallet
+            Move multiple assets to one wallet in a single action
           </p>
         </div>
       </div>
@@ -38,7 +39,7 @@ const BulkNote: FC<ComponentPropsWithoutRef<"div">> = ({
         <div className="flex flex-col gap-y-1">
           <p className="text-xs font-bold text-[#F44319]">Send to Many:</p>
           <p className="text-xs font-medium text-white/60">
-            Distribute assets to multiple wallets in one flow
+            Deliver assets to multiple wallets with a streamlined flow
           </p>
         </div>
       </div>
