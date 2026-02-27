@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "xyz.e_lander.app.dev.twa",
+      "package_name": "xyz.e_lander.beta.twa",
       "sha256_cert_fingerprints": [
-        "72:E3:04:8A:84:4F:15:69:74:75:0F:DC:68:A3:59:FA:47:12:4D:4B:75:8D:14:25:CB:C2:93:17:E5:6A:F6:A5"
+        "E8:60:ED:E8:C5:B6:EC:79:A0:A4:EA:A0:27:E5:49:8A:AF:3B:9E:DB:4F:D2:12:23:C9:F5:D7:F6:8C:74:8D:E3"
       ]
     }
   }
