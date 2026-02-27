@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "xyz.e_lander.app.dev.twa",
+      "sha256_cert_fingerprints": [
+        "72:E3:04:8A:84:4F:15:69:74:75:0F:DC:68:A3:59:FA:47:12:4D:4B:75:8D:14:25:CB:C2:93:17:E5:6A:F6:A5"
+      ]
+    }
+  }
+]
