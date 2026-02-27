@@ -31,7 +31,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
   const filteredAndSortedTokens = useMemo(() => {
     if (!walletBalances) return [];
     const filtered = walletBalances.filter((token) =>
-      token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      token.symbol?.toLowerCase().includes(searchQuery?.toLowerCase())
     );
 
     const selectionOrderMap = new Map<string, number>();
