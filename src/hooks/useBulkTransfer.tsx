@@ -9,7 +9,13 @@ import {
 
 import Decimal from "decimal.js";
 import { BlockchainUtils } from "@/utils";
-import { PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
+import {
+  PublicKey,
+  Transaction,
+  SystemProgram,
+  ComputeBudgetProgram,
+} from "@solana/web3.js";
+import { AppConstant } from "@/const";
 import { BulkTransferInterface, TokenTypeEnum } from "@/models/app.model";
 
 const useBulkTransfer = () => {
@@ -25,6 +31,12 @@ const useBulkTransfer = () => {
       const transaction = new Transaction();
       const connection = await BlockchainUtils.getConnection();
       const failedTransfers: { symbol: string; error: string }[] = [];
+
+      transaction.add(
+        ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
+        })
+      );
 
       for (let i = 0; i < bulkTransferData.length; i++) {
         const transferData = bulkTransferData[i];
