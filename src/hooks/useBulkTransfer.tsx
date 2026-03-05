@@ -131,6 +131,16 @@ const useBulkTransfer = () => {
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = senderPubkey;
 
+      // Solana max tx size is 1232 bytes
+      const MAX_TX_SIZE = 1232;
+      const txSize = transaction.serializeMessage().length + 64; // message + 1 signature
+      if (txSize > MAX_TX_SIZE) {
+        return {
+          transaction: null,
+          errorMessage: `Transaction too large (${txSize} bytes). Try fewer tokens per batch.`,
+        };
+      }
+
       return {
         transaction,
         errorMessage: "",
