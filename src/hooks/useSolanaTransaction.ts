@@ -113,11 +113,10 @@ const useSolanaTransaction = () => {
       try {
         const rpcEndpoint = getSolanaRpcEndpoint();
 
-        const connection = new web3.Connection(rpcEndpoint, "finalized");
+        const connection = new web3.Connection(rpcEndpoint, "confirmed");
 
-        /**
-         * Just simulate first transaction cause if another account depend on the first transaction to create the simulation will fail
-         */
+        // Only simulate the first transaction; subsequent txs may depend on
+        // state created by earlier ones, so their simulation would fail.
         const simulationResult = await simulateAndValidate(
           connection,
           transactionData[0]
@@ -137,6 +136,8 @@ const useSolanaTransaction = () => {
         for (const tx of txs) {
           const serializeTx = tx.serialize();
 
+          // skipPreflight is intentional: dependent txs cannot be simulated
+          // independently since they rely on state from prior txs in the batch
           const txHash = await sendAndConfirmRawTransaction(
             connection,
             serializeTx,
