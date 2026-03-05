@@ -76,6 +76,13 @@ const useSolanaTransaction = () => {
           signedTransaction.serialize()
         );
 
+        const latestBlockHash = await connection.getLatestBlockhash();
+        await connection.confirmTransaction({
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature,
+        });
+
         return {
           txHash: signature,
           messageError: "",
@@ -83,7 +90,7 @@ const useSolanaTransaction = () => {
       } catch (error: any) {
         console.log("error", error.message);
 
-        const message = MESSAGE_USER_REJECTED_SUI_ERROR.includes(error.message)
+        const message = MESSAGE_USER_REJECTED_ERROR.includes(error.message)
           ? USER_REJECTED_MESSAGE
           : error.message;
 
@@ -149,7 +156,7 @@ const useSolanaTransaction = () => {
       } catch (error: any) {
         console.log(error);
 
-        const message = MESSAGE_USER_REJECTED_SUI_ERROR.includes(error.message)
+        const message = MESSAGE_USER_REJECTED_ERROR.includes(error.message)
           ? USER_REJECTED_MESSAGE
           : error.message;
 
@@ -255,7 +262,7 @@ export interface ResSendSolanaTransactionInterface {
   messageError: string;
 }
 
-const MESSAGE_USER_REJECTED_SUI_ERROR = ["Rejected from user"];
+const MESSAGE_USER_REJECTED_ERROR = ["Rejected from user"];
 
 export const simulateAndValidate = async (
   connection: Connection,
@@ -268,12 +275,7 @@ const simulateTransaction = async (
   connection: Connection,
   transactionData: Transaction | VersionedTransaction
 ): Promise<{ txHash: string; messageError: string } | undefined> => {
-  let simulateResult;
-  if (transactionData instanceof VersionedTransaction) {
-    simulateResult = await connection.simulateTransaction(transactionData);
-  } else {
-    simulateResult = await connection.simulateTransaction(transactionData);
-  }
+  const simulateResult = await connection.simulateTransaction(transactionData);
 
   if (simulateResult?.value?.err) {
     console.log("simulateResult: ", simulateResult);
