@@ -35,7 +35,8 @@ export const USER_REJECTED_MESSAGE = "User Rejected";
 
 export const TRANSFER_FEE = 0.001;
 export const BULK_TRANSFER_RENT_FEE = 0.0021;
-export const PRIORITY_FEE = 0.0005;
+export const PRIORITY_FEE_MICRO_LAMPORTS = 5000;
+export const PRIORITY_FEE_ESTIMATE_SOL = 0.001;
 
 export const STEALTH_SIGNING_MESSAGE =
   "E-Lander - Do NOT sign this message unless you are using E-Lander";

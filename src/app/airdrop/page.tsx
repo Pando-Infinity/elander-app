@@ -113,7 +113,7 @@ const Airdrop = () => {
     const transferFee =
       AppConstant.TRANSFER_FEE +
       AppConstant.BULK_TRANSFER_RENT_FEE +
-      AppConstant.PRIORITY_FEE;
+      AppConstant.PRIORITY_FEE_ESTIMATE_SOL;
 
     const transferStealthWalletFee = transferFee;
 

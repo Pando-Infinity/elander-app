@@ -7,6 +7,7 @@ import {
   LAMPORTS_PER_SOL,
   ComputeBudgetProgram,
 } from "@solana/web3.js";
+import Decimal from "decimal.js";
 
 import {
   TOKEN_PROGRAM_ID,
@@ -51,12 +52,15 @@ const useAirdrop = () => {
 
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: AppConstant.PRIORITY_FEE * LAMPORTS_PER_SOL,
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
         })
       );
 
       // Transfer fee
-      const transferFeeAmount = Math.floor(fee * LAMPORTS_PER_SOL);
+      const transferFeeAmount = new Decimal(fee)
+        .mul(LAMPORTS_PER_SOL)
+        .floor()
+        .toNumber();
 
       transaction.add(
         SystemProgram.transfer({
@@ -67,9 +71,10 @@ const useAirdrop = () => {
       );
 
       // transfer airdrop amount
-      const airdropAmount = Math.floor(
-        amount * Math.pow(10, tokenAirdrop.decimals)
-      );
+      const airdropAmount = new Decimal(amount)
+        .mul(new Decimal(10).pow(tokenAirdrop.decimals))
+        .floor()
+        .toNumber();
 
       if (tokenAirdrop.type === TokenTypeEnum.NATIVE_MINT) {
         transaction.add(
@@ -171,15 +176,16 @@ const useAirdrop = () => {
       // add priority fee
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: AppConstant.PRIORITY_FEE * LAMPORTS_PER_SOL,
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
         })
       );
 
       const connection = await BlockchainUtils.getConnection();
 
-      const airdropAmount = Math.floor(
-        amount * Math.pow(10, tokenAirdrop.decimals)
-      );
+      const airdropAmount = new Decimal(amount)
+        .mul(new Decimal(10).pow(tokenAirdrop.decimals))
+        .floor()
+        .toNumber();
 
       if (tokenAirdrop.type === TokenTypeEnum.NATIVE_MINT) {
         transaction.add(
