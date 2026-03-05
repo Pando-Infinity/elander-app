@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   CheckIcon,
@@ -62,22 +62,27 @@ const Snapshot = () => {
     {} as SnapshotDataInterface
   );
 
-  const handleCheckCollection = debounce(async (collectionAddress: string) => {
-    if (!collectionAddress) {
-      setCollectionAddressStatus(undefined);
-      setSnapStats({} as SnapshotInterface);
-      return;
-    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleCheckCollection = useMemo(
+    () =>
+      debounce(async (collectionAddress: string) => {
+        if (!collectionAddress) {
+          setCollectionAddressStatus(undefined);
+          setSnapStats({} as SnapshotInterface);
+          return;
+        }
 
-    const res = await getCollectionInfo(collectionAddress);
+        const res = await getCollectionInfo(collectionAddress);
 
-    if (res) {
-      setSnapStats(res);
-      setCollectionAddressStatus(CheckConnectionAddressEnum.Correct);
-    } else {
-      setCollectionAddressStatus(CheckConnectionAddressEnum.Incorrect);
-    }
-  }, 300);
+        if (res) {
+          setSnapStats(res);
+          setCollectionAddressStatus(CheckConnectionAddressEnum.Correct);
+        } else {
+          setCollectionAddressStatus(CheckConnectionAddressEnum.Incorrect);
+        }
+      }, 300),
+    [getCollectionInfo]
+  );
 
   const handleSnapshot = async () => {
     setIsOpenDialog(true);
@@ -119,6 +124,7 @@ const Snapshot = () => {
       { screen_name: "snapshot" },
       "screen_view"
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

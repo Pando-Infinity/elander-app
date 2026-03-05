@@ -393,19 +393,15 @@ const Airdrop = () => {
     }
   }, [airDropListByString]);
 
-  useEffect(() => {
-    if (selectedToken.amount < totalAmountAirdrop) {
-      setErrorMessage("Insufficient Balance");
-    } else {
-      setErrorMessage("");
-    }
-  }, [selectedToken, totalAmountAirdrop]);
+  const insufficientBalance =
+    selectedToken.amount != null && selectedToken.amount < totalAmountAirdrop;
 
   useEffect(() => {
     analytics.logNavigationButtonAction(
       { screen_name: "airdrop" },
       "screen_view"
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -471,6 +467,7 @@ const Airdrop = () => {
               disabled={
                 !airDropListByString ||
                 Boolean(errorMessage) ||
+                insufficientBalance ||
                 !selectedToken.symbol ||
                 (!isHolderNft && !isSeekerWallet)
               }
