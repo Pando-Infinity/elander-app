@@ -1,11 +1,15 @@
 "use client";
 
-import React, { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { BlockchainUtils } from "@/utils";
 import { useUserStore } from "@/stores/user.store";
 import { userService } from "@/services/user-service";
 
-const AppProvider = () => {
+/**
+ * Hook that initializes app-wide data when a wallet connects.
+ * Must be called inside SolanaProvider.
+ */
+export function useAppInitialization() {
   const {
     stakedNfts,
     walletAddress,
@@ -15,48 +19,25 @@ const AppProvider = () => {
     setIsSeekerWallet,
   } = useUserStore();
 
-  const handleGetBalances = async () => {
-    if (!walletAddress) return;
-    await userService.getAllTokenBalances(walletAddress);
-  };
-
-  const handleGetTokenPriceFeeds = async () => {
-    if (!walletBalances) return;
-    await userService.getTokenPriceFeeds(walletBalances);
-  };
-
-  const handleGetNftInfo = async () => {
-    if (!walletAddress) return;
-    await userService.getAllAlchemistNft(walletAddress);
-    await userService.getStakedNfts(walletAddress);
-  };
-
-  const checkSeekerWallet = async () => {
-    if (!walletAddress) return;
-    const result = await BlockchainUtils.checkWalletForSGT(walletAddress);
-
-    setIsSeekerWallet(result);
-  };
+  useEffect(() => {
+    setIsHolderNft(stakedNfts.length > 0 || allAlchemistNft.length > 0);
+  }, [stakedNfts, allAlchemistNft, setIsHolderNft]);
 
   useEffect(() => {
-    const isHolder = stakedNfts.length > 0 || allAlchemistNft.length > 0;
+    if (!walletAddress) return;
 
-    setIsHolderNft(isHolder);
-  }, [stakedNfts, allAlchemistNft]);
-
-  useEffect(() => {
-    handleGetBalances();
-    handleGetNftInfo();
-    checkSeekerWallet();
-  }, [walletAddress]);
+    // These are independent — fetch in parallel
+    Promise.all([
+      userService.getAllTokenBalances(walletAddress),
+      userService.getAllAlchemistNft(walletAddress),
+      userService.getStakedNfts(walletAddress),
+      BlockchainUtils.checkWalletForSGT(walletAddress).then(setIsSeekerWallet),
+    ]);
+  }, [walletAddress, setIsSeekerWallet]);
 
   useEffect(() => {
     if (!walletAddress || !walletBalances) return;
 
-    handleGetTokenPriceFeeds();
+    userService.getTokenPriceFeeds(walletBalances);
   }, [walletAddress, walletBalances]);
-
-  return <Fragment />;
-};
-
-export default AppProvider;
+}
