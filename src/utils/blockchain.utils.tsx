@@ -43,7 +43,7 @@ export const getSolanaNativeTokenBalance = async (
   if (!walletAddress || !rpcUrl) return 0;
 
   try {
-    const connection = new web3.Connection(rpcUrl, "finalized");
+    const connection = new web3.Connection(rpcUrl, "confirmed");
 
     const address = new web3.PublicKey(walletAddress);
     const balance = await connection.getBalance(address);
@@ -63,7 +63,7 @@ export const getSvmSplTokenBalance = async (
   if (!walletAddress) return 0;
 
   try {
-    const connection = new web3.Connection(rpcUrl, "finalized");
+    const connection = new web3.Connection(rpcUrl, "confirmed");
 
     const pubKey = new web3.PublicKey(walletAddress);
     const mintPubKey = new web3.PublicKey(tokenContractAddress);
@@ -113,7 +113,7 @@ export const getParsedTransaction = async (signature: string) => {
   if (!signature) return;
 
   const rpcUrl = getSolanaRpcEndpoint();
-  const solanaConnection = new web3.Connection(rpcUrl, "finalized");
+  const solanaConnection = new web3.Connection(rpcUrl, "confirmed");
 
   const tx = await solanaConnection.getParsedTransaction(signature, {
     commitment: "confirmed",

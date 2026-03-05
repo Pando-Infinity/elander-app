@@ -19,7 +19,7 @@ import { BlockchainTransactionStatusEnum } from "@/models/common.model";
 
 const useSolanaTransaction = () => {
   const { connectSignature } = useUserStore();
-  const { connected, signTransaction, signAllTransactions } = useWallet();
+  const { signTransaction, signAllTransactions } = useWallet();
 
   const handleSendSolanaTransaction = async (
     transactionData: web3.Transaction | web3.Transaction[]
@@ -48,7 +48,7 @@ const useSolanaTransaction = () => {
       });
       return confirmation;
     },
-    [connected]
+    []
   );
 
   const handleSendSolTransaction = useCallback(
