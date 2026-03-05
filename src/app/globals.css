@@ -40,9 +40,9 @@ body {
   justify-content: space-between;
 }
 
+/* Thin scrollbar globally */
 ::-webkit-scrollbar {
   width: 2px;
-  display: flex;
 }
 
 ::-webkit-scrollbar-track {
@@ -54,22 +54,14 @@ body {
   border-radius: 4px;
 }
 
+/* Hide scrollbar completely */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-::-webkit-scrollbar {
-  display: none;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .navigation-shadow {
