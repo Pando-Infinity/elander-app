@@ -20,9 +20,12 @@ const nextConfig: NextConfig = {
     domains: ["ensofi-prod.s3.ap-southeast-1.amazonaws.com"],
   },
   productionBrowserSourceMaps: false,
+  // These env vars are inlined into the client-side JS bundle at build time.
+  // Do NOT add secrets here. DAPP_SERVICE_URL is intentionally excluded
+  // (only used server-side in rewrites). If RPC_URL contains an API key,
+  // consider proxying RPC calls through a Next.js API route instead.
   env: {
     NETWORK_MODE: process.env.NETWORK_MODE || "",
-    DAPP_SERVICE_URL: process.env.DAPP_SERVICE_URL,
     WS_RPC: process.env.WS_RPC,
     RPC_URL: process.env.RPC_URL,
   },
