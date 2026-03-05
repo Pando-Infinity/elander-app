@@ -7,6 +7,7 @@ import {
   createAssociatedTokenAccountInstruction,
 } from "spl-token-0.4.1";
 
+import Decimal from "decimal.js";
 import { BlockchainUtils } from "@/utils";
 import { PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
 import { BulkTransferInterface, TokenTypeEnum } from "@/models/app.model";
@@ -30,9 +31,10 @@ const useBulkTransfer = () => {
 
         try {
           if (transferData.symbol === "SOL") {
-            const transferAmount = Math.floor(
-              transferData.transferAmount * Math.pow(10, transferData.decimals)
-            );
+            const transferAmount = new Decimal(transferData.transferAmount)
+              .mul(new Decimal(10).pow(transferData.decimals))
+              .floor()
+              .toNumber();
 
             transaction.add(
               SystemProgram.transfer({
@@ -79,9 +81,10 @@ const useBulkTransfer = () => {
               );
             }
 
-            const transferAmount = Math.floor(
-              transferData.transferAmount * Math.pow(10, transferData.decimals)
-            );
+            const transferAmount = new Decimal(transferData.transferAmount)
+              .mul(new Decimal(10).pow(transferData.decimals))
+              .floor()
+              .toNumber();
 
             transaction.add(
               createTransferInstruction(
