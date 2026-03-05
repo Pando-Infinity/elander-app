@@ -328,7 +328,7 @@ const BulkTransfer = () => {
 
 export default BulkTransfer;
 
-export enum BulkTransferStatusEnum {
+enum BulkTransferStatusEnum {
   CONFIRM = "CONFIRM",
   PROCESSING = "PROCESSING",
   SUCCESS = "SUCCESS",

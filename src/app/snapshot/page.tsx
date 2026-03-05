@@ -271,7 +271,7 @@ enum CheckConnectionAddressEnum {
   Correct = "correct",
 }
 
-export enum SnapshotStatusEnum {
+enum SnapshotStatusEnum {
   PROCESSING = "PROCESSING",
   SUCCESS = "SUCCESS",
   ERROR = "ERROR",

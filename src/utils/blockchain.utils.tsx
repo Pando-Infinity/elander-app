@@ -13,7 +13,9 @@ import { BlockchainUtils } from ".";
 import { AppConstant, ApiConstant } from "@/const";
 import { TokenTypeEnum } from "@/models/app.model";
 import { PublicKey, Keypair } from "@solana/web3.js";
+// @ts-expect-error -- @noble/hashes subpath exports resolve at runtime via extensionAlias
 import { keccak_256 } from "@noble/hashes/sha3";
+// @ts-expect-error -- @noble/hashes subpath exports resolve at runtime via extensionAlias
 import { kmac256 as nobleKmac256 } from "@noble/hashes/sha3-addons";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 

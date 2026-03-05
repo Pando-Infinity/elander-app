@@ -562,7 +562,7 @@ const Airdrop = () => {
 
 export default Airdrop;
 
-export enum AirdropStatusEnum {
+enum AirdropStatusEnum {
   CONFIRM = "CONFIRM",
   PROCESSING = "PROCESSING",
   SUCCESS = "SUCCESS",

@@ -19,9 +19,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["ensofi-prod.s3.ap-southeast-1.amazonaws.com"],
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   productionBrowserSourceMaps: false,
   env: {
     NETWORK_MODE: process.env.NETWORK_MODE || "",

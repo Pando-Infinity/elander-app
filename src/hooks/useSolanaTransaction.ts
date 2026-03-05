@@ -276,7 +276,9 @@ const simulateTransaction = async (
   connection: Connection,
   transactionData: Transaction | VersionedTransaction
 ): Promise<{ txHash: string; messageError: string } | undefined> => {
-  const simulateResult = await connection.simulateTransaction(transactionData);
+  const simulateResult = transactionData instanceof VersionedTransaction
+    ? await connection.simulateTransaction(transactionData)
+    : await connection.simulateTransaction(transactionData);
 
   if (simulateResult?.value?.err) {
     console.log("simulateResult: ", simulateResult);
