@@ -1,7 +1,6 @@
 export const HEADER_DEFAULT = {
   Accept: "application/json",
   "Content-Type": "application/json",
-  "ngrok-skip-browser-warning": "69420",
 };
 
 export const BASE_SOURCE = "/dapp-service/";
@@ -42,7 +41,3 @@ export const SOL_LOGO_URL =
 export const MAGIC_EDEN_BASE_URL = "https://api-mainnet.magiceden.io";
 export const MAGIC_EDEN_SEARCH_API = `${MAGIC_EDEN_BASE_URL}/v4/search/search`;
 export const MAGIC_EDEN_HOLDER_STATS_BASE = `${MAGIC_EDEN_BASE_URL}/rpc/getCollectionHolderStats`;
-export const MAGIC_EDEN_HEADERS = {
-  origin: "https://magiceden.io",
-  referer: "https://magiceden.io/",
-};

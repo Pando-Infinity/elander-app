@@ -108,7 +108,6 @@ const useSnapshot = () => {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          ...ApiConstant.MAGIC_EDEN_HEADERS,
         },
         body: JSON.stringify({
           pattern: searchPattern,
@@ -144,7 +143,6 @@ const useSnapshot = () => {
         {
           headers: {
             accept: "application/json",
-            ...ApiConstant.MAGIC_EDEN_HEADERS,
           },
         }
       );
