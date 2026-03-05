@@ -29,7 +29,7 @@ const useBulkTransfer = () => {
       const senderPubkey = new PublicKey(senderAddress);
 
       const transaction = new Transaction();
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
       const failedTransfers: { symbol: string; error: string }[] = [];
 
       transaction.add(

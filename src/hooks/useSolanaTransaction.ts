@@ -56,7 +56,7 @@ const useSolanaTransaction = () => {
       try {
         if (!transactionData || !signTransaction)
           return {} as ResSendSolanaTransactionInterface;
-        const connection = await BlockchainUtils.getConnection();
+        const connection = BlockchainUtils.getConnection();
 
         const simulationResult = await simulateAndValidate(
           connection,
@@ -177,7 +177,7 @@ const useSolanaTransaction = () => {
     if (!txHash) return BlockchainTransactionStatusEnum.FAILED;
 
     try {
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
 
       const result = await connection.getSignatureStatus(txHash, {
         searchTransactionHistory: true,
@@ -222,7 +222,7 @@ const useSolanaTransaction = () => {
         connectSignature
       );
 
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
 
       transaction.sign(stealthWalletKeypair);
 

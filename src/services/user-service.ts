@@ -40,7 +40,7 @@ class UserService {
     const publicKey = new PublicKey(walletAddress);
     const allBalances = [];
     try {
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
       const metaplex = Metaplex.make(connection);
 
       // get native balance
@@ -413,7 +413,7 @@ class UserService {
       }
 
       const rpcUrl = BlockchainUtils.getSolanaRpcEndpoint();
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
       const program = getProgram(new anchor.web3.Connection(rpcUrl));
 
       const staker = new PublicKey(walletAddress);

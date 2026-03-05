@@ -134,14 +134,15 @@ export const validateSolWalletAddress = (address: string): boolean => {
   }
 };
 
-export const getConnection = async (
-  connectionConfig?: web3.ConnectionConfig
-) => {
+let _connectionInstance: web3.Connection | null = null;
+
+export const getConnection = (): web3.Connection => {
+  if (_connectionInstance) return _connectionInstance;
+
   const rpc = process.env.RPC_URL || "";
   const wsEndpoint = process.env.WS_RPC;
 
   const config: web3.ConnectionConfig = {
-    ...connectionConfig,
     httpHeaders: {
       "User-Agent": "E-Lander",
       Origin: ApiConstant.APP_ORIGIN_URL,
@@ -149,7 +150,8 @@ export const getConnection = async (
     wsEndpoint: wsEndpoint,
   };
 
-  return new web3.Connection(rpc, config);
+  _connectionInstance = new web3.Connection(rpc, config);
+  return _connectionInstance;
 };
 
 /**
@@ -285,7 +287,7 @@ export const checkWalletForSGT = async (
   walletAddress: string
 ): Promise<boolean> => {
   try {
-    const connection = await BlockchainUtils.getConnection();
+    const connection = BlockchainUtils.getConnection();
 
     const response = await connection.getParsedTokenAccountsByOwner(
       new PublicKey(walletAddress),

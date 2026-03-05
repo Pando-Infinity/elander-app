@@ -48,7 +48,7 @@ const useAirdrop = () => {
       const recipientPubkey = stealthWalletKeypair.publicKey;
 
       const transaction = new Transaction();
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
 
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
@@ -180,7 +180,7 @@ const useAirdrop = () => {
         })
       );
 
-      const connection = await BlockchainUtils.getConnection();
+      const connection = BlockchainUtils.getConnection();
 
       const airdropAmount = new Decimal(amount)
         .mul(new Decimal(10).pow(tokenAirdrop.decimals))
@@ -197,7 +197,6 @@ const useAirdrop = () => {
         );
       } else {
         const mintPubkey = new PublicKey(tokenAirdrop.mint);
-        const connection = await BlockchainUtils.getConnection();
 
         const tokenProgramId =
           tokenAirdrop.type === TokenTypeEnum.SPL_TOKEN_2022
