@@ -13,7 +13,8 @@ import { BlockchainUtils } from ".";
 import { AppConstant, ApiConstant } from "@/const";
 import { TokenTypeEnum } from "@/models/app.model";
 import { PublicKey, Keypair } from "@solana/web3.js";
-import { keccak_256, sha3_256 } from "@noble/hashes/sha3.js";
+import { keccak_256 } from "@noble/hashes/sha3";
+import { kmac256 as nobleKmac256 } from "@noble/hashes/sha3-addons";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 
 import * as nacl from "tweetnacl";
@@ -149,69 +150,20 @@ export const getConnection = async (
   return new web3.Connection(rpc, config);
 };
 
+/**
+ * NIST SP 800-185 compliant KMAC256 via @noble/hashes.
+ *
+ * WARNING: This produces different output than the previous custom
+ * implementation which used HMAC-style ipad/opad with SHA3-256.
+ * Existing stealth wallets derived with the old implementation can
+ * be recovered using generateLegacyStealthWallet().
+ */
 function kmac256(
   key: Uint8Array,
   data: Uint8Array,
-  outputLength: number = 32
+  _outputLength: number = 32
 ): Uint8Array {
-  const blockSize = AppConstant.KMAC256_BLOCK_SIZE;
-
-  const encodedKey = encodeString(key);
-
-  const customization = new TextEncoder().encode("KMAC");
-  const encodedCustomization = encodeString(customization);
-
-  let paddedKey = encodedKey;
-  if (encodedKey.length >= blockSize) {
-    paddedKey = sha3_256(encodedKey);
-  }
-
-  if (paddedKey.length < blockSize) {
-    const temp = new Uint8Array(blockSize);
-    temp.set(paddedKey);
-    paddedKey = temp;
-  }
-
-  const ipad = new Uint8Array(blockSize);
-  const opad = new Uint8Array(blockSize);
-
-  for (let i = 0; i < blockSize; i++) {
-    ipad[i] = paddedKey[i] ^ 0x36;
-    opad[i] = paddedKey[i] ^ 0x5c;
-  }
-
-  const innerInput = new Uint8Array(
-    ipad.length + data.length + encodedCustomization.length
-  );
-  innerInput.set(ipad, 0);
-  innerInput.set(data, ipad.length);
-  innerInput.set(encodedCustomization, ipad.length + data.length);
-
-  const innerHash = sha3_256(innerInput);
-
-  const outerInput = new Uint8Array(opad.length + innerHash.length);
-  outerInput.set(opad, 0);
-  outerInput.set(innerHash, opad.length);
-
-  const result = sha3_256(outerInput);
-
-  if (outputLength <= result.length) {
-    return result.slice(0, outputLength);
-  }
-
-  return result;
-}
-
-function encodeString(input: Uint8Array): Uint8Array {
-  const length = input.length;
-  const lengthBytes = new Uint8Array(4);
-  new DataView(lengthBytes.buffer).setUint32(0, length, false);
-
-  const result = new Uint8Array(lengthBytes.length + input.length);
-  result.set(lengthBytes, 0);
-  result.set(input, lengthBytes.length);
-
-  return result;
+  return nobleKmac256(key, data);
 }
 
 function generateMasterSeed(owner: string, signature: string): Uint8Array {
@@ -247,6 +199,84 @@ export function generateStealthWallet(
   const keypair = Keypair.fromSeed(addressSeed);
 
   return keypair;
+}
+
+/**
+ * @deprecated Recover stealth wallets derived with the old non-NIST-compliant
+ * KMAC256 implementation. Use generateStealthWallet() for new wallets.
+ */
+export function generateLegacyStealthWallet(
+  owner: string,
+  signature: string
+): Keypair {
+  const masterSeed = generateMasterSeed(owner, signature);
+  const addressIndex = AppConstant.STEALTH_WALLET_ADDRESS_INDEX;
+  const domainBytes = new TextEncoder().encode(STEALTH_ADDRESS_DOMAIN);
+  const indexBytes = new Uint8Array(4);
+  new DataView(indexBytes.buffer).setUint32(0, addressIndex, false);
+
+  const input = new Uint8Array(domainBytes.length + indexBytes.length);
+  input.set(domainBytes, 0);
+  input.set(indexBytes, domainBytes.length);
+
+  const addressSeed = legacyKmac256(masterSeed, input, 32);
+  return Keypair.fromSeed(addressSeed);
+}
+
+/** @deprecated Legacy HMAC-SHA3-based KDF (not NIST KMAC256). */
+function legacyKmac256(
+  key: Uint8Array,
+  data: Uint8Array,
+  outputLength: number = 32
+): Uint8Array {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { sha3_256: sha3Hash } = require("@noble/hashes/sha3");
+  const blockSize = AppConstant.KMAC256_BLOCK_SIZE;
+
+  const encodedKey = legacyEncodeString(key);
+  const customization = new TextEncoder().encode("KMAC");
+  const encodedCustomization = legacyEncodeString(customization);
+
+  let paddedKey = encodedKey;
+  if (encodedKey.length >= blockSize) {
+    paddedKey = sha3Hash(encodedKey);
+  }
+  if (paddedKey.length < blockSize) {
+    const temp = new Uint8Array(blockSize);
+    temp.set(paddedKey);
+    paddedKey = temp;
+  }
+
+  const ipad = new Uint8Array(blockSize);
+  const opad = new Uint8Array(blockSize);
+  for (let i = 0; i < blockSize; i++) {
+    ipad[i] = paddedKey[i] ^ 0x36;
+    opad[i] = paddedKey[i] ^ 0x5c;
+  }
+
+  const innerInput = new Uint8Array(
+    ipad.length + data.length + encodedCustomization.length
+  );
+  innerInput.set(ipad, 0);
+  innerInput.set(data, ipad.length);
+  innerInput.set(encodedCustomization, ipad.length + data.length);
+  const innerHash = sha3Hash(innerInput);
+
+  const outerInput = new Uint8Array(opad.length + innerHash.length);
+  outerInput.set(opad, 0);
+  outerInput.set(innerHash, opad.length);
+  const result = sha3Hash(outerInput);
+
+  return outputLength <= result.length ? result.slice(0, outputLength) : result;
+}
+
+function legacyEncodeString(input: Uint8Array): Uint8Array {
+  const lengthBytes = new Uint8Array(4);
+  new DataView(lengthBytes.buffer).setUint32(0, input.length, false);
+  const result = new Uint8Array(lengthBytes.length + input.length);
+  result.set(lengthBytes, 0);
+  result.set(input, lengthBytes.length);
+  return result;
 }
 
 export const checkWalletForSGT = async (
