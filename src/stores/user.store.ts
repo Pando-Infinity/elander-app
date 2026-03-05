@@ -91,6 +91,11 @@ const useUserStore = create<UserState>()(
     {
       name: "user-storage",
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { connectSignature, ...rest } = state;
+        return rest;
+      },
     }
   )
 );
