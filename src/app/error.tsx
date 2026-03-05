@@ -8,7 +8,7 @@ const Error = ({
   reset: () => void;
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[50vh] gap-y-4 px-4">
+    <div className="flex flex-col items-center justify-center min-h-[50vh] gap-y-4 px-4" role="alert">
       <h2 className="text-xl font-bold text-white">Something went wrong</h2>
       <p className="text-sm text-[#9CA3AF] text-center max-w-md">
         {error.message || "An unexpected error occurred."}

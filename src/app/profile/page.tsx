@@ -55,6 +55,7 @@ const Profile = () => {
         <button
           className="w-10 h-10 center-root bg-[#2A2A2A]"
           onClick={handleBack}
+          aria-label="Go back"
         >
           <ArrowIcon className="rotate-180" />
         </button>

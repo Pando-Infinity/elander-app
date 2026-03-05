@@ -141,7 +141,7 @@ const Snapshot = () => {
           <p className="font-bold text-white">Snapshot</p>
           <div className="flex items-center gap-x-2">
             <UnLock />
-            <button className="sm:hidden" onClick={() => setIsOpenNote(true)}>
+            <button className="sm:hidden" onClick={() => setIsOpenNote(true)} aria-label="Show notes">
               <AlertCircleIcon />
             </button>
           </div>
@@ -253,6 +253,7 @@ const Snapshot = () => {
           <button
             className="absolute top-5 right-5 cursor-pointer"
             onClick={() => setIsOpenDialog(false)}
+            aria-label="Close dialog"
           >
             <CloseIcon className="w-6 h-6 text-[#6B7280]" />
           </button>

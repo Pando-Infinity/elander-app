@@ -98,7 +98,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
           <p className="font-bold text-white">Bulk transfer</p>
           <div className="flex items-center gap-x-2">
             <UnLock />
-            <button className="sm:hidden" onClick={() => setIsOpenNote(true)}>
+            <button className="sm:hidden" onClick={() => setIsOpenNote(true)} aria-label="Show notes">
               <AlertCircleIcon />
             </button>
           </div>
