@@ -22,8 +22,8 @@ const Profile = () => {
 
   const handleGetNftInfo = async () => {
     if (!walletAddress) return;
-    await userService.getAllAlchemistNft(walletAddress);
-    await userService.getStakedNfts(walletAddress);
+    // NFTs and staked data are already fetched by AppInitializer on wallet connect.
+    // Only earned reward is profile-specific.
     await userService.getEarnedReward(walletAddress);
   };
 
