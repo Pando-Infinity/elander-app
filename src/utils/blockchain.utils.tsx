@@ -128,7 +128,8 @@ export const getParsedTransaction = async (signature: string) => {
 export const validateSolWalletAddress = (address: string): boolean => {
   try {
     const pubkey = new PublicKey(address);
-    return PublicKey.isOnCurve(pubkey.toBuffer());
+    // Verify it's a valid 32-byte key (accepts both keypair and PDA addresses)
+    return pubkey.toBytes().length === 32;
   } catch (error) {
     return false;
   }
