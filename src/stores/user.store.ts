@@ -41,7 +41,7 @@ const init = {
   tokenPriceFeeds: [],
   allAlchemistNft: [],
   stakedNfts: [],
-  isHolderNft: true,
+  isHolderNft: false,
   earnedReward: null,
   connectSignature: null,
   isSeekerWallet: false,

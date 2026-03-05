@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface AppState {
   isOpenConnectWallet: boolean;
@@ -7,22 +6,10 @@ export interface AppState {
   setIsOpenConnectWallet: (isOpenConnectWallet: boolean) => void;
 }
 
-const init = {
+const useAppStore = create<AppState>()((set) => ({
   isOpenConnectWallet: false,
-};
-
-const useAppStore = create<AppState>()(
-  persist(
-    (set) => ({
-      ...init,
-      setIsOpenConnectWallet: (isOpenConnectWallet: boolean) =>
-        set({ isOpenConnectWallet }),
-    }),
-    {
-      name: "app-storage",
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
+  setIsOpenConnectWallet: (isOpenConnectWallet: boolean) =>
+    set({ isOpenConnectWallet }),
+}));
 
 export { useAppStore };
