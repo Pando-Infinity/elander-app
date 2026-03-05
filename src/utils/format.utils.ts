@@ -1,11 +1,10 @@
-import { isNil } from "lodash";
 import { AppConstant } from "@/const";
 
 export const convertLargeNumber = (
   value?: string | number,
   localeOption = {}
 ) => {
-  if (isNil(value)) return 0;
+  if (value == null) return 0;
 
   // Nine Zeroes for Billions
   return Math.abs(Number(value)) >= 1.0e9

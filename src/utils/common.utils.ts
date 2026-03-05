@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isEmpty } from "lodash";
 import { ApiResponse } from "apisauce";
 import { BaseResponseData, ResponseDataList } from "@/models/common.model";
 import { ApiConstant } from "@/const";
@@ -146,11 +145,9 @@ export function addSubdomain(url?: string, subdomain?: string) {
 
 export const isMobile =
   typeof window !== "undefined" &&
-  !isEmpty(
-    window?.navigator?.userAgent.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    )
-  );
+  window?.navigator?.userAgent.match(
+    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+  ) != null;
 
 export const convertFloatToBps = (interest: number) => {
   return Math.floor((interest / 100) * 10000);

@@ -14,7 +14,7 @@ import {
   SnapshotStatsInterface,
 } from "@/models/app.model";
 
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useAppStore } from "@/stores/app.store";
 import { useUserStore } from "@/stores/user.store";

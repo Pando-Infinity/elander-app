@@ -3,7 +3,6 @@
 
 import React, { useMemo, Fragment, useState, useEffect } from "react";
 
-import { isNil } from "lodash";
 import { CommonUtils } from "@/utils";
 import { useToast } from "@/stores/toast.store";
 import { twJoin, twMerge } from "tailwind-merge";
@@ -43,7 +42,7 @@ const CommonToast: React.FC<CommonToastProps> = ({
   }, [toast]);
 
   useEffect(() => {
-    if (isNil(toast)) return;
+    if (toast == null) return;
 
     setIsOpen(true);
   }, [toast]);
@@ -77,7 +76,7 @@ const CommonToast: React.FC<CommonToastProps> = ({
           </Title>
           {toast.content}
 
-          {!isNil(toast.transactionHash) ? (
+          {toast.transactionHash != null ? (
             <a
               className={twJoin(
                 "underline",
