@@ -49,7 +49,7 @@ const DesktopNavigation = () => {
           href={PathConstant.SNAPSHOT}
           icon={<ImageIcon />}
         >
-          Snapshort
+          Snapshot
         </DesktopNavigationItem>
         <DesktopNavigationItem
           href={PathConstant.AIRDROP}

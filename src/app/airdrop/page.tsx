@@ -82,7 +82,7 @@ const Airdrop = () => {
   const [airdropError, setAirdropError] = useState("");
 
   const [successfulAirdropCount, setSuccessfulAirdropCount] = useState(0);
-  const [airdropSucessData, setAirdropSucessData] = useState<
+  const [airdropSuccessData, setAirdropSuccessData] = useState<
     AirdropSuccessInterface[]
   >([]);
 
@@ -347,7 +347,7 @@ const Airdrop = () => {
         await userService.getAllTokenBalances(walletAddress);
         setAirdropProgress(AirdropStatusEnum.SUCCESS);
         setSuccessfulAirdropCount(0);
-        setAirdropSucessData(airdropSuccessData);
+        setAirdropSuccessData(airdropSuccessData);
         analytics.logAirdropAction(
           {
             ...analyticsData,
@@ -419,7 +419,7 @@ const Airdrop = () => {
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
-          <p className="font-bold text-white">Snapshot</p>
+          <p className="font-bold text-white">Airdrop</p>
           <div className="flex items-center gap-x-2">
             <UnLock />
             <button className="sm:hidden" onClick={() => setIsOpenNote(true)}>
@@ -479,7 +479,7 @@ const Airdrop = () => {
                 setIsOpenDialog(true);
               }}
             >
-              Comfirm
+              Confirm
             </CommonButton>
           ) : (
             <CommonButton onClick={() => setIsOpenConnectWallet(true)}>
@@ -546,7 +546,7 @@ const Airdrop = () => {
             />
           ) : airdropProgress === AirdropStatusEnum.SUCCESS ? (
             <AirdropSuccess
-              airdropData={airdropSucessData}
+              airdropData={airdropSuccessData}
               fee={totalFee}
               token={selectedToken.symbol}
               totalAmount={totalAmountAirdrop}

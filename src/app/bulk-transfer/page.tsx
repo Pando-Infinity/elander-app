@@ -55,7 +55,7 @@ const BulkTransfer = () => {
     when: bulkTransferProgress === BulkTransferStatusEnum.PROCESSING,
   });
 
-  const analityticsData = useMemo(() => {
+  const analyticsData = useMemo(() => {
     if (!receiver || !walletAddress) return {};
     const senderIdHashed = BlockchainUtils.hashWalletAddressToUUID(
       walletAddress || ""
@@ -109,7 +109,7 @@ const BulkTransfer = () => {
 
     analytics.logBulkTransferAction(
       {
-        ...analityticsData,
+        ...analyticsData,
       },
       "bulk_transfer_initiated"
     );
@@ -134,7 +134,7 @@ const BulkTransfer = () => {
         setBulkTransferProgress(BulkTransferStatusEnum.ERROR);
         analytics.logBulkTransferAction(
           {
-            ...analityticsData,
+            ...analyticsData,
             success: false,
             error_message: tx?.messageError,
           },
@@ -166,7 +166,7 @@ const BulkTransfer = () => {
         setBulkTransferProgress(BulkTransferStatusEnum.SUCCESS);
         analytics.logBulkTransferAction(
           {
-            ...analityticsData,
+            ...analyticsData,
             success: true,
           },
           "bulk_transfer_success"
@@ -176,7 +176,7 @@ const BulkTransfer = () => {
         setBulkTransferProgress(BulkTransferStatusEnum.ERROR);
         analytics.logBulkTransferAction(
           {
-            ...analityticsData,
+            ...analyticsData,
             success: false,
             error_message: "Transaction failed or timed out",
           },
@@ -189,7 +189,7 @@ const BulkTransfer = () => {
       setBulkTransferProgress(BulkTransferStatusEnum.ERROR);
       analytics.logBulkTransferAction(
         {
-          ...analityticsData,
+          ...analyticsData,
           success: false,
           error_message: error.message,
         },
@@ -256,7 +256,7 @@ const BulkTransfer = () => {
                   setIsOpenDialog(true);
                 }}
               >
-                Comfirm
+                Confirm
               </CommonButton>
             ) : (
               <CommonButton
