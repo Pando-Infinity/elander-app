@@ -35,6 +35,8 @@ const solanaStakingStr = JSON.stringify(solanaNftStakingJson);
 const solanaStakingJsonObj = JSON.parse(solanaStakingStr);
 
 class UserService {
+  private _tokenRegistryCache: Map<string, any> | null = null;
+
   async getAllTokenBalances(walletAddress: string) {
     const { setWalletBalances } = useUserStore.getState();
     const publicKey = new PublicKey(walletAddress);
@@ -62,28 +64,37 @@ class UserService {
       );
 
       const tokenRegistry = await this.loadTokenRegistry();
-      for (const { account, pubkey } of splTokenAccounts.value) {
-        const parsedInfo = account.data.parsed.info;
-        const mint = parsedInfo.mint;
-        const amount = parsedInfo.tokenAmount.uiAmount;
-        const decimals = parsedInfo.tokenAmount.decimals;
-        if (amount && amount > 0) {
-          const tokenData = await this.getTokenMetadataFromMetaplex(
-            mint,
+      const splTokensWithBalance = splTokenAccounts.value.filter(
+        ({ account }) => {
+          const amount = account.data.parsed.info.tokenAmount.uiAmount;
+          return amount && amount > 0;
+        }
+      );
+
+      const splMetadataResults = await Promise.allSettled(
+        splTokensWithBalance.map(({ account, pubkey }) => {
+          const parsedInfo = account.data.parsed.info;
+          return this.getTokenMetadataFromMetaplex(
+            parsedInfo.mint,
             metaplex,
             connection,
             tokenRegistry
-          );
-          allBalances.push({
-            type: TokenTypeEnum.SPL_TOKEN,
+          ).then((tokenData) => ({
+            type: TokenTypeEnum.SPL_TOKEN as const,
             symbol: tokenData.symbol,
             name: tokenData.name,
-            mint: mint,
-            amount: amount,
-            decimals: decimals,
+            mint: parsedInfo.mint,
+            amount: parsedInfo.tokenAmount.uiAmount,
+            decimals: parsedInfo.tokenAmount.decimals,
             tokenAccount: pubkey.toString(),
             logo: tokenData.logo,
-          });
+          }));
+        })
+      );
+
+      for (const result of splMetadataResults) {
+        if (result.status === "fulfilled") {
+          allBalances.push(result.value);
         }
       }
 
@@ -117,8 +128,8 @@ class UserService {
 
           allBalances.push({
             type: TokenTypeEnum.SPL_TOKEN_2022,
-            symbol: tokenData?.symbol,
-            name: tokenData?.name,
+            symbol: tokenData?.symbol || mint.slice(0, 4) + "...",
+            name: tokenData?.name || "",
             mint: mint,
             amount: amount,
             decimals: decimals,
@@ -202,6 +213,8 @@ class UserService {
   }
 
   async loadTokenRegistry() {
+    if (this._tokenRegistryCache) return this._tokenRegistryCache;
+
     try {
       const response = await fetch(ApiConstant.SOLANA_TOKEN_LIST_URL);
       const data = await response.json();
@@ -211,6 +224,7 @@ class UserService {
         registry.set(token.address, token);
       });
 
+      this._tokenRegistryCache = registry;
       return registry;
     } catch (error) {
       console.error("Error loading token registry:", error);
