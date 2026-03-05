@@ -6,7 +6,6 @@ import {
   sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
 
-import { toLower } from "lodash";
 import { useCallback } from "react";
 import { web3 } from "@coral-xyz/anchor";
 import { BlockchainUtils } from "@/utils";
@@ -285,14 +284,6 @@ const simulateTransaction = async (
     const messageError = simulateResult.value.logs
       ? handleGetErrorMessage(simulateResult.value.logs)
       : "";
-
-    if (
-      toLower(messageError).includes("require_gte expression was violated") ||
-      toLower(messageError).includes("price slippage check")
-    ) {
-      // throw Error(messageError);
-      console.error(messageError);
-    }
 
     return {
       txHash: "",
