@@ -7,8 +7,8 @@ import SolanaProvider from "@/provider/SolanaProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
-const geist = Geist_Mono({
-  variable: "--font-geist-sans",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.variable}  antialiased`}>
+      <body className={`${geistMono.variable}  antialiased`}>
         <GoogleAnalytics />
         <SolanaProvider>
           <AppInitializer />

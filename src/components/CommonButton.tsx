@@ -23,7 +23,6 @@ const CommonButton: React.FC<CommonButtonProps> = ({
 
   return (
     <button
-      key={`${Date.now}`}
       className={twMerge(
         "font-medium",
         "py-2 px-4 rounded",

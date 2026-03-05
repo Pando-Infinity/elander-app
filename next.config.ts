@@ -17,7 +17,12 @@ const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: false,
   images: {
-    domains: ["ensofi-prod.s3.ap-southeast-1.amazonaws.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ensofi-prod.s3.ap-southeast-1.amazonaws.com",
+      },
+    ],
   },
   productionBrowserSourceMaps: false,
   // These env vars are inlined into the client-side JS bundle at build time.
