@@ -8,8 +8,9 @@ import {
 } from "spl-token-0.4.1";
 
 import Decimal from "decimal.js";
+import { AppConstant } from "@/const";
 import { BlockchainUtils } from "@/utils";
-import { PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
+import { PublicKey, Transaction, SystemProgram, ComputeBudgetProgram } from "@solana/web3.js";
 import { BulkTransferInterface, TokenTypeEnum } from "@/models/app.model";
 
 const useBulkTransfer = () => {
@@ -23,6 +24,11 @@ const useBulkTransfer = () => {
       const senderPubkey = new PublicKey(senderAddress);
 
       const transaction = new Transaction();
+      transaction.add(
+        ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
+        })
+      );
       const connection = await BlockchainUtils.getConnection();
 
       for (let i = 0; i < bulkTransferData.length; i++) {
