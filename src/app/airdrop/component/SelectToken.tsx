@@ -66,7 +66,9 @@ const SelectToken: FC<SelectTokenProps> = ({
           )}
           align="center"
         >
-          {walletBalances?.map((item, index) => (
+          {walletBalances
+            ?.filter((token) => token.decimals > 0)
+            .map((item, index) => (
             <DropdownItem
               key={index}
               className="flex items-center justify-between"
