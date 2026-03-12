@@ -13,6 +13,8 @@ import { BlockchainUtils } from "@/utils";
 import { PublicKey, Transaction, SystemProgram, ComputeBudgetProgram } from "@solana/web3.js";
 import { BulkTransferInterface, TokenTypeEnum } from "@/models/app.model";
 
+const MAX_TX_SIZE = 1232; // Solana maximum serialized transaction size in bytes
+
 const useBulkTransfer = () => {
   const handleCreateBulkTransferTransaction = async (
     recipientAddress: string,
@@ -110,6 +112,15 @@ const useBulkTransfer = () => {
       const { blockhash } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = senderPubkey;
+
+      // Check transaction size (message + 64 bytes for single signature)
+      const txSize = transaction.serializeMessage().length + 64;
+      if (txSize > MAX_TX_SIZE) {
+        return {
+          transaction: null,
+          errorMessage: `Transaction too large (${txSize} bytes). Reduce the number of tokens per transfer.`,
+        };
+      }
 
       return {
         transaction,
