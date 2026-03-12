@@ -363,7 +363,7 @@ export function hashWalletAddressToUUID(walletAddress: string): string {
     return "";
   }
 
-  const normalizedAddress = walletAddress.toLowerCase().trim();
+  const normalizedAddress = walletAddress.trim();
 
   function simpleHash(str: string, seed: number = 0): number {
     let h1 = 0xdeadbeef ^ seed;
