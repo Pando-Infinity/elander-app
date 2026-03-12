@@ -15,7 +15,7 @@ const BulkTransferSuccess: FC<BulkTransferSuccessProps> = ({
     const data = bulkTransferList.map((item) => {
       return {
         symbol: item.symbol,
-        amount: item.amount,
+        amount: item.transferAmount,
         receiver: receiver,
         signature: transferTxHash,
       };
