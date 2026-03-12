@@ -176,20 +176,27 @@ class UserService {
             tokenData.logo = metadata.json.image;
           } else if (metadata.uri && !tokenData.logo) {
             try {
-              const json = await retry(
+              const response = await retry(
                 async () => {
-                  const response = await fetch(metadata.uri, {
+                  const res = await fetch(metadata.uri, {
                     signal: AbortSignal.timeout(
                       AppConstant.TOKEN_URI_FETCH_TIMEOUT
                     ),
                   });
-                  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                  return response.json();
+                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                  return res;
                 },
                 2000,
                 2
               );
-              tokenData.logo = json.image || tokenData.logo;
+
+              const contentType = response.headers.get("content-type") || "";
+              if (contentType.startsWith("image/")) {
+                tokenData.logo = metadata.uri;
+              } else {
+                const json = await response.json();
+                tokenData.logo = json.image || tokenData.logo;
+              }
             } catch (e) {
               console.log(`Could not fetch URI metadata for ${mintAddress}`);
             }
