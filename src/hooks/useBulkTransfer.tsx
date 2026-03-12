@@ -32,6 +32,7 @@ const useBulkTransfer = () => {
         })
       );
       const connection = await BlockchainUtils.getConnection();
+      const failedTransfers: string[] = [];
 
       for (let i = 0; i < bulkTransferData.length; i++) {
         const transferData = bulkTransferData[i];
@@ -105,8 +106,16 @@ const useBulkTransfer = () => {
             );
           }
         } catch (error: any) {
-          console.log("error", error);
+          console.error(`Failed to build transfer for ${transferData.symbol}:`, error);
+          failedTransfers.push(transferData.symbol);
         }
+      }
+
+      if (failedTransfers.length > 0) {
+        return {
+          transaction: null,
+          errorMessage: `Failed to build transfer for: ${failedTransfers.join(", ")}`,
+        };
       }
 
       const { blockhash } = await connection.getLatestBlockhash();
