@@ -203,6 +203,42 @@ export const hashTo32Byte = (input: string): Buffer => {
   return crypto.createHash("sha256").update(input).digest();
 };
 
+export const escapeCsvCell = (cell: unknown): string => {
+  const cellStr = String(cell ?? "");
+  if (
+    cellStr.includes(",") ||
+    cellStr.includes("\n") ||
+    cellStr.includes('"')
+  ) {
+    return `"${cellStr.replace(/"/g, '""')}"`;
+  }
+  return cellStr;
+};
+
+export const buildCsvBlob = (
+  headers: string[],
+  rows: unknown[][]
+): Blob => {
+  const csvContent = [
+    headers.join(","),
+    ...rows.map((row) => row.map(escapeCsvCell).join(",")),
+  ].join("\n");
+
+  const BOM = "\uFEFF";
+  return new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+};
+
+export const downloadCsv = (filename: string, blob: Blob) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+};
+
 export const convertIpfsToHttp = (ipfsUrl: string) => {
   if (!ipfsUrl) return "";
 

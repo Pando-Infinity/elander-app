@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { ImageAssets } from "public";
 import { CommonUtils } from "@/utils";
+import { buildCsvBlob, downloadCsv } from "@/utils/common.utils";
 import { BulkTransferInterface } from "@/models/app.model";
 import { CsvIcon, DownloadIcon } from "@/components/icons";
 import Image from "next/image";
@@ -30,24 +31,8 @@ const BulkTransferSuccess: FC<BulkTransferSuccessProps> = ({
       item.signature,
     ]);
 
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.map((cell) => `"${cell}"`).join(",")),
-    ].join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `bulk_transfer_${Date.now()}.csv`;
-
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    const blob = buildCsvBlob(headers, rows);
+    downloadCsv(`bulk_transfer_${Date.now()}.csv`, blob);
   };
 
   return (
