@@ -23,7 +23,7 @@ import { useUserStore } from "@/stores/user.store";
 import { Metaplex } from "@metaplex-foundation/js";
 import { BlockchainUtils, CommonUtils } from "@/utils";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { convertIpfsToHttp } from "@/utils/common.utils";
+import { convertIpfsToHttp, retry } from "@/utils/common.utils";
 import { BaseResponseData } from "@/models/common.model";
 import { EnsofiSvmNftStaking } from "./ensofi_svm_nft_staking";
 
@@ -176,11 +176,27 @@ class UserService {
             tokenData.logo = metadata.json.image;
           } else if (metadata.uri && !tokenData.logo) {
             try {
-              const response = await fetch(metadata.uri, {
-                signal: AbortSignal.timeout(AppConstant.TOKEN_URI_FETCH_TIMEOUT),
-              });
-              const json = await response.json();
-              tokenData.logo = json.image || tokenData.logo;
+              const response = await retry(
+                async () => {
+                  const res = await fetch(metadata.uri, {
+                    signal: AbortSignal.timeout(
+                      AppConstant.TOKEN_URI_FETCH_TIMEOUT
+                    ),
+                  });
+                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                  return res;
+                },
+                2000,
+                2
+              );
+
+              const contentType = response.headers.get("content-type") || "";
+              if (contentType.startsWith("image/")) {
+                tokenData.logo = metadata.uri;
+              } else {
+                const json = await response.json();
+                tokenData.logo = json.image || tokenData.logo;
+              }
             } catch (e) {
               console.log(`Could not fetch URI metadata for ${mintAddress}`);
             }
