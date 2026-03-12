@@ -30,8 +30,10 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
 
   const filteredAndSortedTokens = useMemo(() => {
     if (!walletBalances) return [];
-    const filtered = walletBalances.filter((token) =>
-      token.symbol?.toLowerCase().includes(searchQuery?.toLowerCase())
+    const filtered = walletBalances.filter(
+      (token) =>
+        token.decimals > 0 &&
+        token.symbol?.toLowerCase().includes(searchQuery?.toLowerCase())
     );
 
     const selectionOrderMap = new Map<string, number>();
@@ -156,6 +158,16 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
                             onClick={() => handleSelect(item)}
                           />
                           <div className="flex items-center gap-x-2">
+                            {item.logo && (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img
+                                src={item.logo}
+                                alt=""
+                                width={24}
+                                height={24}
+                                className="rounded-full"
+                              />
+                            )}
                             <p className="text-white font-medium">
                               {item.symbol}
                             </p>
