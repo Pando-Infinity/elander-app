@@ -256,7 +256,7 @@ const BulkTransfer = () => {
                   setIsOpenDialog(true);
                 }}
               >
-                Comfirm
+                Confirm
               </CommonButton>
             ) : (
               <CommonButton
