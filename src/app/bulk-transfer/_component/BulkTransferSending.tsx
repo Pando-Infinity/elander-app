@@ -18,7 +18,7 @@ const BulkTransferSending = () => {
             Transaction in progress
           </p>
           <p className="text-[10px] text-[#8C8C8C]">
-            Lorem ipsum dolor sit amet.
+            Please do not close this window.
           </p>
         </div>
       </div>

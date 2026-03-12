@@ -54,7 +54,7 @@ const BulkTransferSuccess: FC<BulkTransferSuccessProps> = ({
     <div className="flex flex-col gap-y-5 items-center py-4">
       <Image src={ImageAssets.TickCircleImage} alt="" width={70} height={70} />
       <div className="flex flex-col items-center gap-y-3 w-full">
-        <p className="text-sm font-bold leading-[28px]">Successfully</p>
+        <p className="text-sm font-bold leading-[28px]">Success</p>
         <div className="p-3 bg-[#252525] rounded flex flex-col gap-y-3 w-full">
           <div className="flex items-center justify-between">
             <p className="text-[#747475] text-xs">Fee</p>
