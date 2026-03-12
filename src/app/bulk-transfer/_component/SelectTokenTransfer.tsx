@@ -158,15 +158,17 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
                             onClick={() => handleSelect(item)}
                           />
                           <div className="flex items-center gap-x-2">
-                            {item.logo && (
+                            {item.logo ? (
                               /* eslint-disable-next-line @next/next/no-img-element */
                               <img
                                 src={item.logo}
-                                alt=""
+                                alt={item.symbol}
                                 width={24}
                                 height={24}
-                                className="rounded-full"
+                                className="w-6 h-6 min-w-6 rounded-full object-cover"
                               />
+                            ) : (
+                              <div className="w-6 h-6 min-w-6 rounded-full bg-white/10" />
                             )}
                             <p className="text-white font-medium">
                               {item.symbol}
