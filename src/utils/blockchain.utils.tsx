@@ -43,7 +43,7 @@ export const getSolanaNativeTokenBalance = async (
   if (!walletAddress || !rpcUrl) return 0;
 
   try {
-    const connection = new web3.Connection(rpcUrl, "finalized");
+    const connection = new web3.Connection(rpcUrl, "confirmed");
 
     const address = new web3.PublicKey(walletAddress);
     const balance = await connection.getBalance(address);
@@ -63,7 +63,7 @@ export const getSvmSplTokenBalance = async (
   if (!walletAddress) return 0;
 
   try {
-    const connection = new web3.Connection(rpcUrl, "finalized");
+    const connection = new web3.Connection(rpcUrl, "confirmed");
 
     const pubKey = new web3.PublicKey(walletAddress);
     const mintPubKey = new web3.PublicKey(tokenContractAddress);
@@ -113,7 +113,7 @@ export const getParsedTransaction = async (signature: string) => {
   if (!signature) return;
 
   const rpcUrl = getSolanaRpcEndpoint();
-  const solanaConnection = new web3.Connection(rpcUrl, "finalized");
+  const solanaConnection = new web3.Connection(rpcUrl, "confirmed");
 
   const tx = await solanaConnection.getParsedTransaction(signature, {
     commitment: "confirmed",
@@ -125,16 +125,24 @@ export const getParsedTransaction = async (signature: string) => {
 export const validateSolWalletAddress = (address: string): boolean => {
   try {
     const pubkey = new PublicKey(address);
-    return PublicKey.isOnCurve(pubkey.toBuffer());
+    return pubkey.toBytes().length === 32;
   } catch (error) {
     return false;
   }
 };
 
+let _connectionInstance: web3.Connection | null = null;
+let _connectionRpc: string | null = null;
+
 export const getConnection = async (
   connectionConfig?: web3.ConnectionConfig
 ) => {
   const rpc = process.env.RPC_URL || "";
+
+  if (_connectionInstance && _connectionRpc === rpc && !connectionConfig) {
+    return _connectionInstance;
+  }
+
   const wsEndpoint = process.env.WS_RPC;
 
   const config: web3.ConnectionConfig = {
@@ -146,7 +154,14 @@ export const getConnection = async (
     wsEndpoint: wsEndpoint,
   };
 
-  return new web3.Connection(rpc, config);
+  const connection = new web3.Connection(rpc, config);
+
+  if (!connectionConfig) {
+    _connectionInstance = connection;
+    _connectionRpc = rpc;
+  }
+
+  return connection;
 };
 
 function kmac256(
@@ -363,7 +378,7 @@ export function hashWalletAddressToUUID(walletAddress: string): string {
     return "";
   }
 
-  const normalizedAddress = walletAddress.toLowerCase().trim();
+  const normalizedAddress = walletAddress.trim();
 
   function simpleHash(str: string, seed: number = 0): number {
     let h1 = 0xdeadbeef ^ seed;

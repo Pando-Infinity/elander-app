@@ -35,6 +35,10 @@ const solanaStakingStr = JSON.stringify(solanaNftStakingJson);
 const solanaStakingJsonObj = JSON.parse(solanaStakingStr);
 
 class UserService {
+  private _tokenRegistryCache: Map<string, any> | null = null;
+  private _tokenRegistryCacheTime = 0;
+  private static REGISTRY_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
   async getAllTokenBalances(walletAddress: string) {
     const { setWalletBalances } = useUserStore.getState();
     const publicKey = new PublicKey(walletAddress);
@@ -62,28 +66,35 @@ class UserService {
       );
 
       const tokenRegistry = await this.loadTokenRegistry();
-      for (const { account, pubkey } of splTokenAccounts.value) {
-        const parsedInfo = account.data.parsed.info;
-        const mint = parsedInfo.mint;
-        const amount = parsedInfo.tokenAmount.uiAmount;
-        const decimals = parsedInfo.tokenAmount.decimals;
-        if (amount && amount > 0) {
+      const splTokenPromises = splTokenAccounts.value
+        .filter(({ account }) => {
+          const amount = account.data.parsed.info.tokenAmount.uiAmount;
+          return amount && amount > 0;
+        })
+        .map(async ({ account, pubkey }) => {
+          const parsedInfo = account.data.parsed.info;
           const tokenData = await this.getTokenMetadataFromMetaplex(
-            mint,
+            parsedInfo.mint,
             metaplex,
             connection,
             tokenRegistry
           );
-          allBalances.push({
+          return {
             type: TokenTypeEnum.SPL_TOKEN,
             symbol: tokenData.symbol,
             name: tokenData.name,
-            mint: mint,
-            amount: amount,
-            decimals: decimals,
+            mint: parsedInfo.mint,
+            amount: parsedInfo.tokenAmount.uiAmount,
+            decimals: parsedInfo.tokenAmount.decimals,
             tokenAccount: pubkey.toString(),
             logo: tokenData.logo,
-          });
+          };
+        });
+
+      const splResults = await Promise.allSettled(splTokenPromises);
+      for (const result of splResults) {
+        if (result.status === "fulfilled") {
+          allBalances.push(result.value);
         }
       }
 
@@ -218,6 +229,14 @@ class UserService {
   }
 
   async loadTokenRegistry() {
+    const now = Date.now();
+    if (
+      this._tokenRegistryCache &&
+      now - this._tokenRegistryCacheTime < UserService.REGISTRY_TTL_MS
+    ) {
+      return this._tokenRegistryCache;
+    }
+
     try {
       const response = await fetch(ApiConstant.SOLANA_TOKEN_LIST_URL);
       const data = await response.json();
@@ -227,10 +246,13 @@ class UserService {
         registry.set(token.address, token);
       });
 
+      this._tokenRegistryCache = registry;
+      this._tokenRegistryCacheTime = now;
+
       return registry;
     } catch (error) {
       console.error("Error loading token registry:", error);
-      return new Map();
+      return this._tokenRegistryCache || new Map();
     }
   }
 

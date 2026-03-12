@@ -7,9 +7,13 @@ import {
   createAssociatedTokenAccountInstruction,
 } from "spl-token-0.4.1";
 
+import Decimal from "decimal.js";
+import { AppConstant } from "@/const";
 import { BlockchainUtils } from "@/utils";
-import { PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
+import { PublicKey, Transaction, SystemProgram, ComputeBudgetProgram } from "@solana/web3.js";
 import { BulkTransferInterface, TokenTypeEnum } from "@/models/app.model";
+
+const MAX_TX_SIZE = 1232; // Solana maximum serialized transaction size in bytes
 
 const useBulkTransfer = () => {
   const handleCreateBulkTransferTransaction = async (
@@ -22,16 +26,23 @@ const useBulkTransfer = () => {
       const senderPubkey = new PublicKey(senderAddress);
 
       const transaction = new Transaction();
+      transaction.add(
+        ComputeBudgetProgram.setComputeUnitPrice({
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
+        })
+      );
       const connection = await BlockchainUtils.getConnection();
+      const failedTransfers: string[] = [];
 
       for (let i = 0; i < bulkTransferData.length; i++) {
         const transferData = bulkTransferData[i];
 
         try {
           if (transferData.symbol === "SOL") {
-            const transferAmount = Math.floor(
-              transferData.transferAmount * Math.pow(10, transferData.decimals)
-            );
+            const transferAmount = new Decimal(transferData.transferAmount)
+              .mul(new Decimal(10).pow(transferData.decimals))
+              .floor()
+              .toNumber();
 
             transaction.add(
               SystemProgram.transfer({
@@ -78,9 +89,10 @@ const useBulkTransfer = () => {
               );
             }
 
-            const transferAmount = Math.floor(
-              transferData.transferAmount * Math.pow(10, transferData.decimals)
-            );
+            const transferAmount = new Decimal(transferData.transferAmount)
+              .mul(new Decimal(10).pow(transferData.decimals))
+              .floor()
+              .toNumber();
 
             transaction.add(
               createTransferInstruction(
@@ -94,13 +106,30 @@ const useBulkTransfer = () => {
             );
           }
         } catch (error: any) {
-          console.log("error", error);
+          console.error(`Failed to build transfer for ${transferData.symbol}:`, error);
+          failedTransfers.push(transferData.symbol);
         }
+      }
+
+      if (failedTransfers.length > 0) {
+        return {
+          transaction: null,
+          errorMessage: `Failed to build transfer for: ${failedTransfers.join(", ")}`,
+        };
       }
 
       const { blockhash } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = senderPubkey;
+
+      // Check transaction size (message + 64 bytes for single signature)
+      const txSize = transaction.serializeMessage().length + 64;
+      if (txSize > MAX_TX_SIZE) {
+        return {
+          transaction: null,
+          errorMessage: `Transaction too large (${txSize} bytes). Reduce the number of tokens per transfer.`,
+        };
+      }
 
       return {
         transaction,

@@ -76,6 +76,13 @@ const useSolanaTransaction = () => {
           signedTransaction.serialize()
         );
 
+        const latestBlockHash = await connection.getLatestBlockhash();
+        await connection.confirmTransaction({
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature,
+        });
+
         return {
           txHash: signature,
           messageError: "",
@@ -83,7 +90,7 @@ const useSolanaTransaction = () => {
       } catch (error: any) {
         console.log("error", error.message);
 
-        const message = MESSAGE_USER_REJECTED_SUI_ERROR.includes(error.message)
+        const message = MESSAGE_USER_REJECTED_ERROR.includes(error.message)
           ? USER_REJECTED_MESSAGE
           : error.message;
 
@@ -106,7 +113,7 @@ const useSolanaTransaction = () => {
       try {
         const rpcEndpoint = getSolanaRpcEndpoint();
 
-        const connection = new web3.Connection(rpcEndpoint, "finalized");
+        const connection = new web3.Connection(rpcEndpoint, "confirmed");
 
         /**
          * Just simulate first transaction cause if another account depend on the first transaction to create the simulation will fail
@@ -149,7 +156,7 @@ const useSolanaTransaction = () => {
       } catch (error: any) {
         console.log(error);
 
-        const message = MESSAGE_USER_REJECTED_SUI_ERROR.includes(error.message)
+        const message = MESSAGE_USER_REJECTED_ERROR.includes(error.message)
           ? USER_REJECTED_MESSAGE
           : error.message;
 
@@ -164,7 +171,7 @@ const useSolanaTransaction = () => {
 
   const getTransactionResult = async (
     txHash: string,
-    commitment = "finalized"
+    commitment = "confirmed"
   ) => {
     if (!txHash) return BlockchainTransactionStatusEnum.FAILED;
 
@@ -226,6 +233,13 @@ const useSolanaTransaction = () => {
         }
       );
 
+      const latestBlockHash = await connection.getLatestBlockhash();
+      await connection.confirmTransaction({
+        blockhash: latestBlockHash.blockhash,
+        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        signature,
+      });
+
       return {
         txHash: signature,
         messageError: "",
@@ -255,7 +269,7 @@ export interface ResSendSolanaTransactionInterface {
   messageError: string;
 }
 
-const MESSAGE_USER_REJECTED_SUI_ERROR = ["Rejected from user"];
+const MESSAGE_USER_REJECTED_ERROR = ["Rejected from user"];
 
 export const simulateAndValidate = async (
   connection: Connection,
