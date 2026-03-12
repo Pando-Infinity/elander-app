@@ -131,10 +131,18 @@ export const validateSolWalletAddress = (address: string): boolean => {
   }
 };
 
+let _connectionInstance: web3.Connection | null = null;
+let _connectionRpc: string | null = null;
+
 export const getConnection = async (
   connectionConfig?: web3.ConnectionConfig
 ) => {
   const rpc = process.env.RPC_URL || "";
+
+  if (_connectionInstance && _connectionRpc === rpc && !connectionConfig) {
+    return _connectionInstance;
+  }
+
   const wsEndpoint = process.env.WS_RPC;
 
   const config: web3.ConnectionConfig = {
@@ -146,7 +154,14 @@ export const getConnection = async (
     wsEndpoint: wsEndpoint,
   };
 
-  return new web3.Connection(rpc, config);
+  const connection = new web3.Connection(rpc, config);
+
+  if (!connectionConfig) {
+    _connectionInstance = connection;
+    _connectionRpc = rpc;
+  }
+
+  return connection;
 };
 
 function kmac256(
