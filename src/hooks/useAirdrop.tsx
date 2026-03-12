@@ -52,7 +52,7 @@ const useAirdrop = () => {
 
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: AppConstant.PRIORITY_FEE * LAMPORTS_PER_SOL,
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
         })
       );
 
@@ -176,7 +176,7 @@ const useAirdrop = () => {
       // add priority fee
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
-          microLamports: AppConstant.PRIORITY_FEE * LAMPORTS_PER_SOL,
+          microLamports: AppConstant.PRIORITY_FEE_MICRO_LAMPORTS,
         })
       );
 
