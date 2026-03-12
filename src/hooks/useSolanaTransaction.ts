@@ -76,6 +76,13 @@ const useSolanaTransaction = () => {
           signedTransaction.serialize()
         );
 
+        const latestBlockHash = await connection.getLatestBlockhash();
+        await connection.confirmTransaction({
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature,
+        });
+
         return {
           txHash: signature,
           messageError: "",
@@ -225,6 +232,13 @@ const useSolanaTransaction = () => {
           preflightCommitment: "confirmed",
         }
       );
+
+      const latestBlockHash = await connection.getLatestBlockhash();
+      await connection.confirmTransaction({
+        blockhash: latestBlockHash.blockhash,
+        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        signature,
+      });
 
       return {
         txHash: signature,
