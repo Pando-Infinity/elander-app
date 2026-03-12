@@ -16,6 +16,7 @@ import {
   createAssociatedTokenAccountInstruction,
 } from "spl-token-0.4.1";
 
+import Decimal from "decimal.js";
 import { AppConstant } from "@/const";
 import { BlockchainUtils } from "@/utils";
 import { useUserStore } from "@/stores/user.store";
@@ -56,7 +57,10 @@ const useAirdrop = () => {
       );
 
       // Transfer fee
-      const transferFeeAmount = Math.floor(fee * LAMPORTS_PER_SOL);
+      const transferFeeAmount = new Decimal(fee)
+        .mul(LAMPORTS_PER_SOL)
+        .floor()
+        .toNumber();
 
       transaction.add(
         SystemProgram.transfer({
@@ -67,9 +71,10 @@ const useAirdrop = () => {
       );
 
       // transfer airdrop amount
-      const airdropAmount = Math.floor(
-        amount * Math.pow(10, tokenAirdrop.decimals)
-      );
+      const airdropAmount = new Decimal(amount)
+        .mul(new Decimal(10).pow(tokenAirdrop.decimals))
+        .floor()
+        .toNumber();
 
       if (tokenAirdrop.type === TokenTypeEnum.NATIVE_MINT) {
         transaction.add(
@@ -177,9 +182,10 @@ const useAirdrop = () => {
 
       const connection = await BlockchainUtils.getConnection();
 
-      const airdropAmount = Math.floor(
-        amount * Math.pow(10, tokenAirdrop.decimals)
-      );
+      const airdropAmount = new Decimal(amount)
+        .mul(new Decimal(10).pow(tokenAirdrop.decimals))
+        .floor()
+        .toNumber();
 
       if (tokenAirdrop.type === TokenTypeEnum.NATIVE_MINT) {
         transaction.add(
