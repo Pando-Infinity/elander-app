@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
 import MainLayout from "@/components/layout";
-import AppProvider from "@/provider/AppProvider";
+import AppInitializer from "@/provider/AppInitializer";
 import CommonToast from "@/components/common-toast";
 import SolanaProvider from "@/provider/SolanaProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -29,7 +29,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <SolanaProvider>
           <MainLayout>{children}</MainLayout>
-          <AppProvider />
+          <AppInitializer />
           <CommonToast />
         </SolanaProvider>
       </body>

@@ -6,6 +6,7 @@ import {
   SocialIcon,
   DiamondIcon,
   EssentialIcon,
+  ImageIcon,
 } from "@/components/icons";
 import { PathConstant } from "@/const";
 
@@ -65,6 +66,14 @@ export default function Home() {
             label={"Airdrop"}
             description={
               "Launch targeted token airdrops with transparent, on-chain distribution."
+            }
+          />
+          <UtilityCard
+            icon={<ImageIcon className="w-8 h-8" />}
+            href={PathConstant.NFT_COLLECTION_GEN}
+            label={"NFT Generator"}
+            description={
+              "Generate unique NFT collections with layered artwork, rarity controls, and IPFS upload."
             }
           />
         </div>

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { BlockchainUtils } from "@/utils";
 import { useUserStore } from "@/stores/user.store";
 import { userService } from "@/services/user-service";
 
-const AppProvider = () => {
+export const useAppInitialization = () => {
   const {
     stakedNfts,
     walletAddress,
@@ -15,48 +15,22 @@ const AppProvider = () => {
     setIsSeekerWallet,
   } = useUserStore();
 
-  const handleGetBalances = async () => {
-    if (!walletAddress) return;
-    await userService.getAllTokenBalances(walletAddress);
-  };
-
-  const handleGetTokenPriceFeeds = async () => {
-    if (!walletBalances) return;
-    await userService.getTokenPriceFeeds(walletBalances);
-  };
-
-  const handleGetNftInfo = async () => {
-    if (!walletAddress) return;
-    await userService.getAllAlchemistNft(walletAddress);
-    await userService.getStakedNfts(walletAddress);
-  };
-
-  const checkSeekerWallet = async () => {
-    if (!walletAddress) return;
-    const result = await BlockchainUtils.checkWalletForSGT(walletAddress);
-
-    setIsSeekerWallet(result);
-  };
-
   useEffect(() => {
     const isHolder = stakedNfts.length > 0 || allAlchemistNft.length > 0;
-
     setIsHolderNft(isHolder);
-  }, [stakedNfts, allAlchemistNft]);
+  }, [stakedNfts, allAlchemistNft, setIsHolderNft]);
 
   useEffect(() => {
-    handleGetBalances();
-    handleGetNftInfo();
-    checkSeekerWallet();
-  }, [walletAddress]);
+    if (!walletAddress) return;
+
+    userService.getAllTokenBalances(walletAddress);
+    userService.getAllAlchemistNft(walletAddress);
+    userService.getStakedNfts(walletAddress);
+    BlockchainUtils.checkWalletForSGT(walletAddress).then(setIsSeekerWallet);
+  }, [walletAddress, setIsSeekerWallet]);
 
   useEffect(() => {
     if (!walletAddress || !walletBalances) return;
-
-    handleGetTokenPriceFeeds();
+    userService.getTokenPriceFeeds(walletBalances);
   }, [walletAddress, walletBalances]);
-
-  return <Fragment />;
 };
-
-export default AppProvider;

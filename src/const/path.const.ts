@@ -6,3 +6,4 @@ export const BULK = "/bulk-transfer";
 export const PROFILE = "/profile";
 export const SNAPSHOT = "/snapshot";
 export const AIRDROP = "/airdrop";
+export const NFT_COLLECTION_GEN = "/nft-collection-gen";
