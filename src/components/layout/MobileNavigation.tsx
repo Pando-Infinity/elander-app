@@ -6,7 +6,7 @@ import React, { ComponentPropsWithoutRef, FC } from "react";
 import { PathConstant } from "@/const";
 import { usePathname } from "next/navigation";
 import { twJoin, twMerge } from "tailwind-merge";
-import { DiamondIcon, EssentialIcon, HomeIcon, SocialIcon } from "../icons";
+import { DiamondIcon, EssentialIcon, HomeIcon, SocialIcon, ImageIcon } from "../icons";
 
 import Link from "next/link";
 
@@ -38,6 +38,10 @@ const MobileNavigation = () => {
 
       <MobileNavigationItem href={PathConstant.AIRDROP} icon={<SocialIcon />}>
         Airdrop
+      </MobileNavigationItem>
+
+      <MobileNavigationItem href={PathConstant.NFT_COLLECTION_GEN} icon={<ImageIcon />}>
+        NFT Gen
       </MobileNavigationItem>
     </div>
   );

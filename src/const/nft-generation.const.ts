@@ -1,0 +1,11 @@
+export const DEFAULT_CANVAS_WIDTH = 2000;
+export const DEFAULT_CANVAS_HEIGHT = 2000;
+export const DEFAULT_SELLER_FEE_BASIS_POINTS = 500;
+export const DEFAULT_PREVIEW_COUNT = 4;
+export const GENERATION_BATCH_SIZE = 10;
+export const ZIP_CHUNK_SIZE = 100;
+export const SUPPORTED_IMAGE_TYPES = ["image/png"];
+export const WEIGHT_SEPARATOR = "#";
+export const DNA_DELIMITER = "|";
+export const MAX_DNA_COLLISION_RETRIES = 100;
+export const IPFS_UPLOAD_BATCH_SIZE = 20;

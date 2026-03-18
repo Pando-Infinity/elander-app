@@ -57,6 +57,12 @@ const DesktopNavigation = () => {
         >
           Airdrop
         </DesktopNavigationItem>
+        <DesktopNavigationItem
+          href={PathConstant.NFT_COLLECTION_GEN}
+          icon={<ImageIcon />}
+        >
+          NFT Generator
+        </DesktopNavigationItem>
       </div>
 
       <div className="h-[1px] w-full bg-[#3A3A3A]" />
