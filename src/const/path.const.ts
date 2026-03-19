@@ -7,3 +7,4 @@ export const PROFILE = "/profile";
 export const SNAPSHOT = "/snapshot";
 export const AIRDROP = "/airdrop";
 export const NFT_COLLECTION_GEN = "/nft-collection-gen";
+export const NFT_COLLECTION_MGR = "/nft-collection-mgr";

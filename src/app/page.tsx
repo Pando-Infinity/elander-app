@@ -45,22 +45,6 @@ export default function Home() {
           <BuyNftUtility wrapperClassName="sm:hidden" />
 
           <UtilityCard
-            icon={<DiamondIcon className="w-8 h-8" />}
-            href={PathConstant.BULK}
-            label={"Bulk Transfer"}
-            description={
-              "Move tokens to one or many wallets with speed and control."
-            }
-          />
-          <UtilityCard
-            icon={<EssentialIcon className="w-8 h-8" />}
-            href={PathConstant.SNAPSHOT}
-            label={"Snapshot Collection"}
-            description={
-              "Generate accurate NFT holder snapshots from any collection in seconds."
-            }
-          />
-          <UtilityCard
             icon={<SocialIcon className="w-8 h-8" />}
             href={PathConstant.AIRDROP}
             label={"Airdrop"}
@@ -74,6 +58,30 @@ export default function Home() {
             label={"NFT Generator"}
             description={
               "Generate unique NFT collections with layered artwork, rarity controls, and IPFS upload."
+            }
+          />
+          <UtilityCard
+            icon={<ImageIcon className="w-8 h-8" />}
+            href={PathConstant.NFT_COLLECTION_MGR}
+            label={"Collection Manager"}
+            description={
+              "Create and manage on-chain Metaplex Core NFT collections — mint, update, and configure plugins."
+            }
+          />
+          <UtilityCard
+            icon={<DiamondIcon className="w-8 h-8" />}
+            href={PathConstant.BULK}
+            label={"Bulk Transfer"}
+            description={
+              "Move tokens to one or many wallets with speed and control."
+            }
+          />
+          <UtilityCard
+            icon={<EssentialIcon className="w-8 h-8" />}
+            href={PathConstant.SNAPSHOT}
+            label={"Snapshot Collection"}
+            description={
+              "Generate accurate NFT holder snapshots from any collection in seconds."
             }
           />
         </div>

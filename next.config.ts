@@ -33,6 +33,13 @@ const nextConfig: NextConfig = {
     config.resolve.extensionAlias = {
       ".js": [".js", ".ts", ".tsx"],
     };
+    // mpl-core imports @noble/hashes/sha3 (without .js extension) but v2 only
+    // exports ./sha3.js. Resolve these bare subpath imports to their .js versions.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@noble/hashes/sha3$": require.resolve("@noble/hashes/sha3.js"),
+      "@noble/hashes/sha256$": require.resolve("@noble/hashes/sha2.js"),
+    };
     return config;
   },
 
