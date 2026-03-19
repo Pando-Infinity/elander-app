@@ -42,15 +42,6 @@ const DesktopNavigation = () => {
         <DesktopNavigationItem href={PathConstant.ROOT} icon={<HomeLineIcon />}>
           Home
         </DesktopNavigationItem>
-        <DesktopNavigationItem href={PathConstant.BULK} icon={<TransferIcon />}>
-          Bulk Transfer
-        </DesktopNavigationItem>
-        <DesktopNavigationItem
-          href={PathConstant.SNAPSHOT}
-          icon={<ImageIcon />}
-        >
-          Snapshort
-        </DesktopNavigationItem>
         <DesktopNavigationItem
           href={PathConstant.AIRDROP}
           icon={<AirdropIcon />}
@@ -62,6 +53,21 @@ const DesktopNavigation = () => {
           icon={<ImageIcon />}
         >
           NFT Generator
+        </DesktopNavigationItem>
+        <DesktopNavigationItem
+          href={PathConstant.NFT_COLLECTION_MGR}
+          icon={<ImageIcon />}
+        >
+          Collection Mgr
+        </DesktopNavigationItem>
+        <DesktopNavigationItem href={PathConstant.BULK} icon={<TransferIcon />}>
+          Bulk Transfer
+        </DesktopNavigationItem>
+        <DesktopNavigationItem
+          href={PathConstant.SNAPSHOT}
+          icon={<ImageIcon />}
+        >
+          Snapshot
         </DesktopNavigationItem>
       </div>
 
