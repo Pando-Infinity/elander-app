@@ -10,16 +10,9 @@ const Header = () => {
         <Image
           src={LogoTextImage}
           alt=""
-          width={215}
+          width={180}
           height={28}
-          className="hidden sm:block"
-        />
-        <Image
-          src={LogoImage}
-          alt=""
-          width={33}
-          height={3}
-          className="sm:hidden"
+          className="w-[116px] lg:w-[180px]"
         />
       </a>
 
