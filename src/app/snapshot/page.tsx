@@ -45,6 +45,10 @@ const Snapshot = () => {
   const { getCollectionInfo, snapshotByCollection } = useSnapshot();
   const { isHolderNft, isSeekerWallet, walletAddress } = useUserStore();
 
+  useEffect(() => {
+    analytics.logCustomEvent({ feature_name: "snapshot" }, "feature_opened");
+  }, []);
+
   const [isOpenNote, setIsOpenNote] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [collectionAddress, setCollectionAddress] = useState("");
@@ -103,12 +107,12 @@ const Snapshot = () => {
 
     if (collectionAddressStatus === CheckConnectionAddressEnum.Incorrect)
       return (
-        <XCircleIcon className="w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2 text-[#F34E4E]" />
+        <XCircleIcon className="w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2 text-error" />
       );
 
     if (collectionAddressStatus === CheckConnectionAddressEnum.Correct)
       return (
-        <CheckIcon className="w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2 text-[#31E200]" />
+        <CheckIcon className="w-6 h-6 absolute right-3 top-1/2 -translate-y-1/2 text-success" />
       );
 
     return <Fragment />;
@@ -128,7 +132,7 @@ const Snapshot = () => {
           "w-full mx-auto",
           "flex flex-col",
           "rounded-xl overflow-hidden",
-          "bg-[#232323] border border-white/20"
+          "bg-surface-card border border-white/20"
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
@@ -168,7 +172,7 @@ const Snapshot = () => {
             />
             {collectionAddress &&
             collectionAddressStatus === CheckConnectionAddressEnum.Incorrect ? (
-              <p className="text-xs text-[#F34E4E]/60">
+              <p className="text-xs text-error/60">
                 The information is incorrect. Please check again.
               </p>
             ) : (
@@ -176,7 +180,7 @@ const Snapshot = () => {
             )}
           </div>
 
-          <div className="p-3 sm:p-4 rounded bg-[#2E2E2E] flex flex-col gap-y-2 mb-10 sm:mb-6">
+          <div className="p-3 sm:p-4 rounded bg-surface-tooltip flex flex-col gap-y-2 mb-10 sm:mb-6">
             <CollectionItem
               label="Name"
               value={
@@ -233,7 +237,7 @@ const Snapshot = () => {
         isOpen={isOpenDialog}
         onClose={() => setIsOpenDialog(false)}
         isShowIconClose={false}
-        contentClassName="p-0 border-white/20 bg-[#1B1B1B] rounded-lg"
+        contentClassName="p-0 border-white/20 bg-surface-panel rounded-lg"
       >
         <div
           className={twJoin(
@@ -253,7 +257,10 @@ const Snapshot = () => {
           {snapshotProgress === SnapshotStatusEnum.PROCESSING ? (
             <SnapshotSending />
           ) : snapshotProgress === SnapshotStatusEnum.SUCCESS ? (
-            <SnapshotSuccess snapshotData={snapshotData} />
+            <SnapshotSuccess
+              snapshotData={snapshotData}
+              onDownloadComplete={() => analytics.logCustomEvent({}, "snapshot_downloaded")}
+            />
           ) : (
             <SnapshotError />
           )}

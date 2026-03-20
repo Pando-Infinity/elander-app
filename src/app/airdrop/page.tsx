@@ -54,6 +54,10 @@ const Airdrop = () => {
   const { setIsOpenConnectWallet } = useAppStore();
   const { isHolderNft, isSeekerWallet, walletAddress } = useUserStore();
 
+  useEffect(() => {
+    analytics.logCustomEvent({ feature_name: "airdrop" }, "feature_opened");
+  }, []);
+
   const {
     handleTransferByStealthWallet,
     handleTransferBalanceToStealthWallet,
@@ -415,7 +419,7 @@ const Airdrop = () => {
           "w-full mx-auto",
           "flex flex-col",
           "rounded-xl overflow-hidden",
-          "bg-[#232323] border border-white/20"
+          "bg-surface-card border border-white/20"
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
@@ -510,7 +514,7 @@ const Airdrop = () => {
           setIsOpenDialog(false);
         }}
         isShowIconClose={false}
-        contentClassName="p-0 border-white/20 bg-[#1B1B1B] rounded-lg"
+        contentClassName="p-0 border-white/20 bg-surface-panel rounded-lg"
       >
         <div
           className={twJoin(

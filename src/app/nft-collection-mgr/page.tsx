@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 import { useWallet } from "@solana/wallet-adapter-react";
+import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 import {
   CollectionManagerTabEnum,
   CollectionManagerMode,
@@ -24,12 +25,17 @@ const MANAGE_TABS = [
 
 const NftCollectionMgr = () => {
   const { publicKey } = useWallet();
+  const { logCustomEvent } = useFirebaseAnalytics();
   const [mode, setMode] = useState<CollectionManagerMode>("manage");
   const [activeTab, setActiveTab] = useState(
     CollectionManagerTabEnum.OVERVIEW
   );
   const [addressInput, setAddressInput] = useState("");
   const [isOpenNote, setIsOpenNote] = useState(false);
+
+  useEffect(() => {
+    logCustomEvent({ feature_name: "nft-collection-mgr" }, "feature_opened");
+  }, []);
 
   const {
     collectionAddress,
@@ -70,6 +76,7 @@ const NftCollectionMgr = () => {
   ) => {
     const address = await createCollection(params);
     if (address) {
+      logCustomEvent({ collection_address: address }, "collection_created");
       setAddressInput(address);
       setMode("manage");
       setActiveTab(CollectionManagerTabEnum.OVERVIEW);
@@ -126,7 +133,7 @@ const NftCollectionMgr = () => {
           "w-full mx-auto",
           "flex flex-col",
           "rounded-xl overflow-hidden",
-          "bg-[#232323] border border-white/20"
+          "bg-surface-card border border-white/20"
         )}
       >
         {/* Header */}
@@ -144,7 +151,7 @@ const NftCollectionMgr = () => {
             className={twMerge(
               "px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors",
               mode === "manage"
-                ? "bg-[#F44319] text-white"
+                ? "bg-accent text-white"
                 : "bg-white/5 text-white/40 hover:text-white/60 border border-white/10"
             )}
           >
@@ -155,7 +162,7 @@ const NftCollectionMgr = () => {
             className={twMerge(
               "px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors",
               mode === "create"
-                ? "bg-[#F44319] text-white"
+                ? "bg-accent text-white"
                 : "bg-white/5 text-white/40 hover:text-white/60 border border-white/10"
             )}
           >
@@ -179,8 +186,8 @@ const NftCollectionMgr = () => {
                   placeholder="Enter collection address to load..."
                   className={twMerge(
                     "px-3 py-2 rounded text-xs font-mono",
-                    "bg-[#2A2A2A] border border-white/20 text-white",
-                    "outline-none focus:border-[#F44319]/40"
+                    "bg-surface-input border border-white/20 text-white",
+                    "outline-none focus:border-accent/40"
                   )}
                 />
               </div>
@@ -190,7 +197,7 @@ const NftCollectionMgr = () => {
                 className={twMerge(
                   "px-4 py-2 rounded text-xs font-semibold shrink-0",
                   addressInput.trim() && !isLoading
-                    ? "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+                    ? "bg-accent text-white hover:bg-accent/80"
                     : "bg-white/10 text-white/30 cursor-not-allowed"
                 )}
               >
@@ -241,7 +248,7 @@ const NftCollectionMgr = () => {
                   className={twMerge(
                     "px-3 py-2 text-xs font-semibold rounded-t transition-colors",
                     activeTab === tab.key
-                      ? "text-[#F44319] border-b-2 border-[#F44319] bg-white/5"
+                      ? "text-accent border-b-2 border-accent bg-white/5"
                       : "text-white/40 hover:text-white/60"
                   )}
                 >

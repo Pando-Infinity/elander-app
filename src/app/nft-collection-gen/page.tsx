@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
-import { WizardStepEnum } from "@/models/nft-generation.model";
+import { WizardStepEnum, GenerationStatusEnum } from "@/models/nft-generation.model";
+import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 import useNftGeneration from "@/hooks/useNftGeneration";
 import WizardStepper from "./_component/WizardStepper";
 import UploadLayers from "./_component/UploadLayers";
@@ -16,8 +17,13 @@ import CommonDialog from "@/components/CommonDialog";
 import { AlertCircleIcon } from "@/components/icons";
 
 const NftCollectionGen = () => {
+  const { logCustomEvent } = useFirebaseAnalytics();
   const [currentStep, setCurrentStep] = useState(WizardStepEnum.UPLOAD_LAYERS);
   const [isOpenNote, setIsOpenNote] = useState(false);
+
+  useEffect(() => {
+    logCustomEvent({ feature_name: "nft-collection-gen" }, "feature_opened");
+  }, []);
 
   const {
     traitTypes,
@@ -49,6 +55,12 @@ const NftCollectionGen = () => {
     totalSupply,
     validationErrors,
   } = useNftGeneration();
+
+  useEffect(() => {
+    if (progress.status === GenerationStatusEnum.COMPLETE && generatedNfts.length > 0) {
+      logCustomEvent({ count: generatedNfts.length }, "nft_generated");
+    }
+  }, [progress.status]);
 
   const canProceed = (step: WizardStepEnum): boolean => {
     switch (step) {
@@ -157,7 +169,7 @@ const NftCollectionGen = () => {
           "w-full mx-auto",
           "flex flex-col",
           "rounded-xl overflow-hidden",
-          "bg-[#232323] border border-white/20"
+          "bg-surface-card border border-white/20"
         )}
       >
         {/* Header */}
@@ -203,7 +215,7 @@ const NftCollectionGen = () => {
               className={twMerge(
                 "px-4 py-2 rounded text-xs font-semibold",
                 canProceed(currentStep)
-                  ? "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+                  ? "bg-accent text-white hover:bg-accent/80"
                   : "bg-white/10 text-white/30 cursor-not-allowed"
               )}
             >

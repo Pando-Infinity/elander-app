@@ -7,7 +7,7 @@ import { SnapshotDataInterface } from "@/models/app.model";
 import { CsvIcon, DownloadIcon } from "@/components/icons";
 import Image from "next/image";
 
-const SnapshotSuccess: FC<SnapshotSuccessProps> = ({ snapshotData }) => {
+const SnapshotSuccess: FC<SnapshotSuccessProps> = ({ snapshotData, onDownloadComplete }) => {
   const handleDownloadCsv = () => {
     const headers = [
       "Collection Name",
@@ -42,6 +42,7 @@ const SnapshotSuccess: FC<SnapshotSuccessProps> = ({ snapshotData }) => {
 
     const blob = buildCsvBlob(headers, rows);
     downloadCsv(`snapshot_${Date.now()}.csv`, blob);
+    onDownloadComplete?.();
   };
 
   return (
@@ -91,4 +92,5 @@ export default SnapshotSuccess;
 
 interface SnapshotSuccessProps {
   snapshotData: SnapshotDataInterface;
+  onDownloadComplete?: () => void;
 }
