@@ -82,8 +82,8 @@ const GeneratePreview: FC<GeneratePreviewProps> = ({
           }
           className={twMerge(
             "w-16 px-2 py-1.5 rounded text-xs text-center",
-            "bg-[#2A2A2A] border border-white/20 text-white",
-            "outline-none focus:border-[#F44319]/40"
+            "bg-surface-input border border-white/20 text-white",
+            "outline-none focus:border-accent/40"
           )}
         />
         <button
@@ -93,7 +93,7 @@ const GeneratePreview: FC<GeneratePreviewProps> = ({
             "px-3 py-1.5 rounded text-xs font-semibold",
             hasErrors || isPreviewLoading || isGenerating
               ? "bg-white/10 text-white/30 cursor-not-allowed"
-              : "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+              : "bg-accent text-white hover:bg-accent/80"
           )}
         >
           {isPreviewLoading ? "Generating..." : "Generate Preview"}
@@ -123,7 +123,7 @@ const GeneratePreview: FC<GeneratePreviewProps> = ({
               "w-full py-3 rounded-lg text-sm font-bold",
               hasErrors || isComplete || totalSupply === 0
                 ? "bg-white/10 text-white/30 cursor-not-allowed"
-                : "bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+                : "bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
             )}
           >
             {isComplete

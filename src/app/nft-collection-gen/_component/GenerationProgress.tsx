@@ -56,7 +56,7 @@ const GenerationProgress: FC<GenerationProgressProps> = ({
               ? "bg-green-500"
               : progress.status === GenerationStatusEnum.ERROR
                 ? "bg-red-500"
-                : "bg-[#F44319]"
+                : "bg-accent"
           )}
           style={{ width: `${percent}%` }}
         />

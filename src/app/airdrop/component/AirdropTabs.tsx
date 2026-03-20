@@ -5,7 +5,7 @@ const AirdropTabs: FC<AirdropTabsProps> = ({ selectedTabs, onSelectTab }) => {
   return (
     <div
       className={twMerge(
-        "bg-[#2A2A2A]",
+        "bg-surface-input",
         "p-1 rounded-lg",
         "flex items-center justify-between gap-x-3"
       )}
@@ -18,7 +18,7 @@ const AirdropTabs: FC<AirdropTabsProps> = ({ selectedTabs, onSelectTab }) => {
             "py-1.5 cursor-pointer rounded",
             "text-xs font-semibold leading-[24px]",
             item === selectedTabs
-              ? "text-[#F44319] bg-[#F44319]/20 border border-[#F44319]/20 shadow-[4px_4px_24px_0px_#F4431940]"
+              ? "text-accent bg-accent/20 border border-accent/20 shadow-[4px_4px_24px_0px_#F4431940]"
               : "text-white/20"
           )}
           onClick={() => onSelectTab(item)}

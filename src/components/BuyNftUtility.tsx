@@ -20,7 +20,7 @@ const BuyNftUtility: FC<BuyNftUtilityProps> = ({
   return !isHolderNft && !isSeekerWallet ? (
     <div
       className={twMerge(
-        "bg-[#1B1B1B] rounded-lg w-full sm:w-[200px] border border-white/20",
+        "bg-surface-panel rounded-lg w-full sm:w-[200px] border border-white/20",
         wrapperClassName
       )}
       {...otherProps}

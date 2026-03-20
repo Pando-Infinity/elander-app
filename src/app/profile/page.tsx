@@ -53,7 +53,7 @@ const Profile = () => {
     <div>
       <div className="py-4 flex items-center gap-x-5 sm:hidden">
         <button
-          className="w-10 h-10 center-root bg-[#2A2A2A]"
+          className="w-10 h-10 center-root bg-surface-input"
           onClick={handleBack}
         >
           <ArrowIcon className="rotate-180" />

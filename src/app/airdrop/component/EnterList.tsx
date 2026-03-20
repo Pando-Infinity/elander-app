@@ -24,9 +24,9 @@ const EnterList: FC<EnterListProps> = ({
           "rounded",
           "text-xs outline-none",
           "w-full min-h-[225px] sm:min-h-[186px] p-3 h-full",
-          "bg-[#2A2A2A] border resize-y",
+          "bg-surface-input border resize-y",
           airDropListByString && errorMessage
-            ? "border-[#F34E4E]/60"
+            ? "border-error/60"
             : "border-white/20"
         )}
         placeholder={
@@ -37,7 +37,7 @@ const EnterList: FC<EnterListProps> = ({
       />
 
       {airDropListByString && errorMessage ? (
-        <p className="text-xs text-[#F34E4E]/60">{errorMessage}</p>
+        <p className="text-xs text-error/60">{errorMessage}</p>
       ) : (
         <Fragment />
       )}

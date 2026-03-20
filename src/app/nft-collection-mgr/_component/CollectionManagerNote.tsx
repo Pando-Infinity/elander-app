@@ -9,14 +9,14 @@ const CollectionManagerNote: FC<ComponentPropsWithoutRef<"div">> = ({
   return (
     <div
       className={twMerge(
-        "rounded-xl bg-[#232323] border border-white/20 p-4 flex flex-col gap-y-4",
+        "rounded-xl bg-surface-card border border-white/20 p-4 flex flex-col gap-y-4",
         className
       )}
     >
       {/* Metaplex Core branding */}
       <div className="flex items-center gap-x-2">
         <p className="font-bold text-white text-sm">NFT Collection Manager</p>
-        <span className="px-1.5 py-0.5 rounded bg-[#F44319]/10 text-[8px] font-bold text-[#F44319]">
+        <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-bold text-accent">
           Metaplex Core
         </span>
       </div>
@@ -61,7 +61,7 @@ const CollectionManagerNote: FC<ComponentPropsWithoutRef<"div">> = ({
 
       {/* Core vs Token Metadata */}
       <div className="rounded bg-white/5 border border-white/10 p-3">
-        <p className="text-[10px] font-bold text-[#F44319] mb-1.5">
+        <p className="text-[10px] font-bold text-accent mb-1.5">
           Why Metaplex Core?
         </p>
         <div className="flex flex-col gap-y-1.5">
@@ -84,7 +84,7 @@ const CollectionManagerNote: FC<ComponentPropsWithoutRef<"div">> = ({
 
       {/* Integration note */}
       <div className="rounded bg-white/5 border border-white/10 p-3">
-        <p className="text-[10px] font-bold text-[#F44319] mb-1">
+        <p className="text-[10px] font-bold text-accent mb-1">
           From NFT Generator
         </p>
         <p className="text-[10px] text-white/50">
@@ -101,7 +101,7 @@ const CollectionManagerNote: FC<ComponentPropsWithoutRef<"div">> = ({
           href="https://developers.metaplex.com/core"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-[#F44319] hover:underline"
+          className="text-[10px] text-accent hover:underline"
         >
           Metaplex Core Documentation ↗
         </a>
@@ -109,7 +109,7 @@ const CollectionManagerNote: FC<ComponentPropsWithoutRef<"div">> = ({
           href="https://core.metaplex.com/explorer"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-[#F44319] hover:underline"
+          className="text-[10px] text-accent hover:underline"
         >
           Core Explorer ↗
         </a>

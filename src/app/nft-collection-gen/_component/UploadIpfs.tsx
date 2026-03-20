@@ -131,7 +131,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
 
       {/* Setup Guide */}
       <div className="rounded bg-white/5 border border-white/10 p-3">
-        <p className="text-[10px] font-bold text-[#F44319] mb-2">
+        <p className="text-[10px] font-bold text-accent mb-2">
           Setup Guide
         </p>
         <ol className="text-[10px] text-white/60 list-decimal ml-4 space-y-1">
@@ -163,7 +163,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
           <label className="text-[10px] font-semibold text-white/60">
             Provider
           </label>
-          <div className="px-3 py-2 rounded text-xs bg-[#2A2A2A] border border-white/20 text-white/60">
+          <div className="px-3 py-2 rounded text-xs bg-surface-input border border-white/20 text-white/60">
             Pinata (more providers coming soon)
           </div>
         </div>
@@ -182,8 +182,8 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
             placeholder="eyJhbGciOiJIUzI1NiIs..."
             className={twMerge(
               "px-3 py-2 rounded text-xs",
-              "bg-[#2A2A2A] border border-white/20 text-white",
-              "outline-none focus:border-[#F44319]/40"
+              "bg-surface-input border border-white/20 text-white",
+              "outline-none focus:border-accent/40"
             )}
           />
         </div>
@@ -199,8 +199,8 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
             placeholder="https://gateway.pinata.cloud"
             className={twMerge(
               "px-3 py-2 rounded text-xs",
-              "bg-[#2A2A2A] border border-white/20 text-white",
-              "outline-none focus:border-[#F44319]/40"
+              "bg-surface-input border border-white/20 text-white",
+              "outline-none focus:border-accent/40"
             )}
           />
           <p className="text-[8px] text-white/30">
@@ -245,7 +245,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
           </div>
           <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
             <div
-              className="h-full rounded-full bg-[#F44319] transition-all duration-300"
+              className="h-full rounded-full bg-accent transition-all duration-300"
               style={{ width: `${percent}%` }}
             />
           </div>
@@ -279,7 +279,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                 className={twMerge(
                   "px-3 py-1 rounded text-[10px] font-semibold",
                   useChunks
-                    ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+                    ? "bg-accent/20 text-accent border border-accent/40"
                     : "bg-white/5 text-white/40 border border-white/10"
                 )}
               >
@@ -290,7 +290,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                 className={twMerge(
                   "px-3 py-1 rounded text-[10px] font-semibold",
                   !useChunks
-                    ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+                    ? "bg-accent/20 text-accent border border-accent/40"
                     : "bg-white/5 text-white/40 border border-white/10"
                 )}
               >
@@ -328,7 +328,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                         ? "bg-white/5 text-white/20 cursor-not-allowed"
                         : chunk.uploaded
                           ? "bg-white/10 text-white/60 hover:bg-white/20"
-                          : "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+                          : "bg-accent text-white hover:bg-accent/80"
                     )}
                   >
                     {chunk.uploaded ? "Re-upload" : "Upload"}
@@ -354,8 +354,8 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                     }
                     className={twMerge(
                       "px-2 py-1.5 rounded text-xs text-center",
-                      "bg-[#2A2A2A] border border-white/20 text-white",
-                      "outline-none focus:border-[#F44319]/40"
+                      "bg-surface-input border border-white/20 text-white",
+                      "outline-none focus:border-accent/40"
                     )}
                   />
                 </div>
@@ -374,8 +374,8 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                     }
                     className={twMerge(
                       "px-2 py-1.5 rounded text-xs text-center",
-                      "bg-[#2A2A2A] border border-white/20 text-white",
-                      "outline-none focus:border-[#F44319]/40"
+                      "bg-surface-input border border-white/20 text-white",
+                      "outline-none focus:border-accent/40"
                     )}
                   />
                 </div>
@@ -389,7 +389,7 @@ const UploadIpfs: FC<UploadIpfsProps> = ({
                 className={twMerge(
                   "w-full py-3 rounded-lg text-sm font-bold",
                   !isUploading && rangeStart <= rangeEnd
-                    ? "bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+                    ? "bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
                     : "bg-white/10 text-white/30 cursor-not-allowed"
                 )}
               >

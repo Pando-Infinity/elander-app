@@ -158,8 +158,8 @@ const UploadCsv: FC<UploadCsvProps> = ({
             "rounded",
             "text-xs outline-none",
             "w-full min-h-[165px] sm:min-h-[186px] p-3 h-full",
-            "bg-[#2A2A2A] border resize-y",
-            errorMessage ? "border-[#F34E4E]/60" : "border-white/20"
+            "bg-surface-input border resize-y",
+            errorMessage ? "border-error/60" : "border-white/20"
           )}
           rows={airDropListByArray.length + 2}
           onChange={(e) => onAirDropListByString(e.target.value)}
@@ -169,8 +169,8 @@ const UploadCsv: FC<UploadCsvProps> = ({
           className={twMerge(
             "min-h-[165px] sm:min-h-[186px] w-full rounded",
             "flex flex-col gap-y-5 items-center justify-center",
-            "bg-[#2A2A2A] border border-dashed  cursor-pointer",
-            errorMessage ? "border-[#F34E4E]/60" : "border-white/20"
+            "bg-surface-input border border-dashed  cursor-pointer",
+            errorMessage ? "border-error/60" : "border-white/20"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -196,7 +196,7 @@ const UploadCsv: FC<UploadCsvProps> = ({
         </div>
       )}
       {errorMessage && (
-        <p className="text-xs text-[#F34E4E]/60">{errorMessage}</p>
+        <p className="text-xs text-error/60">{errorMessage}</p>
       )}
     </div>
   );

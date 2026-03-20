@@ -72,7 +72,7 @@ const PluginEditor: FC<PluginEditorProps> = ({
   return (
     <div className="flex flex-col gap-y-3 rounded bg-white/5 border border-white/10 p-3">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold text-[#F44319]">
+        <span className="text-[10px] font-bold text-accent">
           {mode === "add" ? "Add" : "Update"} {pluginType}
         </span>
       </div>
@@ -93,8 +93,8 @@ const PluginEditor: FC<PluginEditorProps> = ({
                 }
                 className={twMerge(
                   "px-2 py-1.5 rounded text-xs w-24",
-                  "bg-[#2A2A2A] border border-white/20 text-white",
-                  "outline-none focus:border-[#F44319]/40"
+                  "bg-surface-input border border-white/20 text-white",
+                  "outline-none focus:border-accent/40"
                 )}
               />
             </div>
@@ -114,8 +114,8 @@ const PluginEditor: FC<PluginEditorProps> = ({
                 placeholder="Wallet address..."
                 className={twMerge(
                   "px-2 py-1.5 rounded text-xs",
-                  "bg-[#2A2A2A] border border-white/20 text-white",
-                  "outline-none focus:border-[#F44319]/40"
+                  "bg-surface-input border border-white/20 text-white",
+                  "outline-none focus:border-accent/40"
                 )}
               />
             </div>
@@ -131,8 +131,8 @@ const PluginEditor: FC<PluginEditorProps> = ({
                 }
                 className={twMerge(
                   "px-2 py-1.5 rounded text-xs text-center",
-                  "bg-[#2A2A2A] border border-white/20 text-white",
-                  "outline-none focus:border-[#F44319]/40"
+                  "bg-surface-input border border-white/20 text-white",
+                  "outline-none focus:border-accent/40"
                 )}
               />
             </div>
@@ -171,8 +171,8 @@ const PluginEditor: FC<PluginEditorProps> = ({
               placeholder="trait_type"
               className={twMerge(
                 "px-2 py-1.5 rounded text-xs",
-                "bg-[#2A2A2A] border border-white/20 text-white",
-                "outline-none focus:border-[#F44319]/40"
+                "bg-surface-input border border-white/20 text-white",
+                "outline-none focus:border-accent/40"
               )}
             />
           </div>
@@ -185,8 +185,8 @@ const PluginEditor: FC<PluginEditorProps> = ({
               placeholder="value"
               className={twMerge(
                 "px-2 py-1.5 rounded text-xs",
-                "bg-[#2A2A2A] border border-white/20 text-white",
-                "outline-none focus:border-[#F44319]/40"
+                "bg-surface-input border border-white/20 text-white",
+                "outline-none focus:border-accent/40"
               )}
             />
           </div>
@@ -207,7 +207,7 @@ const PluginEditor: FC<PluginEditorProps> = ({
         className={twMerge(
           "px-3 py-1.5 rounded text-xs font-semibold",
           !isTxPending
-            ? "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+            ? "bg-accent text-white hover:bg-accent/80"
             : "bg-white/10 text-white/30 cursor-not-allowed"
         )}
       >

@@ -93,7 +93,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
           "w-full mx-auto",
           "flex flex-col",
           "rounded-xl overflow-hidden",
-          "bg-[#232323] border border-white/20"
+          "bg-surface-card border border-white/20"
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
@@ -138,17 +138,17 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
 
                 return (
                   <div
-                    className="bg-[#343434] rounded-lg overflow-hidden"
+                    className="bg-surface-selected rounded-lg overflow-hidden"
                     key={index}
                   >
-                    <div className={"bg-[#1B1B1B] rounded-lg"}>
+                    <div className={"bg-surface-panel rounded-lg"}>
                       <div
                         className={twJoin(
                           "px-3 py-4",
                           "rounded-lg",
                           "flex items-center justify-between border transition-all duration-200",
                           checked
-                            ? "bg-[radial-gradient(60.75%_112.14%_at_47.63%_0%,rgba(244,67,25,0.4)_0%,rgba(244,67,25,0)_100%)] border-[#F44319]/50"
+                            ? "bg-[radial-gradient(60.75%_112.14%_at_47.63%_0%,rgba(244,67,25,0.4)_0%,rgba(244,67,25,0)_100%)] border-accent/50"
                             : "border-white/20"
                         )}
                       >
@@ -196,7 +196,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
                           className={twJoin(
                             "flex items-center gap-x-1 px-3 py-2 rounded-lg h-9 ",
                             isError
-                              ? "bg-[#F34E4E]/10 border border-[#F34E4E]/30"
+                              ? "bg-error/10 border border-error/30"
                               : "bg-[#494949]/50"
                           )}
                         >
@@ -214,7 +214,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
                           />
 
                           <button
-                            className="text-sm font-bold text-[#F44319] cursor-pointer hover:text-[#F44319]/80 transition-colors"
+                            className="text-sm font-bold text-accent cursor-pointer hover:text-accent/80 transition-colors"
                             onClick={() => handleMaxClick(item)}
                           >
                             Max

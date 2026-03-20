@@ -89,7 +89,7 @@ const ConnectButton: FC<ComponentPropsWithoutRef<"button">> = ({
             "w-[184px] sm:w-[199px]",
             "flex flex-col gap-y-2",
             "absolute right-0 -bottom-4 rounded translate-y-[100%] duration-500 z-[100]",
-            "p-3 bg-[#2A2A2A] border border-white/20 text-sm font-medium "
+            "p-3 bg-surface-input border border-white/20 text-sm font-medium "
           )}
         >
           <Link
@@ -104,7 +104,7 @@ const ConnectButton: FC<ComponentPropsWithoutRef<"button">> = ({
           <div className="h-[1px] w-full bg-[#575757]" />
 
           <button
-            className="flex items-center gap-x-1.5 text-[#D01515] py-1 cursor-pointer"
+            className="flex items-center gap-x-1.5 text-error-critical py-1 cursor-pointer"
             onClick={handleLogout}
           >
             <LogoutIcon />

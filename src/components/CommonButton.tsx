@@ -13,9 +13,9 @@ const CommonButton: React.FC<CommonButtonProps> = ({
   const variantStyle = useMemo(() => {
     switch (variant) {
       case "primary":
-        return "bg-[#F44319] hover:bg-[#F44319]/80 border border-[#F44319]/20 text-white";
+        return "bg-accent hover:bg-accent/80 border border-accent/20 text-white";
       case "secondary":
-        return "bg-[#2A2A2A] hover:bg-[#2A2A2A]/80 text-white font-semibold";
+        return "bg-surface-input hover:bg-surface-input/80 text-white font-semibold";
       default:
         return "";
     }

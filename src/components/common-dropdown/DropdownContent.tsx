@@ -19,7 +19,7 @@ const DropdownContent: React.FC<DropdownMenuContentProps> = ({
         "mt-3",
         "rounded-lg",
         "border border-white/40",
-        "bg-[#2A2A2A]",
+        "bg-surface-input",
         className
       )}
       {...otherProps}

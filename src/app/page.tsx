@@ -39,7 +39,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="h-[1px] w-full bg-[#3A3A3A]" />
+        <div className="h-[1px] w-full bg-surface-divider" />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <BuyNftUtility wrapperClassName="sm:hidden" />

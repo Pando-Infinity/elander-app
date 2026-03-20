@@ -39,7 +39,7 @@ const CommonTooltip: React.FC<CommonTooltipProps> = ({
           <Content
             className={twMerge(
               "z-40 py-1.5 px-2.5",
-              "bg-[#2E2E2E] border border-white/20 rounded",
+              "bg-surface-tooltip border border-white/20 rounded",
               "text-white/70 text-xs text-start font-medium font-sans",
               contentClassName
             )}

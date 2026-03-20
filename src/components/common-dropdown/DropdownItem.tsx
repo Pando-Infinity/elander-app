@@ -18,7 +18,7 @@ const DropdownItem: React.FC<DropdownMenuItemProps> = ({
         "border-t border-[#D7D9DD]/20",
         "focus-visible:outline-none",
         "text-white font-medium",
-        "hover:bg-[#2A2A2A]/80",
+        "hover:bg-surface-input/80",
         "first:rounded-t-lg last:rounded-b-lg",
         className
       )}

@@ -19,18 +19,18 @@ const Wrapper: FC<WrapperProps> = ({
     <div
       className={twMerge(
         "rounded-lg",
-        "bg-[#141414]",
+        "bg-surface-card-alt",
         "border border-white/20",
         "flex flex-col min-h-[310px]",
         wrapperClassName
       )}
       {...otherProps}
     >
-      <div className="flex items-center justify-between bg-[#242424] rounded-t-lg pr-4">
+      <div className="flex items-center justify-between bg-surface-header rounded-t-lg pr-4">
         <div className="text-sm sm:text-base font-semibold py-2.5 pl-4 pr-7 bg-[#D9D9D9]/5 rounded-tl-lg relative">
           {label}
           <div
-            className="w-6 h-full bg-[#242424] top-0 absolute right-0"
+            className="w-6 h-full bg-surface-header top-0 absolute right-0"
             style={{ clipPath: "polygon(100% 0, 0% 100%, 100% 100%)" }}
           />
         </div>

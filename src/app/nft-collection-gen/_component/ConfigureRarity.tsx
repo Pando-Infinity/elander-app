@@ -86,7 +86,7 @@ const ConfigureRarity: FC<ConfigureRarityProps> = ({
         {rarityClasses.length < 4 && (
           <button
             onClick={addRarityClass}
-            className="px-3 py-1.5 rounded text-[10px] font-semibold bg-[#F44319] text-white hover:bg-[#F44319]/80"
+            className="px-3 py-1.5 rounded text-[10px] font-semibold bg-accent text-white hover:bg-accent/80"
           >
             + Add Class
           </button>
@@ -153,8 +153,8 @@ const ConfigureRarity: FC<ConfigureRarityProps> = ({
                   }
                   className={twMerge(
                     "w-24 px-2 py-1.5 rounded text-xs",
-                    "bg-[#2A2A2A] border border-white/20 text-white",
-                    "outline-none focus:border-[#F44319]/40"
+                    "bg-surface-input border border-white/20 text-white",
+                    "outline-none focus:border-accent/40"
                   )}
                 />
               </div>
@@ -200,8 +200,8 @@ const ConfigureRarity: FC<ConfigureRarityProps> = ({
                         }
                         className={twMerge(
                           "w-10 px-1 py-0.5 rounded text-[10px] text-center",
-                          "bg-[#2A2A2A] border border-white/20 text-white",
-                          "outline-none focus:border-[#F44319]/40"
+                          "bg-surface-input border border-white/20 text-white",
+                          "outline-none focus:border-accent/40"
                         )}
                       />
                     </div>

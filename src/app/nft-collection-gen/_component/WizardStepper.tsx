@@ -36,7 +36,7 @@ const WizardStepper: FC<WizardStepperProps> = ({
                 disabled
                   ? "bg-transparent text-white/15 cursor-not-allowed"
                   : isActive
-                    ? "bg-[#F44319]/20 text-[#F44319]"
+                    ? "bg-accent/20 text-accent"
                     : isCompleted
                       ? "bg-white/10 text-white/80 cursor-pointer"
                       : "bg-transparent text-white/30",
@@ -51,7 +51,7 @@ const WizardStepper: FC<WizardStepperProps> = ({
                   disabled
                     ? "bg-white/5 text-white/15"
                     : isActive
-                      ? "bg-[#F44319] text-white"
+                      ? "bg-accent text-white"
                       : isCompleted
                         ? "bg-white/20 text-white"
                         : "bg-white/10 text-white/30"

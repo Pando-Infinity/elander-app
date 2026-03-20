@@ -16,7 +16,7 @@ const NoRecordFound: FC<ComponentPropsWithoutRef<"div">> = ({
         className={twJoin(
           "w-[70px] h-[70px]",
           "center-root ",
-          "rounded-full bg-[#101010]/20 border-[0.7px] border-[#CECECE]/20"
+          "rounded-full bg-surface-deep/20 border-[0.7px] border-text-dialog/20"
         )}
       >
         <Image
@@ -27,7 +27,7 @@ const NoRecordFound: FC<ComponentPropsWithoutRef<"div">> = ({
         />
       </div>
       <div className="flex flex-col items-center">
-        <p className="text-sm font-bold text-[#A7A7A7] leading-[28px]">
+        <p className="text-sm font-bold text-text-muted leading-[28px]">
           No record found
         </p>
         <p className="text-xs text-[#656565]">Borem ipsum dolor sit </p>

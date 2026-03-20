@@ -21,7 +21,7 @@ const ConfirmTransfer: FC<ConfirmTransferProps> = ({
     <div className="flex flex-col gap-y-3">
       <p className="font-bold leading-[36px]">Confirm</p>
       <div className="flex flex-col gap-y-3">
-        <div className="flex flex-col gap-y-3 p-3 bg-[#2E2E2E] rounded">
+        <div className="flex flex-col gap-y-3 p-3 bg-surface-tooltip rounded">
           <div className="flex flex-col gap-y-3">
             {selectedTokens.map((item, index) => (
               <div key={index} className="flex items-center justify-between">
@@ -53,7 +53,7 @@ const ConfirmTransfer: FC<ConfirmTransferProps> = ({
         </CommonButton>
 
         {solBalance < fee ? (
-          <p className="text-xs text-[#F34E4E]/60 text-center">
+          <p className="text-xs text-error/60 text-center">
             Insufficient funds
           </p>
         ) : (

@@ -73,7 +73,7 @@ const MobileNavigation = () => {
         <div
           className={twMerge(
             "fixed bottom-[72px] right-3 z-[51]",
-            "rounded-xl bg-[#1E1E1E] border border-white/10",
+            "rounded-xl bg-surface-dropdown border border-white/10",
             "shadow-[0px_-8px_30px_0px_rgba(0,0,0,0.5)]",
             "py-2 px-1 flex flex-col gap-y-1 min-w-[140px]"
           )}
@@ -87,7 +87,7 @@ const MobileNavigation = () => {
                 className={twMerge(
                   "flex items-center gap-x-3 px-3 py-2.5 rounded-lg",
                   active
-                    ? "bg-[#F44319]/10 text-[#F44319]"
+                    ? "bg-accent/10 text-accent"
                     : "text-white/50 hover:bg-white/5"
                 )}
               >
@@ -110,7 +110,7 @@ const MobileNavigation = () => {
       <div
         className={twMerge(
           "px-4 py-5 sm:hidden",
-          "w-full bg-[#151515]",
+          "w-full bg-surface-nav",
           "fixed bottom-0 left-0 z-[50]",
           "flex items-center justify-between",
           "shadow-[0px_-40px_60px_0px_#F4431933]"
@@ -131,7 +131,7 @@ const MobileNavigation = () => {
           onClick={() => setShowMore((v) => !v)}
           className={twMerge(
             "flex flex-col gap-y-2 items-center",
-            isMoreActive || showMore ? "text-[#F44319]" : "text-white/50"
+            isMoreActive || showMore ? "text-accent" : "text-white/50"
           )}
         >
           <MoreIcon />
@@ -166,7 +166,7 @@ const MobileNavigationItem: FC<MobileNavigationItemInterface> = ({
     <Link
       className={twMerge(
         "flex flex-col gap-y-2 items-center",
-        active ? "text-[#F44319]" : "text-white/50",
+        active ? "text-accent" : "text-white/50",
         className
       )}
       href={href}

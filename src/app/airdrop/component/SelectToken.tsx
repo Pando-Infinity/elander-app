@@ -30,7 +30,7 @@ const SelectToken: FC<SelectTokenProps> = ({
       className={twMerge(
         "py-2.5 px-3 rounded-lg",
         "flex items-center justify-between",
-        "border border-white/50 bg-[#2A2A2A]"
+        "border border-white/50 bg-surface-input"
       )}
     >
       <DropdownRoot open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>

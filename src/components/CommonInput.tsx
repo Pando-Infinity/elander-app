@@ -17,11 +17,11 @@ const CommonInput: FC<CommonInputProps> = ({
         className={twMerge(
           "text-xs sm:text-base",
           "p-2 sm:p-3 rounded ",
-          "bg-[#2A2A2A] border outline-none",
+          "bg-surface-input border outline-none",
           isError
-            ? "border-[#F34E4E]/20 text-[#F34E4E]"
+            ? "border-error/20 text-error"
             : isSuccess
-            ? "border-[#31E200]/30 text-[#31E200]"
+            ? "border-success/30 text-success"
             : "border-white/20 text-white",
           className
         )}

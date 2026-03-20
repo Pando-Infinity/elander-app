@@ -164,8 +164,8 @@ Or JSON: [{"edition": 1, "metadataUrl": "https://..."}]`}
           disabled={isMinting || !isAuthority}
           className={twMerge(
             "px-3 py-2 rounded text-xs resize-none font-mono",
-            "bg-[#2A2A2A] border border-white/20 text-white",
-            "outline-none focus:border-[#F44319]/40",
+            "bg-surface-input border border-white/20 text-white",
+            "outline-none focus:border-accent/40",
             (isMinting || !isAuthority) && "opacity-50"
           )}
         />
@@ -221,7 +221,7 @@ Or JSON: [{"edition": 1, "metadataUrl": "https://..."}]`}
               </div>
               <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#F44319] transition-all duration-300"
+                  className="h-full rounded-full bg-accent transition-all duration-300"
                   style={{ width: `${percent}%` }}
                 />
               </div>
@@ -274,7 +274,7 @@ Or JSON: [{"edition": 1, "metadataUrl": "https://..."}]`}
                     collectionAddress &&
                     isAuthority &&
                     pendingCount > 0
-                    ? "bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+                    ? "bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
                     : "bg-white/10 text-white/30 cursor-not-allowed"
                 )}
               >

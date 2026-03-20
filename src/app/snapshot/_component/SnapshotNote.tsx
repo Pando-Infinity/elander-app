@@ -10,7 +10,7 @@ const SnapshotNote: FC<ComponentPropsWithoutRef<"div">> = ({
       className={twMerge(
         "p-4 sm:p-6 rounded-lg",
         "flex flex-col gap-y-5",
-        "bg-[#2A2A2A] border border-white/20",
+        "bg-surface-input border border-white/20",
         className,
       )}
       {...otherProps}
@@ -20,7 +20,7 @@ const SnapshotNote: FC<ComponentPropsWithoutRef<"div">> = ({
       </span>
 
       <div className="flex flex-col gap-y-2">
-        <p className="text-[#F44319] font-bold text-xs">Collection Address</p>
+        <p className="text-accent font-bold text-xs">Collection Address</p>
         <span className="flex flex-col text-xs">
           <p className="font-bold text-white/80 leading-[20px]">
             Collection Key
