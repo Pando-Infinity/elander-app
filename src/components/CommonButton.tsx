@@ -26,7 +26,7 @@ const CommonButton: React.FC<CommonButtonProps> = ({
       key={`${Date.now}`}
       className={twMerge(
         "font-medium",
-        "py-2 px-4 rounded",
+        "py-2.5 px-4 rounded",
         "text-sm cursor-pointer",
         "focus-visible:outline-none",
         "flex items-center justify-center gap-x-2",

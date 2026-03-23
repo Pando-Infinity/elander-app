@@ -15,7 +15,7 @@ const AirdropTabs: FC<AirdropTabsProps> = ({ selectedTabs, onSelectTab }) => {
           key={item}
           className={twJoin(
             "center-root w-full",
-            "py-1.5 cursor-pointer rounded",
+            "py-2.5 cursor-pointer rounded",
             "text-xs font-semibold leading-[24px]",
             item === selectedTabs
               ? "text-accent bg-accent/20 border border-accent/20 shadow-[4px_4px_24px_0px_#F4431940]"
