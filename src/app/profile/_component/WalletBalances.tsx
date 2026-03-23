@@ -26,7 +26,7 @@ const WalletBalances: FC<ComponentPropsWithoutRef<"div">> = ({
     return price * value.amount;
   };
 
-  const tokens = walletBalances?.filter((t) => t.decimals > 0) ?? [];
+  const tokens = walletBalances?.filter((t) => t.decimals > 0 && !t.symbol.endsWith("...")) ?? [];
   const nfts = walletBalances?.filter((t) => t.decimals === 0) ?? [];
 
   const tabAdornment = (

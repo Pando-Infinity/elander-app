@@ -33,6 +33,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
     const filtered = walletBalances.filter(
       (token) =>
         token.decimals > 0 &&
+        !token.symbol.endsWith("...") &&
         token.symbol?.toLowerCase().includes(searchQuery?.toLowerCase())
     );
 

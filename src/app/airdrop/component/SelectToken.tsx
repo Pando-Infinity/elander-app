@@ -67,7 +67,7 @@ const SelectToken: FC<SelectTokenProps> = ({
           align="center"
         >
           {walletBalances
-            ?.filter((token) => token.decimals > 0)
+            ?.filter((token) => token.decimals > 0 && !token.symbol.endsWith("..."))
             .map((item, index) => (
             <DropdownItem
               key={index}
