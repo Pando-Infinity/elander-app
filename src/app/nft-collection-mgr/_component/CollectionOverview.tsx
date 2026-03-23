@@ -163,7 +163,7 @@ const CollectionOverview: FC<CollectionOverviewProps> = ({
               href={collection.uri}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-[#F44319] hover:underline break-all font-mono"
+              className="text-xs text-accent hover:underline break-all font-mono"
             >
               {collection.uri}
             </a>
@@ -214,7 +214,7 @@ const CollectionOverview: FC<CollectionOverviewProps> = ({
                   <div className="px-3 py-2 border-t border-white/5">
                     <button
                       onClick={() => setShowFullJson(true)}
-                      className="text-[10px] text-[#F44319] hover:underline"
+                      className="text-[10px] text-accent hover:underline"
                     >
                       Show full JSON
                     </button>

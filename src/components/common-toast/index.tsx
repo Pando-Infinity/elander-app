@@ -31,9 +31,9 @@ const CommonToast: React.FC<CommonToastProps> = ({
   const icon = useMemo(() => {
     switch (toast?.status) {
       case ToastStatusEnum.SUCCESS:
-        return <SuccessIcon className="text-[#50E796] w-6 h-6" />;
+        return <SuccessIcon className="text-success-alt w-6 h-6" />;
       case ToastStatusEnum.ERROR:
-        return <ErrorIcon className="text-[#F75858] w-6 h-6" />;
+        return <ErrorIcon className="text-error-toast w-6 h-6" />;
       case ToastStatusEnum.DEFAULT:
         return <Fragment />;
 
@@ -60,7 +60,7 @@ const CommonToast: React.FC<CommonToastProps> = ({
             "toast-root",
             "w-full sm:min-w-80",
             "flex flex-col gap-y-2",
-            "bg-[#2E2E2E] lg:rounded-lg p-6 !font-sans",
+            "bg-surface-tooltip lg:rounded-lg p-6 !font-sans",
             rootClassName
           )}
         >
@@ -82,7 +82,7 @@ const CommonToast: React.FC<CommonToastProps> = ({
               className={twJoin(
                 "underline",
                 "flex items-center gap-x-1",
-                "text-[#84CAFF] font-semibold"
+                "text-info font-semibold"
               )}
               href={CommonUtils.getTransactionHashInfoLink(
                 toast.transactionHash || ""

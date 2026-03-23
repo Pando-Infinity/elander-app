@@ -10,7 +10,7 @@ const AirdropNote: FC<ComponentPropsWithoutRef<"div">> = ({
       className={twMerge(
         "p-4 sm:p-6 rounded-lg",
         "flex flex-col gap-y-5",
-        "bg-[#2A2A2A] border border-white/20",
+        "bg-surface-input border border-white/20",
         className,
       )}
       {...otherProps}
@@ -23,7 +23,7 @@ const AirdropNote: FC<ComponentPropsWithoutRef<"div">> = ({
       </span>
 
       <div className="flex flex-col gap-y-2">
-        <p className="text-[#F44319] font-bold text-xs">What you can do</p>
+        <p className="text-accent font-bold text-xs">What you can do</p>
 
         <span className="flex flex-col text-xs font-medium text-white/60">
           <ul className="list-disc ml-4">

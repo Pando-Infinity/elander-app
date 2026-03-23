@@ -97,7 +97,7 @@ On-chain Metaplex Core NFT collection management via Umi SDK. Two top-level mode
 ### Key Conventions
 
 - Path alias: `@/*` → `./src/*`
-- UI: Tailwind CSS v4 + Radix UI primitives + `tailwind-merge` for class merging. See `BRANDING.md` for full visual identity, color palette (`#F44319` primary accent), component patterns, and design system reference
+- UI: Tailwind CSS v4 + Radix UI primitives + `tailwind-merge` for class merging. See `DESIGN.md` for design system (aesthetic, typography, color, spacing, layout, motion rationale) and `BRANDING.md` for component-level patterns and visual reference
 - Decimal math: use `decimal.js` (not native floats) for token amounts
 - Two SPL Token versions coexist: `@solana/spl-token` (0.4.14) and `spl-token-0.4.1` (aliased older version)
 - Blockchain utilities in `src/utils/blockchain.utils.tsx` (RPC resolution, stealth wallets, SGT token checks)
@@ -108,6 +108,10 @@ On-chain Metaplex Core NFT collection management via Umi SDK. Two top-level mode
 - PWA enabled in production (disabled in dev)
 - `typescript.ignoreBuildErrors: true` in next.config — TypeScript errors won't block builds
 - `reactStrictMode: false`
+
+### Design System
+
+Always read `DESIGN.md` before making any visual or UI decisions. All font choices, colors, spacing, and aesthetic direction are defined there. Do not deviate without explicit user approval. In QA mode, flag any code that doesn't match `DESIGN.md`. Use Tailwind `@theme` token classes (`bg-surface-card`, `text-accent`) — never hardcode hex values for mapped colors.
 
 ### Deployment
 

@@ -153,7 +153,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({
           className={twMerge(
             "px-3 py-1 rounded text-[10px] font-semibold",
             !useDirectUri
-              ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+              ? "bg-accent/20 text-accent border border-accent/40"
               : "bg-white/5 text-white/40 border border-white/10"
           )}
         >
@@ -164,7 +164,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({
           className={twMerge(
             "px-3 py-1 rounded text-[10px] font-semibold",
             useDirectUri
-              ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+              ? "bg-accent/20 text-accent border border-accent/40"
               : "bg-white/5 text-white/40 border border-white/10"
           )}
         >
@@ -273,7 +273,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({
           className={twMerge(
             "px-2 py-0.5 rounded text-[10px] font-semibold",
             enableRoyalties
-              ? "bg-[#F44319]/20 text-[#F44319]"
+              ? "bg-accent/20 text-accent"
               : "bg-white/5 text-white/40"
           )}
         >
@@ -298,8 +298,8 @@ const CreateCollection: FC<CreateCollectionProps> = ({
                 }
                 className={twMerge(
                   "px-3 py-2 rounded text-xs",
-                  "bg-[#2A2A2A] border border-white/20 text-white",
-                  "outline-none focus:border-[#F44319]/40"
+                  "bg-surface-input border border-white/20 text-white",
+                  "outline-none focus:border-accent/40"
                 )}
               />
               <span className="text-[8px] text-white/30">
@@ -331,8 +331,8 @@ const CreateCollection: FC<CreateCollectionProps> = ({
                   placeholder="Wallet address..."
                   className={twMerge(
                     "px-2 py-1.5 rounded text-xs",
-                    "bg-[#2A2A2A] border border-white/20 text-white",
-                    "outline-none focus:border-[#F44319]/40"
+                    "bg-surface-input border border-white/20 text-white",
+                    "outline-none focus:border-accent/40"
                   )}
                 />
               </div>
@@ -352,8 +352,8 @@ const CreateCollection: FC<CreateCollectionProps> = ({
                   }
                   className={twMerge(
                     "px-2 py-1.5 rounded text-xs text-center",
-                    "bg-[#2A2A2A] border border-white/20 text-white",
-                    "outline-none focus:border-[#F44319]/40"
+                    "bg-surface-input border border-white/20 text-white",
+                    "outline-none focus:border-accent/40"
                   )}
                 />
               </div>
@@ -381,7 +381,7 @@ const CreateCollection: FC<CreateCollectionProps> = ({
         className={twMerge(
           "w-full py-3 rounded-lg text-sm font-bold mt-2",
           canCreate
-            ? "bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+            ? "bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
             : "bg-white/10 text-white/30 cursor-not-allowed"
         )}
       >
@@ -430,7 +430,7 @@ const MetadataPreviewCard: FC<{
   return (
     <div className="rounded bg-white/5 border border-white/10 overflow-hidden">
       <div className="px-3 py-2 bg-white/5 border-b border-white/10">
-        <p className="text-[10px] font-bold text-[#F44319]">
+        <p className="text-[10px] font-bold text-accent">
           Collection Preview
         </p>
       </div>
@@ -564,8 +564,8 @@ const InputField: FC<{
         rows={3}
         className={twMerge(
           "px-3 py-2 rounded text-xs resize-none",
-          "bg-[#2A2A2A] border border-white/20 text-white",
-          "outline-none focus:border-[#F44319]/40"
+          "bg-surface-input border border-white/20 text-white",
+          "outline-none focus:border-accent/40"
         )}
       />
     ) : (
@@ -576,8 +576,8 @@ const InputField: FC<{
         placeholder={placeholder}
         className={twMerge(
           "px-3 py-2 rounded text-xs",
-          "bg-[#2A2A2A] border border-white/20 text-white",
-          "outline-none focus:border-[#F44319]/40"
+          "bg-surface-input border border-white/20 text-white",
+          "outline-none focus:border-accent/40"
         )}
       />
     )}
@@ -611,10 +611,10 @@ const CoreStandardInfo = () => {
         className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-white/[0.02] transition-colors"
       >
         <div className="flex items-center gap-x-2">
-          <span className="text-[10px] font-bold text-[#F44319]">
+          <span className="text-[10px] font-bold text-accent">
             Metaplex Core Standard
           </span>
-          <span className="px-1.5 py-0.5 rounded bg-[#F44319]/10 text-[8px] font-semibold text-[#F44319]">
+          <span className="px-1.5 py-0.5 rounded bg-accent/10 text-[8px] font-semibold text-accent">
             87% cheaper
           </span>
         </div>
@@ -647,7 +647,7 @@ const CoreStandardInfo = () => {
                 "No token accounts needed",
               ].map((f) => (
                 <div key={f} className="flex items-start gap-x-1.5">
-                  <span className="text-[#F44319] text-[8px] mt-0.5">●</span>
+                  <span className="text-accent text-[8px] mt-0.5">●</span>
                   <span className="text-[10px] text-white/50">{f}</span>
                 </div>
               ))}
@@ -698,7 +698,7 @@ const CoreStandardInfo = () => {
                 ],
               ].map(([field, desc]) => (
                 <div key={field} className="flex items-start gap-x-2">
-                  <code className="text-[10px] font-mono text-[#F44319]/70 shrink-0 min-w-[140px]">
+                  <code className="text-[10px] font-mono text-accent/70 shrink-0 min-w-[140px]">
                     {field}
                   </code>
                   <span className="text-[10px] text-white/40">{desc}</span>
@@ -713,7 +713,7 @@ const CoreStandardInfo = () => {
               href="https://developers.metaplex.com/core"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] text-[#F44319] hover:underline"
+              className="text-[10px] text-accent hover:underline"
             >
               Core Documentation ↗
             </a>
@@ -721,7 +721,7 @@ const CoreStandardInfo = () => {
               href="https://core.metaplex.com/explorer"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] text-[#F44319] hover:underline"
+              className="text-[10px] text-accent hover:underline"
             >
               Core Explorer ↗
             </a>

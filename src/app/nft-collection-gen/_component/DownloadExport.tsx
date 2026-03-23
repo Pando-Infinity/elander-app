@@ -89,7 +89,7 @@ const DownloadExport: FC<DownloadExportProps> = ({
 
           <button
             onClick={onDownloadAll}
-            className="w-full py-3 rounded-lg text-sm font-bold bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+            className="w-full py-3 rounded-lg text-sm font-bold bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
           >
             Download All ({totalChunks} ZIPs)
           </button>
@@ -108,7 +108,7 @@ const DownloadExport: FC<DownloadExportProps> = ({
                     {collectionName || "collection"}_{String(start).padStart(4, "0")}-
                     {String(end).padStart(4, "0")}.zip
                   </span>
-                  <span className="text-[10px] text-[#F44319]">Download</span>
+                  <span className="text-[10px] text-accent">Download</span>
                 </button>
               );
             })}
@@ -117,7 +117,7 @@ const DownloadExport: FC<DownloadExportProps> = ({
       ) : (
         <button
           onClick={onDownloadAll}
-          className="w-full py-3 rounded-lg text-sm font-bold bg-gradient-to-r from-[#F44319] to-[#F44319]/70 text-white hover:opacity-90"
+          className="w-full py-3 rounded-lg text-sm font-bold bg-gradient-to-r from-accent to-accent/70 text-white hover:opacity-90"
         >
           Download ZIP ({totalNfts} NFTs)
         </button>

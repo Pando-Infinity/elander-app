@@ -111,8 +111,8 @@ const UploadLayers: FC<UploadLayersProps> = ({
           placeholder="e.g., Background, Body, Hat..."
           className={twMerge(
             "flex-1 px-3 py-2 rounded text-xs",
-            "bg-[#2A2A2A] border border-white/20 text-white",
-            "outline-none focus:border-[#F44319]/40"
+            "bg-surface-input border border-white/20 text-white",
+            "outline-none focus:border-accent/40"
           )}
         />
         <button
@@ -121,7 +121,7 @@ const UploadLayers: FC<UploadLayersProps> = ({
           className={twMerge(
             "px-3 py-2 rounded text-xs font-semibold",
             newTraitName.trim()
-              ? "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+              ? "bg-accent text-white hover:bg-accent/80"
               : "bg-white/10 text-white/30 cursor-not-allowed"
           )}
         >
@@ -149,7 +149,7 @@ const UploadLayers: FC<UploadLayersProps> = ({
               className={twMerge(
                 "rounded border bg-white/5 overflow-hidden transition-colors",
                 dragOverId === tt.id
-                  ? "border-[#F44319]/50 bg-[#F44319]/5"
+                  ? "border-accent/50 bg-accent/5"
                   : "border-white/10"
               )}
             >

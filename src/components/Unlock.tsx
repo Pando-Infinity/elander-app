@@ -27,7 +27,7 @@ const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
       trigger={
         <button
           className={twMerge(
-            "py-1.5 px-2 cursor-pointer",
+            "py-2 px-3 cursor-pointer",
             "text-[#312E2D] font-semibold text-xs",
             "flex items-center gap-x-2 bg-[#FFD800] rounded-lg",
             className

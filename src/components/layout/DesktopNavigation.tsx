@@ -30,7 +30,7 @@ const DesktopNavigation = () => {
     <div
       className={twMerge(
         "px-5 py-8 relative",
-        "bg-[#222222] border-r border-[#3A3A3A]",
+        "bg-surface-sidebar border-r border-surface-divider",
         "hidden sm:flex flex-col gap-y-6 h-full",
         "min-w-[240px] w-[240px] min-h-screen h-screen"
       )}
@@ -71,7 +71,7 @@ const DesktopNavigation = () => {
         </DesktopNavigationItem>
       </div>
 
-      <div className="h-[1px] w-full bg-[#3A3A3A]" />
+      <div className="h-[1px] w-full bg-surface-divider" />
 
       <DesktopNavigationItem href={PathConstant.PROFILE} icon={<ProfileIcon />}>
         Profile
@@ -172,7 +172,7 @@ const DesktopNavigationItem: FC<DesktopNavigationItemInterface> = ({
           </div>
 
           {active && (
-            <div className="h-9 w-[6px] bg-[#F44319] absolute top-1/2 -translate-y-1/2 -left-6 rounded-r-lg navigation-shadow" />
+            <div className="h-9 w-[6px] bg-accent absolute top-1/2 -translate-y-1/2 -left-6 rounded-r-lg navigation-shadow" />
           )}
         </div>
       </div>

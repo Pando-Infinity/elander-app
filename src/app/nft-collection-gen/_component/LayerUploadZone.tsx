@@ -53,7 +53,7 @@ const LayerUploadZone: FC<LayerUploadZoneProps> = ({
               className={twMerge(
                 "px-2 py-1 rounded text-[10px] font-semibold transition-colors",
                 selectedPool === pool
-                  ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+                  ? "bg-accent/20 text-accent border border-accent/40"
                   : "bg-white/5 text-white/40 border border-white/10 hover:bg-white/10"
               )}
               onClick={() => onSelectedPoolChange(pool)}
@@ -69,8 +69,8 @@ const LayerUploadZone: FC<LayerUploadZoneProps> = ({
         className={twMerge(
           "min-h-[100px] w-full rounded",
           "flex flex-col gap-y-3 items-center justify-center",
-          "bg-[#2A2A2A] border border-dashed cursor-pointer p-3",
-          isDragging ? "border-[#F44319]/60 bg-[#F44319]/5" : "border-white/20"
+          "bg-surface-input border border-dashed cursor-pointer p-3",
+          isDragging ? "border-accent/60 bg-accent/5" : "border-white/20"
         )}
         onDragOver={(e) => {
           e.preventDefault();

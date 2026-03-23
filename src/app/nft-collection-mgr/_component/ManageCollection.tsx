@@ -95,8 +95,8 @@ const ManageCollection: FC<ManageCollectionProps> = ({
             disabled={!isAuthority}
             className={twMerge(
               "px-3 py-2 rounded text-xs",
-              "bg-[#2A2A2A] border border-white/20 text-white",
-              "outline-none focus:border-[#F44319]/40",
+              "bg-surface-input border border-white/20 text-white",
+              "outline-none focus:border-accent/40",
               !isAuthority && "opacity-50"
             )}
           />
@@ -112,8 +112,8 @@ const ManageCollection: FC<ManageCollectionProps> = ({
             disabled={!isAuthority}
             className={twMerge(
               "px-3 py-2 rounded text-xs font-mono",
-              "bg-[#2A2A2A] border border-white/20 text-white",
-              "outline-none focus:border-[#F44319]/40",
+              "bg-surface-input border border-white/20 text-white",
+              "outline-none focus:border-accent/40",
               !isAuthority && "opacity-50"
             )}
           />
@@ -129,7 +129,7 @@ const ManageCollection: FC<ManageCollectionProps> = ({
           className={twMerge(
             "px-4 py-2 rounded text-xs font-semibold",
             isReady && isAuthority && hasChanged && !isTxPending
-              ? "bg-[#F44319] text-white hover:bg-[#F44319]/80"
+              ? "bg-accent text-white hover:bg-accent/80"
               : "bg-white/10 text-white/30 cursor-not-allowed"
           )}
         >
@@ -166,7 +166,7 @@ const ManageCollection: FC<ManageCollectionProps> = ({
                 className={twMerge(
                   "px-2 py-1 rounded text-[10px] font-semibold",
                   selectedPluginType === pt
-                    ? "bg-[#F44319]/20 text-[#F44319] border border-[#F44319]/40"
+                    ? "bg-accent/20 text-accent border border-accent/40"
                     : "bg-white/5 text-white/40 border border-white/10"
                 )}
               >
@@ -198,7 +198,7 @@ const ManageCollection: FC<ManageCollectionProps> = ({
                 <span
                   className={twMerge(
                     "px-1.5 py-0.5 rounded text-[10px] font-bold",
-                    "bg-[#F44319]/20 text-[#F44319]"
+                    "bg-accent/20 text-accent"
                   )}
                 >
                   {plugin.type}

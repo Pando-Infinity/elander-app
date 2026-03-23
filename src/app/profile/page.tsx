@@ -53,12 +53,12 @@ const Profile = () => {
     <div>
       <div className="py-4 flex items-center gap-x-5 sm:hidden">
         <button
-          className="w-10 h-10 center-root bg-[#2A2A2A]"
+          className="w-10 h-10 center-root bg-surface-input"
           onClick={handleBack}
         >
           <ArrowIcon className="rotate-180" />
         </button>
-        <p className="font-bold text-lg">Profile</p>
+        <h1 className="font-bold text-lg">Profile</h1>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-x-8 justify-between gap-y-6">

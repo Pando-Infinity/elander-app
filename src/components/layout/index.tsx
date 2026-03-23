@@ -55,7 +55,7 @@ const MainLayout: FC<MainLayoutInterface> = ({ children, className }) => {
       <Header />
       <DesktopNavigation />
       <div className="flex flex-col w-full h-full overflow-hidden w-screen">
-        <div className="sm:flex justify-end py-5 border-b border-[#3A3A3A] hidden sm:px-[46px] flex-shrink-0">
+        <div className="sm:flex justify-end py-5 border-b border-surface-divider hidden sm:px-[46px] flex-shrink-0">
           <ConnectButton />
         </div>
         <div

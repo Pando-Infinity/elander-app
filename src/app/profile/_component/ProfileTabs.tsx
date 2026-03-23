@@ -13,7 +13,7 @@ const ProfileTabs: FC<ProfileTabsInterface> = ({
   return (
     <div
       className={twMerge(
-        "flex items-center gap-x-3 bg-[#2E2E2E] p-1 rounded",
+        "flex items-center gap-x-3 bg-surface-tooltip p-1 rounded",
         className
       )}
     >
@@ -24,7 +24,7 @@ const ProfileTabs: FC<ProfileTabsInterface> = ({
             "px-3 py-2",
             "text-sm font-semibold",
             item === selectedTab
-              ? "text-[#F44319] bg-[#F44319]/20 border border-[#F44319]/20 rounded shadow-[4px_4px_24px_0px_#F4431940]"
+              ? "text-accent bg-accent/20 border border-accent/20 rounded shadow-[4px_4px_24px_0px_#F4431940]"
               : "text-white/20"
           )}
           onClick={() => onSelectTab(item)}

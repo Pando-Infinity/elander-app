@@ -33,7 +33,7 @@ const AirdropSending: FC<AirdropSendingProps> = ({
               style={{ transform: "translateZ(0)" }}
             >
               <Indicator
-                className="w-full h-full bg-[#F44319] rounded-[2px]"
+                className="w-full h-full bg-accent rounded-[2px]"
                 style={{
                   transform: `translateX(-${100 - progress}%)`,
                   transition: "transform 50ms linear",
@@ -41,7 +41,7 @@ const AirdropSending: FC<AirdropSendingProps> = ({
               />
             </Root>
 
-            <p className=" text-[10px] text-[#F44319] font-semibold w-6">
+            <p className=" text-[10px] text-accent font-semibold w-6">
               {Math.floor(progress)}%
             </p>
           </div>

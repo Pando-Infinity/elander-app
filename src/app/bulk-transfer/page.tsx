@@ -34,6 +34,10 @@ const BulkTransfer = () => {
   const { setIsOpenConnectWallet } = useAppStore();
   const { walletAddress, isHolderNft, isSeekerWallet } = useUserStore();
 
+  useEffect(() => {
+    analytics.logCustomEvent({ feature_name: "bulk-transfer" }, "feature_opened");
+  }, []);
+
   const { handleCreateBulkTransferTransaction } = useBulkTransfer();
   const { handleSendSolanaTransaction, getTransactionResult } =
     useSolanaTransaction();
@@ -223,7 +227,7 @@ const BulkTransfer = () => {
       />
 
       <div className="w-full sm:min-w-[407px] sm:w-[407px] flex flex-col gap-y-5">
-        <div className="flex flex-col gap-y-3 p-4 sm:p-5 border border-white/20 bg-[#14141480] rounded-lg">
+        <div className="flex flex-col gap-y-3 p-4 sm:p-5 border border-white/20 bg-surface-card-alt/50 rounded-lg">
           <p className="text-sm font-medium">Address</p>
           <div className="flex flex-col gap-y-1">
             <CommonInput
@@ -235,7 +239,7 @@ const BulkTransfer = () => {
             />
 
             {incorrectAddress && (
-              <p className="text-xs text-[#F34E4E99]">Incorrect address</p>
+              <p className="text-xs text-error/60">Incorrect address</p>
             )}
           </div>
           <div className="flex items-center gap-x-3">
@@ -280,7 +284,7 @@ const BulkTransfer = () => {
           handleClose();
         }}
         isShowIconClose={false}
-        contentClassName="p-0 border-white/20 bg-[#1B1B1B] rounded-lg"
+        contentClassName="p-0 border-white/20 bg-surface-panel rounded-lg"
       >
         <div
           className={twJoin(

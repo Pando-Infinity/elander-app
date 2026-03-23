@@ -75,8 +75,8 @@ const ConfigureCollection: FC<ConfigureCollectionProps> = ({
           rows={3}
           className={twMerge(
             "px-3 py-2 rounded text-xs",
-            "bg-[#2A2A2A] border border-white/20 text-white",
-            "outline-none focus:border-[#F44319]/40 resize-y"
+            "bg-surface-input border border-white/20 text-white",
+            "outline-none focus:border-accent/40 resize-y"
           )}
         />
       </div>
@@ -133,7 +133,7 @@ const ConfigureCollection: FC<ConfigureCollectionProps> = ({
           </label>
           <button
             onClick={addCreator}
-            className="text-[10px] text-[#F44319] font-semibold hover:underline"
+            className="text-[10px] text-accent font-semibold hover:underline"
           >
             + Add Creator
           </button>
@@ -147,8 +147,8 @@ const ConfigureCollection: FC<ConfigureCollectionProps> = ({
               placeholder="Solana wallet address"
               className={twMerge(
                 "flex-1 px-3 py-2 rounded text-xs",
-                "bg-[#2A2A2A] border border-white/20 text-white",
-                "outline-none focus:border-[#F44319]/40"
+                "bg-surface-input border border-white/20 text-white",
+                "outline-none focus:border-accent/40"
               )}
             />
             <input
@@ -161,8 +161,8 @@ const ConfigureCollection: FC<ConfigureCollectionProps> = ({
               }
               className={twMerge(
                 "w-16 px-2 py-2 rounded text-xs text-center",
-                "bg-[#2A2A2A] border border-white/20 text-white",
-                "outline-none focus:border-[#F44319]/40"
+                "bg-surface-input border border-white/20 text-white",
+                "outline-none focus:border-accent/40"
               )}
             />
             <span className="text-[10px] text-white/30">%</span>
@@ -198,8 +198,8 @@ const InputField: FC<{
       placeholder={placeholder}
       className={twMerge(
         "px-3 py-2 rounded text-xs",
-        "bg-[#2A2A2A] border border-white/20 text-white",
-        "outline-none focus:border-[#F44319]/40"
+        "bg-surface-input border border-white/20 text-white",
+        "outline-none focus:border-accent/40"
       )}
     />
   </div>

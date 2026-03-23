@@ -30,7 +30,7 @@ const SelectToken: FC<SelectTokenProps> = ({
       className={twMerge(
         "py-2.5 px-3 rounded-lg",
         "flex items-center justify-between",
-        "border border-white/50 bg-[#2A2A2A]"
+        "border border-white/50 bg-surface-input"
       )}
     >
       <DropdownRoot open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
@@ -67,7 +67,7 @@ const SelectToken: FC<SelectTokenProps> = ({
           align="center"
         >
           {walletBalances
-            ?.filter((token) => token.decimals > 0)
+            ?.filter((token) => token.decimals > 0 && !token.symbol.endsWith("..."))
             .map((item, index) => (
             <DropdownItem
               key={index}

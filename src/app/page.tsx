@@ -29,7 +29,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-y-4 sm:gap-y-6">
         <div className="flex items-end justify-between">
-          <p className="text-lg sm:text-2xl font-bold">Utility Hub</p>
+          <h1 className="text-lg sm:text-2xl font-bold">Utility Hub</h1>
           <CommonInput
             className="pr-8 sm:pr-9"
             placeholder="Search"
@@ -39,7 +39,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="h-[1px] w-full bg-[#3A3A3A]" />
+        <div className="h-[1px] w-full bg-surface-divider" />
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <BuyNftUtility wrapperClassName="sm:hidden" />

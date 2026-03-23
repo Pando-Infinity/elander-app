@@ -26,7 +26,7 @@ const WalletBalances: FC<ComponentPropsWithoutRef<"div">> = ({
     return price * value.amount;
   };
 
-  const tokens = walletBalances?.filter((t) => t.decimals > 0) ?? [];
+  const tokens = walletBalances?.filter((t) => t.decimals > 0 && !t.symbol.endsWith("...")) ?? [];
   const nfts = walletBalances?.filter((t) => t.decimals === 0) ?? [];
 
   const tabAdornment = (
@@ -36,7 +36,7 @@ const WalletBalances: FC<ComponentPropsWithoutRef<"div">> = ({
         className={twMerge(
           "px-2.5 py-1 rounded text-xs font-semibold transition-colors",
           activeTab === "tokens"
-            ? "bg-[#F44319]/15 text-[#F44319]"
+            ? "bg-accent/15 text-accent"
             : "text-white/40 hover:text-white/60"
         )}
       >
@@ -48,7 +48,7 @@ const WalletBalances: FC<ComponentPropsWithoutRef<"div">> = ({
         className={twMerge(
           "px-2.5 py-1 rounded text-xs font-semibold transition-colors",
           activeTab === "nfts"
-            ? "bg-[#F44319]/15 text-[#F44319]"
+            ? "bg-accent/15 text-accent"
             : "text-white/40 hover:text-white/60"
         )}
       >
@@ -123,7 +123,7 @@ const TokenRow: FC<{
   balance: number;
   usdValue: number;
 }> = ({ logo, symbol, name, balance, usdValue }) => (
-  <div className="flex items-center justify-between w-full px-3 py-3 bg-[#1F1F1F] rounded-lg">
+  <div className="flex items-center justify-between w-full px-3 py-3 bg-surface-row rounded-lg">
     <div className="flex items-center gap-x-2.5">
       {logo ? (
         <img
@@ -166,7 +166,7 @@ const NftRow: FC<{
   mint: string;
   balance: number;
 }> = ({ image, name, symbol, mint, balance }) => (
-  <div className="flex items-center justify-between w-full px-3 py-2.5 bg-[#1F1F1F] rounded-lg">
+  <div className="flex items-center justify-between w-full px-3 py-2.5 bg-surface-row rounded-lg">
     <div className="flex items-center gap-x-2.5 min-w-0">
       {image ? (
         <img

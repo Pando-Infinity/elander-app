@@ -13,7 +13,7 @@ const UtilityCard: FC<UtilityCardProps> = ({
   return (
     <Link
       href={href}
-      className="flex flex-col gap-y-5 p-4 bg-[#2E2E2E] rounded border-[1.5px] border-white/20 hover:shadow-[4px_4px_40px_0px_#F443194D] hover:border-[#F44319]/20"
+      className="flex flex-col gap-y-5 p-4 bg-surface-tooltip rounded border-[1.5px] border-white/20 hover:shadow-[4px_4px_40px_0px_#F443194D] hover:border-accent/20"
     >
       <div className="flex items-center justify-between">
         {icon}
@@ -21,7 +21,7 @@ const UtilityCard: FC<UtilityCardProps> = ({
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <p className="font-bold text-[#F44319]">{label}</p>
+        <p className="font-bold text-accent">{label}</p>
         <div className="flex items-center justify-between">
           <p className="text-xs text-white/70">{description}</p>
 

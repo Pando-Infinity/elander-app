@@ -46,7 +46,7 @@ const CommonDialog: React.FC<CommonDialogProps> = ({
 
             "left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
 
-            "bg-[#151515] shadow-2xl border-[1.5px] border-[#524B4B]",
+            "bg-surface-nav shadow-2xl border-[1.5px] border-[#524B4B]",
             "focus-visible:outline-none",
             contentClassName
           )}
@@ -55,7 +55,7 @@ const CommonDialog: React.FC<CommonDialogProps> = ({
             {dialogTitle && (
               <Title
                 className={twMerge(
-                  "font-bold font-sans text-lg text-[#CECECE] pb-4 border-b border-[#9C9C9C4D] mb-4",
+                  "font-bold font-sans text-lg text-text-dialog pb-4 border-b border-[#9C9C9C4D] mb-4",
                   titleClassName
                 )}
               >
@@ -65,7 +65,7 @@ const CommonDialog: React.FC<CommonDialogProps> = ({
             {isShowIconClose && (
               <CloseIcon
                 className={twMerge(
-                  "text-[#CECECE]",
+                  "text-text-dialog",
                   "absolute right-0 top-0 cursor-pointer",
                   closeIconClassName
                 )}
