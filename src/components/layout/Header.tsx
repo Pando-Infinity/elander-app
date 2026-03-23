@@ -12,7 +12,7 @@ const Header = () => {
           alt=""
           width={180}
           height={28}
-          className="w-[116px] lg:w-[180px]"
+          className="w-[116px] lg:w-[180px] h-auto"
         />
       </a>
 
