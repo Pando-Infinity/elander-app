@@ -97,7 +97,7 @@ const SelectTokenTransfer: FC<SelectTokenTransferProps> = ({
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
-          <p className="font-bold text-white">Bulk transfer</p>
+          <h1 className="font-bold text-white">Bulk transfer</h1>
           <div className="flex items-center gap-x-2">
             <UnLock />
             <button className="sm:hidden" onClick={() => setIsOpenNote(true)}>

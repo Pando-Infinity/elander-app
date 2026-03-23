@@ -58,7 +58,7 @@ const Profile = () => {
         >
           <ArrowIcon className="rotate-180" />
         </button>
-        <p className="font-bold text-lg">Profile</p>
+        <h1 className="font-bold text-lg">Profile</h1>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-x-8 justify-between gap-y-6">

@@ -29,7 +29,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-y-4 sm:gap-y-6">
         <div className="flex items-end justify-between">
-          <p className="text-lg sm:text-2xl font-bold">Utility Hub</p>
+          <h1 className="text-lg sm:text-2xl font-bold">Utility Hub</h1>
           <CommonInput
             className="pr-8 sm:pr-9"
             placeholder="Search"
