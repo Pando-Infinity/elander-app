@@ -423,7 +423,7 @@ const Airdrop = () => {
         )}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-white/20">
-          <p className="font-bold text-white">Snapshot</p>
+          <h1 className="font-bold text-white">Airdrop</h1>
           <div className="flex items-center gap-x-2">
             <UnLock />
             <button className="sm:hidden" onClick={() => setIsOpenNote(true)}>
@@ -483,7 +483,7 @@ const Airdrop = () => {
                 setIsOpenDialog(true);
               }}
             >
-              Comfirm
+              Confirm
             </CommonButton>
           ) : (
             <CommonButton onClick={() => setIsOpenConnectWallet(true)}>
