@@ -9,6 +9,7 @@ import { retry } from "@/utils/common.utils";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useAppStore } from "@/stores/app.store";
 import { useUserStore } from "@/stores/user.store";
+import useIsUnlocked from "@/hooks/useIsUnlocked";
 import { userService } from "@/services/user-service";
 import { WalletBalanceInterface } from "@/models/app.model";
 import { AlertCircleIcon, CloseIcon } from "@/components/icons";
@@ -52,7 +53,8 @@ export interface AirdropSuccessInterface {
 const Airdrop = () => {
   const analytics = useFirebaseAnalytics();
   const { setIsOpenConnectWallet } = useAppStore();
-  const { isHolderNft, isSeekerWallet, walletAddress } = useUserStore();
+  const { walletAddress } = useUserStore();
+  const isUnlocked = useIsUnlocked();
 
   useEffect(() => {
     analytics.logCustomEvent({ feature_name: "airdrop" }, "feature_opened");
@@ -476,7 +478,7 @@ const Airdrop = () => {
                 !airDropListByString ||
                 Boolean(errorMessage) ||
                 !selectedToken.symbol ||
-                (!isHolderNft && !isSeekerWallet)
+                !isUnlocked
               }
               onClick={() => {
                 setAirdropProgress(AirdropStatusEnum.CONFIRM);

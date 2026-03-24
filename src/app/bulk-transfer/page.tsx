@@ -10,6 +10,7 @@ import { retry } from "@/utils/common.utils";
 import { CloseIcon } from "@/components/icons";
 import { useAppStore } from "@/stores/app.store";
 import { useUserStore } from "@/stores/user.store";
+import useIsUnlocked from "@/hooks/useIsUnlocked";
 import { userService } from "@/services/user-service";
 import { BulkTransferInterface } from "@/models/app.model";
 import { validateSolWalletAddress } from "@/utils/blockchain.utils";
@@ -32,7 +33,8 @@ import SelectTokenTransfer from "./_component/SelectTokenTransfer";
 const BulkTransfer = () => {
   const analytics = useFirebaseAnalytics();
   const { setIsOpenConnectWallet } = useAppStore();
-  const { walletAddress, isHolderNft, isSeekerWallet } = useUserStore();
+  const { walletAddress } = useUserStore();
+  const isUnlocked = useIsUnlocked();
 
   useEffect(() => {
     analytics.logCustomEvent({ feature_name: "bulk-transfer" }, "feature_opened");
@@ -84,13 +86,13 @@ const BulkTransfer = () => {
   const isDisableConfirm = useMemo(() => {
     return (
       !receiver ||
-      (!isHolderNft && !isSeekerWallet) ||
+      !isUnlocked ||
       selectedTokens.length === 0 ||
       selectedTokens.some(
         (item) => item.transferAmount === 0 || item.amount < item.transferAmount
       )
     );
-  }, [selectedTokens, receiver, isHolderNft, isSeekerWallet]);
+  }, [selectedTokens, receiver, isUnlocked]);
 
   const bulkTransferFee = useMemo(() => {
     if (selectedTokens.length === 0) return 0;

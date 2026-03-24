@@ -3,11 +3,11 @@
 import { ComponentPropsWithoutRef, FC, Fragment } from "react";
 import { ThreeStarIcon } from "./icons";
 import { twJoin, twMerge } from "tailwind-merge";
-import { useUserStore } from "@/stores/user.store";
 
 import CommonButton from "./CommonButton";
 import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 import { AppConstant } from "@/const";
+import useIsUnlocked from "@/hooks/useIsUnlocked";
 
 const BuyNftUtility: FC<BuyNftUtilityProps> = ({
   className,
@@ -15,9 +15,9 @@ const BuyNftUtility: FC<BuyNftUtilityProps> = ({
   ...otherProps
 }) => {
   const analytics = useFirebaseAnalytics();
-  const { isHolderNft, isSeekerWallet } = useUserStore();
+  const isUnlocked = useIsUnlocked();
 
-  return !isHolderNft && !isSeekerWallet ? (
+  return !isUnlocked ? (
     <div
       className={twMerge(
         "bg-surface-panel rounded-lg w-full sm:w-[200px] border border-white/20",
