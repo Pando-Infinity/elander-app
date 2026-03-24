@@ -15,25 +15,25 @@ import { TokenTypeEnum } from "@/models/app.model";
 import { PublicKey, Keypair } from "@solana/web3.js";
 import { keccak_256, sha3_256 } from "@noble/hashes/sha3.js";
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
+import {
+  getEffectiveRpcUrl,
+  getNetworkMode,
+  useNetworkStore,
+} from "@/stores/network.store";
+import {
+  getConnectionCache,
+  setConnectionCache,
+  invalidateConnection,
+} from "@/utils/connection-cache";
 
 import * as nacl from "tweetnacl";
 import * as web3 from "@solana/web3.js";
 import * as splToken from "@solana/spl-token";
 
+export { invalidateConnection };
+
 export const getSolanaRpcEndpoint = (): string => {
-  if (process.env.RPC_URL) return process.env.RPC_URL;
-
-  let mode = "devnet";
-
-  if (process.env.NETWORK_MODE === "devnet") {
-    mode = "devnet";
-  } else if (process.env.NETWORK_MODE === "testnet") {
-    mode = "devnet";
-  } else {
-    mode = "mainnet-beta";
-  }
-
-  return web3.clusterApiUrl(mode as web3.Cluster);
+  return getEffectiveRpcUrl(useNetworkStore.getState());
 };
 
 export const getSolanaNativeTokenBalance = async (
@@ -131,19 +131,20 @@ export const validateSolWalletAddress = (address: string): boolean => {
   }
 };
 
-let _connectionInstance: web3.Connection | null = null;
-let _connectionRpc: string | null = null;
-
 export const getConnection = async (
   connectionConfig?: web3.ConnectionConfig
 ) => {
-  const rpc = process.env.RPC_URL || "";
+  const rpc = getSolanaRpcEndpoint();
+  const { instance, rpc: cachedRpc } = getConnectionCache();
 
-  if (_connectionInstance && _connectionRpc === rpc && !connectionConfig) {
-    return _connectionInstance;
+  if (instance && cachedRpc === rpc && !connectionConfig) {
+    return instance;
   }
 
-  const wsEndpoint = process.env.WS_RPC;
+  const state = useNetworkStore.getState();
+  const isDefaultMainnet =
+    getNetworkMode(state) === "mainnet" && state.activeEndpoint === "mainnet";
+  const wsEndpoint = isDefaultMainnet ? process.env.WS_RPC : undefined;
 
   const config: web3.ConnectionConfig = {
     ...connectionConfig,
@@ -157,8 +158,7 @@ export const getConnection = async (
   const connection = new web3.Connection(rpc, config);
 
   if (!connectionConfig) {
-    _connectionInstance = connection;
-    _connectionRpc = rpc;
+    setConnectionCache(connection, rpc);
   }
 
   return connection;

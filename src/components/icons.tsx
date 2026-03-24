@@ -749,7 +749,7 @@ export const ChevronDownIcon: FC<SVGProps<SVGSVGElement>> = ({
     >
       <path
         d="M16.8 9.5999L12 14.3999L7.20005 9.5999"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

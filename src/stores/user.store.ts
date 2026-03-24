@@ -31,6 +31,7 @@ export interface UserState {
   setConnectSignature: (connectSignature: string | null) => void;
   setIsSeekerWallet: (isSeekerWallet: boolean) => void;
 
+  resetUserData: () => void;
   logout: () => void;
 }
 
@@ -79,6 +80,22 @@ const useUserStore = create<UserState>()(
       },
       setIsSeekerWallet: (isSeekerWallet) => {
         set({ isSeekerWallet });
+      },
+
+      resetUserData: () => {
+        set((state) => ({
+          walletBalances: null,
+          tokenPriceFeeds: [],
+          allAlchemistNft: [],
+          stakedNfts: [],
+          isHolderNft: true,
+          earnedReward: null,
+          isSeekerWallet: false,
+          // preserve wallet identity
+          walletAddress: state.walletAddress,
+          walletType: state.walletType,
+          connectSignature: state.connectSignature,
+        }));
       },
 
       logout: () => {

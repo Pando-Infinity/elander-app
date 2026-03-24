@@ -10,6 +10,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Header from "./Header";
 import CommonDialog from "../CommonDialog";
 import ConnectButton from "./ConnectButton";
+import NetworkSwitcher from "./NetworkSwitcher";
 import SolanaWalletList from "./SolanaWalletList";
 import MobileNavigation from "./MobileNavigation";
 import DesktopNavigation from "./DesktopNavigation";
@@ -55,7 +56,8 @@ const MainLayout: FC<MainLayoutInterface> = ({ children, className }) => {
       <Header />
       <DesktopNavigation />
       <div className="flex flex-col w-full h-full overflow-hidden w-screen">
-        <div className="sm:flex justify-end py-5 border-b border-surface-divider hidden sm:px-[46px] flex-shrink-0">
+        <div className="sm:flex justify-end items-center gap-x-3 py-5 border-b border-surface-divider hidden sm:px-[46px] flex-shrink-0">
+          <NetworkSwitcher />
           <ConnectButton />
         </div>
         <div

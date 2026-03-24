@@ -24,7 +24,6 @@ const nextConfig: NextConfig = {
   },
   productionBrowserSourceMaps: false,
   env: {
-    NETWORK_MODE: process.env.NETWORK_MODE || "",
     WS_RPC: process.env.WS_RPC,
     RPC_URL: process.env.RPC_URL,
   },

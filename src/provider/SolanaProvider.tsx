@@ -14,12 +14,16 @@ import {
   ConnectionProvider,
 } from "@solana/wallet-adapter-react";
 
-import { getSolanaRpcEndpoint } from "@/utils/blockchain.utils";
 import { LedgerWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { BackpackWalletAdapter } from "@solana/wallet-adapter-backpack";
+import {
+  useEffectiveRpcUrl,
+  useNetworkMode,
+} from "@/stores/network.store";
 
 const SolanaProvider = ({ children }: PropsWithChildren) => {
-  const endpoint = getSolanaRpcEndpoint();
+  const endpoint = useEffectiveRpcUrl();
+  const networkMode = useNetworkMode();
 
   const wallets = useMemo(
     () => [new LedgerWalletAdapter(), new BackpackWalletAdapter()],
@@ -28,8 +32,6 @@ const SolanaProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const networkMode = process.env.NETWORK_MODE;
 
     const chain =
       networkMode === "mainnet" ? "solana:mainnet" : "solana:devnet";
@@ -50,7 +52,7 @@ const SolanaProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       console.error("❌ Error registering Mobile Wallet Adapter:", error);
     }
-  }, []);
+  }, [networkMode]);
 
   return (
     <ConnectionProvider endpoint={endpoint}>

@@ -182,3 +182,5 @@ export interface SnapshotDataInterface {
     metadata: string;
   }[];
 }
+
+export type NetworkMode = "devnet" | "mainnet";
