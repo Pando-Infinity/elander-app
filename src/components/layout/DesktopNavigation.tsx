@@ -11,6 +11,8 @@ import {
   TelegramIcon,
   TransferIcon,
   HomeLineIcon,
+  NftGeneratorIcon,
+  CollectionMgrIcon,
 } from "../icons";
 
 import { PathConstant, AppConstant } from "@/const";
@@ -50,13 +52,13 @@ const DesktopNavigation = () => {
         </DesktopNavigationItem>
         <DesktopNavigationItem
           href={PathConstant.NFT_COLLECTION_GEN}
-          icon={<ImageIcon />}
+          icon={<NftGeneratorIcon />}
         >
           NFT Generator
         </DesktopNavigationItem>
         <DesktopNavigationItem
           href={PathConstant.NFT_COLLECTION_MGR}
-          icon={<ImageIcon />}
+          icon={<CollectionMgrIcon />}
         >
           Collection Mgr
         </DesktopNavigationItem>

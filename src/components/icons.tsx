@@ -1074,6 +1074,94 @@ export const XCircleIcon: FC<SVGProps<SVGSVGElement>> = ({ ...otherProps }) => {
   );
 };
 
+export const NftGeneratorIcon: FC<SVGProps<SVGSVGElement>> = ({
+  ...otherProps
+}) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...otherProps}
+    >
+      {/* Bottom layer */}
+      <path
+        d="M2 15L12 20L22 15"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Middle layer */}
+      <path
+        d="M2 11L12 16L22 11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Top layer */}
+      <path
+        d="M12 2L2 7L12 12L22 7L12 2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const CollectionMgrIcon: FC<SVGProps<SVGSVGElement>> = ({
+  ...otherProps
+}) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...otherProps}
+    >
+      {/* Top-left cube */}
+      <path
+        d="M2 2H10V10H2V2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Top-right cube */}
+      <path
+        d="M14 2H22V10H14V2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Bottom-left cube */}
+      <path
+        d="M2 14H10V22H2V14Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Bottom-right — plus/add indicator */}
+      <path
+        d="M18 14V22M14 18H22"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 export const CheckIcon: FC<SVGProps<SVGSVGElement>> = ({ ...otherProps }) => {
   return (
     <svg
