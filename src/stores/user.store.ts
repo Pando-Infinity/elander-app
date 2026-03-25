@@ -88,7 +88,7 @@ const useUserStore = create<UserState>()(
           tokenPriceFeeds: [],
           allAlchemistNft: [],
           stakedNfts: [],
-          isHolderNft: true,
+          isHolderNft: false,
           earnedReward: null,
           isSeekerWallet: false,
           // preserve wallet identity

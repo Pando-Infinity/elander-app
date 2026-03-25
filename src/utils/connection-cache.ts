@@ -1,12 +1,12 @@
-import * as web3 from "@solana/web3.js";
+import type { Connection } from "@solana/web3.js";
 
-let _instance: web3.Connection | null = null;
+let _instance: Connection | null = null;
 let _rpc: string | null = null;
 
 export const getConnectionCache = () => ({ instance: _instance, rpc: _rpc });
 
 export const setConnectionCache = (
-  instance: web3.Connection | null,
+  instance: Connection | null,
   rpc: string | null
 ) => {
   _instance = instance;

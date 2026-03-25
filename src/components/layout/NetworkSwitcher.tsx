@@ -23,8 +23,16 @@ const verifyRpc = async (url: string): Promise<boolean> => {
       body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "getHealth" }),
       signal: AbortSignal.timeout(5000),
     });
+
+    if (!response.ok) return false;
+
     const data = await response.json();
-    return data.result === "ok" || data.result !== undefined;
+
+    if (data && typeof data === "object" && "error" in data && data.error) {
+      return false;
+    }
+
+    return data.result === "ok";
   } catch {
     return false;
   }
@@ -167,13 +175,16 @@ const NetworkSwitcher: FC = () => {
             const isActive = activeEndpoint === url;
             const hostname = getEndpointLabel(url);
             return (
-              <button
+              <div
                 key={url}
+                role="menuitem"
+                tabIndex={0}
                 className={twJoin(
                   "flex items-center gap-x-3 px-4 py-2 cursor-pointer w-full",
-                  "hover:bg-white/5 transition-colors text-left"
+                  "hover:bg-white/5 transition-colors"
                 )}
                 onClick={() => handleSelect(url)}
+                onKeyDown={(e) => e.key === "Enter" && handleSelect(url)}
               >
                 <span
                   className={twJoin(
@@ -213,7 +224,7 @@ const NetworkSwitcher: FC = () => {
                     </svg>
                   </button>
                 )}
-              </button>
+              </div>
             );
           })}
 
