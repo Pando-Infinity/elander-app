@@ -20,11 +20,6 @@ const init = {
   savedCustomRpcs: [] as string[],
 };
 
-const BUILT_IN: NetworkMode[] = ["mainnet", "devnet"];
-
-export const isBuiltIn = (endpoint: string): endpoint is NetworkMode =>
-  BUILT_IN.includes(endpoint as NetworkMode);
-
 /** Derives the actual RPC URL to connect to */
 export const getEffectiveRpcUrl = (state: NetworkState): string => {
   if (state.activeEndpoint === "mainnet") {
@@ -69,7 +64,13 @@ const useNetworkStore = create<NetworkState>()(
       addCustomRpc: (url: string) => {
         const trimmed = url.trim();
         if (!trimmed) return;
+        try {
+          new URL(trimmed);
+        } catch {
+          return;
+        }
         const current = get();
+        if (trimmed === current.activeEndpoint) return;
         const alreadySaved = current.savedCustomRpcs.includes(trimmed);
         invalidateConnection();
         useUserStore.getState().resetUserData();

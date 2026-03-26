@@ -165,7 +165,7 @@ const NetworkSwitcher: FC = () => {
           })}
 
           {/* Divider + Custom RPC header */}
-          <div className="h-[1px] w-full bg-[#575757] my-2" />
+          <div className="h-[1px] w-full bg-surface-divider my-2" />
           <p className="px-4 pb-1.5 text-[11px] text-white/40 uppercase tracking-wider">
             Custom RPC
           </p>
@@ -237,7 +237,7 @@ const NetworkSwitcher: FC = () => {
               placeholder="Enter RPC..."
               className={twJoin(
                 "w-full text-xs px-3 py-2 rounded",
-                "bg-[#1a1a1a] border",
+                "bg-surface-input border",
                 rpcError ? "border-error-critical" : "border-white/15",
                 "text-white placeholder-white/25",
                 "focus:outline-none",
