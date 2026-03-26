@@ -749,7 +749,7 @@ export const ChevronDownIcon: FC<SVGProps<SVGSVGElement>> = ({
     >
       <path
         d="M16.8 9.5999L12 14.3999L7.20005 9.5999"
-        stroke="white"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1069,6 +1069,94 @@ export const XCircleIcon: FC<SVGProps<SVGSVGElement>> = ({ ...otherProps }) => {
       <path
         d="M16.1012 9.31302C16.4917 8.92249 16.4917 8.28933 16.1012 7.89881C15.7107 7.50828 15.0775 7.50828 14.687 7.89881L15.3941 8.60591L16.1012 9.31302ZM7.89877 14.687C7.50825 15.0776 7.50825 15.7107 7.89877 16.1012C8.2893 16.4918 8.92246 16.4918 9.31299 16.1012L8.60588 15.3941L7.89877 14.687ZM14.687 16.1012C15.0775 16.4918 15.7107 16.4918 16.1012 16.1012C16.4917 15.7107 16.4917 15.0776 16.1012 14.687L15.3941 15.3941L14.687 16.1012ZM9.31299 7.8988C8.92246 7.50828 8.2893 7.50828 7.89877 7.8988C7.50825 8.28933 7.50825 8.92249 7.89877 9.31302L8.60588 8.60591L9.31299 7.8988ZM21.6 12H20.6C20.6 16.7497 16.7496 20.6 12 20.6V21.6V22.6C17.8542 22.6 22.6 17.8542 22.6 12H21.6ZM12 21.6V20.6C7.25034 20.6 3.39999 16.7497 3.39999 12H2.39999H1.39999C1.39999 17.8542 6.14578 22.6 12 22.6V21.6ZM2.39999 12H3.39999C3.39999 7.25038 7.25034 3.40002 12 3.40002V2.40002V1.40002C6.14578 1.40002 1.39999 6.14581 1.39999 12H2.39999ZM12 2.40002V3.40002C16.7496 3.40002 20.6 7.25038 20.6 12H21.6H22.6C22.6 6.14581 17.8542 1.40002 12 1.40002V2.40002ZM15.3941 8.60591L14.687 7.89881L11.2929 11.2929L12 12L12.7071 12.7071L16.1012 9.31302L15.3941 8.60591ZM12 12L11.2929 11.2929L7.89877 14.687L8.60588 15.3941L9.31299 16.1012L12.7071 12.7071L12 12ZM15.3941 15.3941L16.1012 14.687L12.7071 11.2929L12 12L11.2929 12.7071L14.687 16.1012L15.3941 15.3941ZM12 12L12.7071 11.2929L9.31299 7.8988L8.60588 8.60591L7.89877 9.31302L11.2929 12.7071L12 12Z"
         fill="currentColor"
+      />
+    </svg>
+  );
+};
+
+export const NftGeneratorIcon: FC<SVGProps<SVGSVGElement>> = ({
+  ...otherProps
+}) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...otherProps}
+    >
+      {/* Bottom layer */}
+      <path
+        d="M2 15L12 20L22 15"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Middle layer */}
+      <path
+        d="M2 11L12 16L22 11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Top layer */}
+      <path
+        d="M12 2L2 7L12 12L22 7L12 2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const CollectionMgrIcon: FC<SVGProps<SVGSVGElement>> = ({
+  ...otherProps
+}) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...otherProps}
+    >
+      {/* Top-left cube */}
+      <path
+        d="M2 2H10V10H2V2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Top-right cube */}
+      <path
+        d="M14 2H22V10H14V2Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Bottom-left cube */}
+      <path
+        d="M2 14H10V22H2V14Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* Bottom-right — plus/add indicator */}
+      <path
+        d="M18 14V22M14 18H22"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { BlockchainUtils } from "@/utils";
 import { useUserStore } from "@/stores/user.store";
+import { useActiveEndpoint } from "@/stores/network.store";
 import { userService } from "@/services/user-service";
 
 export const useAppInitialization = () => {
@@ -14,6 +15,8 @@ export const useAppInitialization = () => {
     setIsHolderNft,
     setIsSeekerWallet,
   } = useUserStore();
+
+  const activeEndpoint = useActiveEndpoint();
 
   useEffect(() => {
     const isHolder = stakedNfts.length > 0 || allAlchemistNft.length > 0;
@@ -27,7 +30,7 @@ export const useAppInitialization = () => {
     userService.getAllAlchemistNft(walletAddress);
     userService.getStakedNfts(walletAddress);
     BlockchainUtils.checkWalletForSGT(walletAddress).then(setIsSeekerWallet);
-  }, [walletAddress, setIsSeekerWallet]);
+  }, [walletAddress, activeEndpoint, setIsSeekerWallet]);
 
   useEffect(() => {
     if (!walletAddress || !walletBalances) return;

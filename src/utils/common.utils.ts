@@ -3,6 +3,7 @@ import { isEmpty } from "lodash";
 import { ApiResponse } from "apisauce";
 import { BaseResponseData, ResponseDataList } from "@/models/common.model";
 import { ApiConstant } from "@/const";
+import { getNetworkMode, useNetworkStore } from "@/stores/network.store";
 
 import crypto from "crypto";
 
@@ -74,10 +75,8 @@ export const deepEqual = (value1: any, value2: any) => {
 };
 
 export const getTransactionHashInfoLink = (transactionHash: string) => {
-  const solanaParams =
-    process.env.NETWORK_MODE !== "mainnet"
-      ? `?cluster=${process.env.NETWORK_MODE}`
-      : "";
+  const networkMode = getNetworkMode(useNetworkStore.getState());
+  const solanaParams = networkMode !== "mainnet" ? `?cluster=${networkMode}` : "";
   return `${process.env.NEXT_PUBLIC_SOLS_EXPLORER_URL}/tx/${transactionHash}/${solanaParams}`;
 };
 
@@ -215,10 +214,7 @@ export const escapeCsvCell = (cell: unknown): string => {
   return cellStr;
 };
 
-export const buildCsvBlob = (
-  headers: string[],
-  rows: unknown[][]
-): Blob => {
+export const buildCsvBlob = (headers: string[], rows: unknown[][]): Blob => {
   const csvContent = [
     headers.join(","),
     ...rows.map((row) => row.map(escapeCsvCell).join(",")),

@@ -6,7 +6,8 @@ import {
   SocialIcon,
   DiamondIcon,
   EssentialIcon,
-  ImageIcon,
+  NftGeneratorIcon,
+  CollectionMgrIcon,
 } from "@/components/icons";
 import { PathConstant } from "@/const";
 
@@ -25,7 +26,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-y-6 sm:gap-y-8">
-      <Introduction />
+      {/* <Introduction /> */}
 
       <div className="flex flex-col gap-y-4 sm:gap-y-6">
         <div className="flex items-end justify-between">
@@ -53,7 +54,7 @@ export default function Home() {
             }
           />
           <UtilityCard
-            icon={<ImageIcon className="w-8 h-8" />}
+            icon={<NftGeneratorIcon className="w-8 h-8" />}
             href={PathConstant.NFT_COLLECTION_GEN}
             label={"NFT Generator"}
             description={
@@ -61,7 +62,7 @@ export default function Home() {
             }
           />
           <UtilityCard
-            icon={<ImageIcon className="w-8 h-8" />}
+            icon={<CollectionMgrIcon className="w-8 h-8" />}
             href={PathConstant.NFT_COLLECTION_MGR}
             label={"Collection Manager"}
             description={

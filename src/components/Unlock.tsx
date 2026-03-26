@@ -3,11 +3,11 @@
 import React, { ComponentPropsWithoutRef, FC, Fragment, useState } from "react";
 import { LockIcon } from "./icons";
 import { twMerge } from "tailwind-merge";
-import { useUserStore } from "@/stores/user.store";
+import useIsUnlocked from "@/hooks/useIsUnlocked";
 import CommonTooltip from "./CommonTooltip";
 
 const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
-  const { isHolderNft, isSeekerWallet } = useUserStore();
+  const isUnlocked = useIsUnlocked();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -16,7 +16,7 @@ const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
     setIsOpen(!isOpen);
   };
 
-  return !isHolderNft && !isSeekerWallet ? (
+  return !isUnlocked ? (
     <CommonTooltip
       isOpen={isOpen}
       contentProps={{

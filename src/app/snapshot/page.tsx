@@ -18,6 +18,7 @@ import { debounce } from "lodash";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useAppStore } from "@/stores/app.store";
 import { useUserStore } from "@/stores/user.store";
+import useIsUnlocked from "@/hooks/useIsUnlocked";
 
 import UnLock from "@/components/Unlock";
 import Loading from "@/components/Loading";
@@ -43,7 +44,8 @@ const Snapshot = () => {
   const analytics = useFirebaseAnalytics();
   const { setIsOpenConnectWallet } = useAppStore();
   const { getCollectionInfo, snapshotByCollection } = useSnapshot();
-  const { isHolderNft, isSeekerWallet, walletAddress } = useUserStore();
+  const { walletAddress } = useUserStore();
+  const isUnlocked = useIsUnlocked();
 
   useEffect(() => {
     analytics.logCustomEvent({ feature_name: "snapshot" }, "feature_opened");
@@ -206,7 +208,7 @@ const Snapshot = () => {
                 !collectionAddress ||
                 collectionAddressStatus !==
                   CheckConnectionAddressEnum.Correct ||
-                (!isHolderNft && !isSeekerWallet)
+                !isUnlocked
               }
             >
               Snapshot

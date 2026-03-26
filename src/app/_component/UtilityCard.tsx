@@ -25,7 +25,7 @@ const UtilityCard: FC<UtilityCardProps> = ({
         <div className="flex items-center justify-between">
           <p className="text-xs text-white/70">{description}</p>
 
-          <ArrowIcon />
+          <ArrowIcon className="w-6 h-6 flex-shrink-0" />
         </div>
       </div>
     </Link>
