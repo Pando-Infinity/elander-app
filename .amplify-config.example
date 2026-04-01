@@ -1,0 +1,6 @@
+# Amplify local config — copy to .amplify-config and fill in your App ID.
+# .amplify-config is gitignored. Do NOT commit .amplify-config.
+#
+# Find your App ID in: AWS Console → Amplify → your app → App settings → General
+
+AMPLIFY_APP_ID=your-amplify-app-id-here

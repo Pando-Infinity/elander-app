@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# amplify local config (contains app ID — do not commit)
+.amplify-config
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

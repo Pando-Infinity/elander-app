@@ -14,7 +14,8 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // "standalone" is for Docker. Amplify manages its own server, so omit it there.
+  output: process.env.AMPLIFY_BUILD ? undefined : "standalone",
   reactStrictMode: false,
   images: {
     domains: ["ensofi-prod.s3.ap-southeast-1.amazonaws.com"],
