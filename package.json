@@ -68,5 +68,22 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@firebase/util",
+      "@stellar/stellar-sdk",
+      "bigint-buffer",
+      "blake-hash",
+      "bufferutil",
+      "keccak",
+      "protobufjs",
+      "secp256k1",
+      "sharp",
+      "tiny-secp256k1",
+      "unrs-resolver",
+      "usb",
+      "utf-8-validate"
+    ]
   }
 }

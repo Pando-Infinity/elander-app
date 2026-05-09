@@ -40,3 +40,7 @@ next-env.d.ts
 
 *.keystore
 .gstack/
+
+.claude
+.env.*
+!.env.example
