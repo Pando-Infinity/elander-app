@@ -9,7 +9,7 @@ import {
   NftGeneratorIcon,
   CollectionMgrIcon,
 } from "@/components/icons";
-import { PathConstant } from "@/const";
+import { PathConstant, FeatureFlags } from "@/const";
 
 import CommonInput from "@/components/CommonInput";
 import UtilityCard from "./_component/UtilityCard";
@@ -53,22 +53,26 @@ export default function Home() {
               "Launch targeted token airdrops with transparent, on-chain distribution."
             }
           />
-          <UtilityCard
-            icon={<NftGeneratorIcon className="w-8 h-8" />}
-            href={PathConstant.NFT_COLLECTION_GEN}
-            label={"NFT Generator"}
-            description={
-              "Generate unique NFT collections with layered artwork, rarity controls, and IPFS upload."
-            }
-          />
-          <UtilityCard
-            icon={<CollectionMgrIcon className="w-8 h-8" />}
-            href={PathConstant.NFT_COLLECTION_MGR}
-            label={"Collection Manager"}
-            description={
-              "Create and manage on-chain Metaplex Core NFT collections — mint, update, and configure plugins."
-            }
-          />
+          {!FeatureFlags.HIDE_V11_TOOLS && (
+            <UtilityCard
+              icon={<NftGeneratorIcon className="w-8 h-8" />}
+              href={PathConstant.NFT_COLLECTION_GEN}
+              label={"NFT Generator"}
+              description={
+                "Generate unique NFT collections with layered artwork, rarity controls, and IPFS upload."
+              }
+            />
+          )}
+          {!FeatureFlags.HIDE_V11_TOOLS && (
+            <UtilityCard
+              icon={<CollectionMgrIcon className="w-8 h-8" />}
+              href={PathConstant.NFT_COLLECTION_MGR}
+              label={"Collection Manager"}
+              description={
+                "Create and manage on-chain Metaplex Core NFT collections — mint, update, and configure plugins."
+              }
+            />
+          )}
           <UtilityCard
             icon={<DiamondIcon className="w-8 h-8" />}
             href={PathConstant.BULK}

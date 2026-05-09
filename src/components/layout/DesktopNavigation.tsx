@@ -15,7 +15,7 @@ import {
   CollectionMgrIcon,
 } from "../icons";
 
-import { PathConstant, AppConstant } from "@/const";
+import { PathConstant, AppConstant, FeatureFlags } from "@/const";
 import { usePathname } from "next/navigation";
 import { LogoTextImage } from "public/images";
 import { twJoin, twMerge } from "tailwind-merge";
@@ -50,18 +50,22 @@ const DesktopNavigation = () => {
         >
           Airdrop
         </DesktopNavigationItem>
-        <DesktopNavigationItem
-          href={PathConstant.NFT_COLLECTION_GEN}
-          icon={<NftGeneratorIcon />}
-        >
-          NFT Generator
-        </DesktopNavigationItem>
-        <DesktopNavigationItem
-          href={PathConstant.NFT_COLLECTION_MGR}
-          icon={<CollectionMgrIcon />}
-        >
-          Collection Mgr
-        </DesktopNavigationItem>
+        {!FeatureFlags.HIDE_V11_TOOLS && (
+          <DesktopNavigationItem
+            href={PathConstant.NFT_COLLECTION_GEN}
+            icon={<NftGeneratorIcon />}
+          >
+            NFT Generator
+          </DesktopNavigationItem>
+        )}
+        {!FeatureFlags.HIDE_V11_TOOLS && (
+          <DesktopNavigationItem
+            href={PathConstant.NFT_COLLECTION_MGR}
+            icon={<CollectionMgrIcon />}
+          >
+            Collection Mgr
+          </DesktopNavigationItem>
+        )}
         <DesktopNavigationItem href={PathConstant.BULK} icon={<TransferIcon />}>
           Bulk Transfer
         </DesktopNavigationItem>

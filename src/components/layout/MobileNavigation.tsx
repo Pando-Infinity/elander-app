@@ -9,7 +9,7 @@ import React, {
   useEffect,
 } from "react";
 
-import { PathConstant } from "@/const";
+import { PathConstant, FeatureFlags } from "@/const";
 import { usePathname } from "next/navigation";
 import { twJoin, twMerge } from "tailwind-merge";
 import {
@@ -22,25 +22,26 @@ import {
 
 import Link from "next/link";
 
-const PRIMARY_ITEMS = [
-  { href: PathConstant.ROOT, icon: <HomeIcon />, label: "Home" },
-  { href: PathConstant.AIRDROP, icon: <SocialIcon />, label: "Airdrop" },
-  {
-    href: PathConstant.NFT_COLLECTION_GEN,
-    icon: <ImageIcon />,
-    label: "NFT Gen",
-  },
-];
+const PRIMARY_ITEMS = FeatureFlags.HIDE_V11_TOOLS
+  ? [
+      { href: PathConstant.ROOT, icon: <HomeIcon />, label: "Home" },
+      { href: PathConstant.AIRDROP, icon: <SocialIcon />, label: "Airdrop" },
+      { href: PathConstant.BULK, icon: <DiamondIcon />, label: "Bulk Transfer" },
+      { href: PathConstant.SNAPSHOT, icon: <EssentialIcon />, label: "Snapshot" },
+    ]
+  : [
+      { href: PathConstant.ROOT, icon: <HomeIcon />, label: "Home" },
+      { href: PathConstant.AIRDROP, icon: <SocialIcon />, label: "Airdrop" },
+      { href: PathConstant.NFT_COLLECTION_GEN, icon: <ImageIcon />, label: "NFT Gen" },
+    ];
 
-const MORE_ITEMS = [
-  {
-    href: PathConstant.NFT_COLLECTION_MGR,
-    icon: <ImageIcon />,
-    label: "Col Mgr",
-  },
-  { href: PathConstant.BULK, icon: <DiamondIcon />, label: "Bulk Transfer" },
-  { href: PathConstant.SNAPSHOT, icon: <EssentialIcon />, label: "Snapshot" },
-];
+const MORE_ITEMS = FeatureFlags.HIDE_V11_TOOLS
+  ? []
+  : [
+      { href: PathConstant.NFT_COLLECTION_MGR, icon: <ImageIcon />, label: "Col Mgr" },
+      { href: PathConstant.BULK, icon: <DiamondIcon />, label: "Bulk Transfer" },
+      { href: PathConstant.SNAPSHOT, icon: <EssentialIcon />, label: "Snapshot" },
+    ];
 
 const MobileNavigation = () => {
   const pathname = usePathname();
@@ -126,24 +127,26 @@ const MobileNavigation = () => {
           </MobileNavigationItem>
         ))}
 
-        {/* More button */}
-        <button
-          onClick={() => setShowMore((v) => !v)}
-          className={twMerge(
-            "flex flex-col gap-y-2 items-center",
-            isMoreActive || showMore ? "text-accent" : "text-white/50"
-          )}
-        >
-          <MoreIcon />
-          <div
-            className={twJoin(
-              "text-sm font-semibold",
-              isMoreActive || showMore ? "text-gradient" : "text-white/50"
+        {/* More button — hidden when no overflow items */}
+        {MORE_ITEMS.length > 0 && (
+          <button
+            onClick={() => setShowMore((v) => !v)}
+            className={twMerge(
+              "flex flex-col gap-y-2 items-center",
+              isMoreActive || showMore ? "text-accent" : "text-white/50"
             )}
           >
-            More
-          </div>
-        </button>
+            <MoreIcon />
+            <div
+              className={twJoin(
+                "text-sm font-semibold",
+                isMoreActive || showMore ? "text-gradient" : "text-white/50"
+              )}
+            >
+              More
+            </div>
+          </button>
+        )}
       </div>
     </div>
   );
