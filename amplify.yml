@@ -3,11 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
+        - nvm install 22
+        - nvm use 22
         - npm install -g pnpm
         - pnpm install --frozen-lockfile
     build:
       commands:
-        - pnpm build
+        - AMPLIFY_BUILD=1 pnpm build
   artifacts:
     baseDirectory: .next
     files:
