@@ -5,11 +5,11 @@ frontend:
       commands:
         - nvm install 22
         - nvm use 22
-        - npm install -g pnpm
+        - npm install -g pnpm@9
         - pnpm install --frozen-lockfile
     build:
       commands:
-        - AMPLIFY_BUILD=1 pnpm build
+        - pnpm build
   artifacts:
     baseDirectory: .next
     files:
