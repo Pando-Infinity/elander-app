@@ -66,7 +66,8 @@ export function CampaignBanner() {
 
   return (
     <div
-      role="alert"
+      role="region"
+      aria-label="Campaign announcement"
       className={twMerge(
         'w-full flex items-center gap-3 px-4 py-2.5',
         'border-b border-surface-divider',
