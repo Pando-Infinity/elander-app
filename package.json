@@ -74,6 +74,9 @@
     "vitest": "^4.1.0"
   },
   "pnpm": {
+    "overrides": {
+      "ws": "^8"
+    },
     "onlyBuiltDependencies": [
       "@firebase/util",
       "@stellar/stellar-sdk",

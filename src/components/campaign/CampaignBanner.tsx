@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 import { useCampaign } from '@/hooks/useCampaign'
 import { urlFor } from '@/lib/sanity'
+import { CAMPAIGN } from '@/const/path.const'
 
 const VARIANT_STYLES = {
   info: {
@@ -52,7 +53,7 @@ export function CampaignBanner() {
     if (banner?.ctaTarget === 'external_url' && banner?.ctaUrl) {
       window.open(banner.ctaUrl, '_blank', 'noopener,noreferrer')
     } else {
-      router.push(`/campaign/${campaign.slug}`)
+      router.push(`${CAMPAIGN}/${campaign.slug}`)
     }
   }
 
