@@ -1,7 +1,6 @@
 "use client"
 
-import type { PortableTextBlock } from '@portabletext/react'
-import { PortableText } from '@portabletext/react'
+import { PortableText, type PortableTextBlock } from '@portabletext/react'
 import { Campaign } from '@/hooks/useCampaign'
 import { JoinButton } from './JoinButton'
 
@@ -49,14 +48,14 @@ function formatDate(iso: string) {
   })
 }
 
-function RichSection({ title, blocks }: { title: string; blocks: unknown[] }) {
+function RichSection({ title, blocks }: { title: string; blocks: PortableTextBlock[] }) {
   if (!blocks?.length) return null
   return (
     <section className="flex flex-col gap-3">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-wider">{title}</h2>
       <div className="flex flex-col gap-2">
         <PortableText
-          value={blocks as PortableTextBlock[]}
+          value={blocks}
           components={PORTABLE_TEXT_COMPONENTS}
         />
       </div>
@@ -93,8 +92,11 @@ export default function CampaignPageClient({ campaign }: Props) {
         <h1 className="text-2xl sm:text-3xl font-bold text-white">{campaign.title}</h1>
 
         <div className="flex items-center gap-4 text-xs text-white/50 flex-wrap">
-          <span>{formatDate(campaign.startDate)} — {formatDate(campaign.endDate)}</span>
-          {campaign.winnerCount && (
+          <span>
+            {formatDate(campaign.startDate)}
+            {campaign.endDate && ` — ${formatDate(campaign.endDate)}`}
+          </span>
+          {!!campaign.winnerCount && (
             <span>{campaign.winnerCount} winner{campaign.winnerCount !== 1 ? 's' : ''}</span>
           )}
         </div>

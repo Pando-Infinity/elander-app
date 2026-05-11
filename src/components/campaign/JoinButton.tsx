@@ -13,7 +13,7 @@ interface Props {
 export function JoinButton({ campaignSlug, isActive }: Props) {
   const { connected } = useWallet()
   const { setIsOpenConnectWallet } = useAppStore()
-  const { status } = useCampaignTracking(campaignSlug, isActive)
+  const { status, retry } = useCampaignTracking(campaignSlug, isActive)
 
   if (!isActive) {
     return (
@@ -64,13 +64,14 @@ export function JoinButton({ campaignSlug, isActive }: Props) {
   if (status === 'error') {
     return (
       <button
-        disabled
+        type="button"
+        onClick={retry}
         className={twMerge(
           'w-full sm:w-auto px-8 py-3 rounded font-semibold text-sm',
-          'bg-error/10 text-error cursor-not-allowed',
+          'bg-error/10 text-error hover:bg-error/20 transition-colors',
         )}
       >
-        Join Failed — Retry Later
+        Join Failed — Try Again
       </button>
     )
   }

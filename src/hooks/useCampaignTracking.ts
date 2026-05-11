@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { supabase } from '@/lib/supabase'
 
@@ -7,6 +7,7 @@ type ParticipationStatus = 'idle' | 'loading' | 'joined' | 'error'
 export function useCampaignTracking(campaignSlug: string | null, isActive: boolean) {
   const { publicKey, connected } = useWallet()
   const [status, setStatus] = useState<ParticipationStatus>('idle')
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     if (!connected || !publicKey || !campaignSlug || !isActive) {
@@ -33,7 +34,9 @@ export function useCampaignTracking(campaignSlug: string | null, isActive: boole
       })
 
     return () => { cancelled = true }
-  }, [connected, publicKey?.toString(), campaignSlug, isActive])
+  }, [connected, publicKey?.toString(), campaignSlug, isActive, retryCount])
 
-  return { status }
+  const retry = useCallback(() => setRetryCount(c => c + 1), [])
+
+  return { status, retry }
 }
