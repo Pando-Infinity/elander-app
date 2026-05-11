@@ -62,8 +62,11 @@ export function CampaignBanner() {
     setDismissed(true)
   }
 
+  const imgSrc = banner.image ? urlFor(banner.image, { w: 48, h: 48 }) : undefined
+
   return (
     <div
+      role="alert"
       className={twMerge(
         'w-full flex items-center gap-3 px-4 py-2.5',
         'border-b border-surface-divider',
@@ -71,9 +74,9 @@ export function CampaignBanner() {
         styles.bg,
       )}
     >
-      {banner.image && urlFor(banner.image, { w: 48, h: 48 }) && (
+      {imgSrc && (
         <img
-          src={urlFor(banner.image, { w: 48, h: 48 })}
+          src={imgSrc}
           alt=""
           aria-hidden="true"
           className="h-6 w-6 shrink-0 rounded object-cover"

@@ -14,11 +14,14 @@ import NetworkSwitcher from "./NetworkSwitcher";
 import SolanaWalletList from "./SolanaWalletList";
 import MobileNavigation from "./MobileNavigation";
 import DesktopNavigation from "./DesktopNavigation";
+import { CampaignBanner } from "@/components/campaign/CampaignBanner";
+import { useWalletTracking } from "@/hooks/useWalletTracking";
 
 const MainLayout: FC<MainLayoutInterface> = ({ children, className }) => {
   const { wallets, select } = useWallet();
   const { walletType } = useUserStore();
   const { isOpenConnectWallet, setIsOpenConnectWallet } = useAppStore();
+  useWalletTracking();
 
   useEffect(() => {
     if (!walletType) return;
@@ -56,6 +59,7 @@ const MainLayout: FC<MainLayoutInterface> = ({ children, className }) => {
       <Header />
       <DesktopNavigation />
       <div className="flex flex-col w-full h-full overflow-hidden w-screen">
+        <CampaignBanner />
         <div className="sm:flex justify-end items-center gap-x-3 py-5 border-b border-surface-divider hidden sm:px-[46px] flex-shrink-0">
           <NetworkSwitcher />
           <ConnectButton />
