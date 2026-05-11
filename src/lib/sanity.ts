@@ -24,12 +24,27 @@ export const ACTIVE_CAMPAIGN_QUERY = `
   }
 `
 
-export function urlFor(source: { asset: { _ref: string } }): string {
+export function urlFor(
+  source: { asset: { _ref: string } },
+  opts?: { w?: number; h?: number },
+): string | undefined {
   const ref = source.asset._ref
   const match = ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/)
-  if (!match) return ''
+  if (!match) return undefined
   const [, id, dimensions, format] = match
-  return `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${id}-${dimensions}.${format}`
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+  if (!projectId || !dataset) return undefined
+  let url = `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${dimensions}.${format}`
+  if (opts?.w || opts?.h) {
+    const params = new URLSearchParams()
+    if (opts.w) params.set('w', String(opts.w))
+    if (opts.h) params.set('h', String(opts.h))
+    params.set('fit', 'crop')
+    params.set('auto', 'format')
+    url += `?${params.toString()}`
+  }
+  return url
 }
 
 export const CAMPAIGN_BY_SLUG_QUERY = `

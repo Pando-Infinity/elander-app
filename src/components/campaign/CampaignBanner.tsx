@@ -34,14 +34,10 @@ export function CampaignBanner() {
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!campaign?.slug) return
-    if (sessionStorage.getItem(`dismissed-campaign-${campaign.slug}`)) {
+    if (campaign?.slug && sessionStorage.getItem(`dismissed-campaign-${campaign.slug}`)) {
       setDismissed(true)
     }
+    setMounted(true)
   }, [campaign?.slug])
 
   if (!mounted) return null
@@ -61,7 +57,8 @@ export function CampaignBanner() {
   }
 
   function handleDismiss() {
-    sessionStorage.setItem(`dismissed-campaign-${campaign!.slug}`, '1')
+    if (!campaign?.slug) return
+    sessionStorage.setItem(`dismissed-campaign-${campaign.slug}`, '1')
     setDismissed(true)
   }
 
@@ -74,9 +71,9 @@ export function CampaignBanner() {
         styles.bg,
       )}
     >
-      {banner.image && (
+      {banner.image && urlFor(banner.image, { w: 48, h: 48 }) && (
         <img
-          src={urlFor(banner.image)}
+          src={urlFor(banner.image, { w: 48, h: 48 })}
           alt=""
           aria-hidden="true"
           className="h-6 w-6 shrink-0 rounded object-cover"
@@ -98,6 +95,7 @@ export function CampaignBanner() {
 
       {banner.ctaLabel && (
         <button
+          type="button"
           onClick={handleCta}
           className={twMerge(
             'shrink-0 rounded px-3 py-1 text-xs font-semibold transition-colors',
@@ -109,6 +107,7 @@ export function CampaignBanner() {
       )}
 
       <button
+        type="button"
         onClick={handleDismiss}
         aria-label="Dismiss campaign banner"
         className="ml-1 shrink-0 text-white/40 transition-colors hover:text-white/70"
