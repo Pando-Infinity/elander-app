@@ -1,5 +1,9 @@
 import { createClient } from 'next-sanity'
 
+if (process.env.NODE_ENV !== 'production' && !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+  console.warn('[sanity] NEXT_PUBLIC_SANITY_PROJECT_ID is not set — Sanity queries will fail')
+}
+
 export const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
