@@ -9,8 +9,12 @@ export function useCampaignTracking(campaignSlug: string | null, isActive: boole
   const [status, setStatus] = useState<ParticipationStatus>('idle')
 
   useEffect(() => {
-    if (!connected || !publicKey || !campaignSlug || !isActive) return
+    if (!connected || !publicKey || !campaignSlug || !isActive) {
+      setStatus('idle')
+      return
+    }
 
+    let cancelled = false
     setStatus('loading')
 
     supabase
@@ -19,6 +23,7 @@ export function useCampaignTracking(campaignSlug: string | null, isActive: boole
         p_wallet_address: publicKey.toString(),
       })
       .then(({ error }) => {
+        if (cancelled) return
         if (error) {
           console.error('Campaign tracking error:', error)
           setStatus('error')
@@ -26,7 +31,9 @@ export function useCampaignTracking(campaignSlug: string | null, isActive: boole
           setStatus('joined')
         }
       })
-  }, [connected, publicKey, campaignSlug, isActive])
+
+    return () => { cancelled = true }
+  }, [connected, publicKey?.toString(), campaignSlug, isActive])
 
   return { status }
 }

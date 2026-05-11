@@ -13,5 +13,5 @@ export function useWalletTracking() {
       .then(({ error }) => {
         if (error) console.error('Wallet tracking error:', error)
       })
-  }, [connected, publicKey])
+  }, [connected, publicKey?.toString()])
 }
