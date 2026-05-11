@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import type { PortableTextBlock } from '@portabletext/react'
 import { sanityClient, ACTIVE_CAMPAIGN_QUERY } from '@/lib/sanity'
 
 export interface CampaignBanner {
@@ -18,11 +19,11 @@ export interface Campaign {
   title: string
   type: 'airdrop' | 'event' | 'contest'
   status: 'draft' | 'active' | 'ended'
-  description?: unknown[]
-  howItWorks?: unknown[]
-  rewardDetails?: unknown[]
+  description?: PortableTextBlock[]
+  howItWorks?: PortableTextBlock[]
+  rewardDetails?: PortableTextBlock[]
   startDate: string
-  endDate: string
+  endDate?: string
   winnerCount?: number
   banner?: CampaignBanner
 }
