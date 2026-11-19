@@ -57,7 +57,8 @@ aws sts get-caller-identity
 
 ### 3. Required IAM Permissions
 
-Your AWS user/role needs at minimum:
+The deploy user (e.g. `elander-amplify-deployer`) needs at minimum the policy below. It covers Steps 2+ (env sync and redeploys) only — it **cannot create the app** (Step 1).
+
 
 ```json
 {
@@ -79,9 +80,32 @@ Your AWS user/role needs at minimum:
 }
 ```
 
+Creating the app is a one-time bootstrap. Do it as an admin (Console, or CLI with an admin profile), or temporarily attach this extra policy to the deploy user and detach it afterwards:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateApp",
+        "amplify:CreateBranch",
+        "amplify:TagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+Without it, Step 1 Option B fails with `AccessDeniedException ... not authorized to perform: amplify:CreateApp`.
+
 ---
 
 ## Step 1: Create Amplify App
+
+> Requires admin rights or the bootstrap policy above — the deploy-only policy is not enough.
 
 ### Option A — Connect via AWS Console (recommended for first setup)
 
@@ -99,6 +123,7 @@ aws amplify create-app \
   --name "elander-app" \
   --platform WEB_COMPUTE \
   --region ap-southeast-1
+# add --profile <admin-profile> if your default profile is the deploy user
 
 # Connect a branch
 aws amplify create-branch \
