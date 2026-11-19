@@ -1,0 +1,23 @@
+# --- Signing keys (NEVER COMMIT) ---
+*.keystore
+*.jks
+*.p12
+keystore.properties
+key.properties
+
+# --- Generated webshell project (scripts/configure.sh <env>) ---
+# Not committed: it carries whichever environment was configured last.
+/webshell/
+
+# --- Build artifacts ---
+*.apk
+*.aab
+*.apks
+
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+*.log
