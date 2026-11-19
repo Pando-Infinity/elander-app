@@ -5,39 +5,19 @@
 keystore.properties
 key.properties
 
-# --- Generated Android project ---
-# Produced by ./scripts/configure.sh <env> from twa-manifest.template.json + env/<env>.env.
-# Not committed: the tree would otherwise carry whichever environment was configured last,
-# and a staging-configured checkout could be built and shipped as production.
-/twa-manifest.json
-/manifest-checksum.txt
-/app/
-/build.gradle
-/settings.gradle
-/gradle.properties
-/gradle/
-/gradlew
-/gradlew.bat
-/store_icon.png
-/assetlinks.*.json
+# --- Generated webshell project (scripts/configure.sh <env>) ---
+# Not committed: it carries whichever environment was configured last.
+/webshell/
 
 # --- Build artifacts ---
-.gradle/
-build/
 *.apk
 *.aab
-*.idsig
 *.apks
 
-# --- Local SDK / IDE config ---
-local.properties
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
 .idea/
 *.iml
 .vscode/
-
-# --- OS ---
-.DS_Store
-Thumbs.db
-
-# --- Logs ---
 *.log

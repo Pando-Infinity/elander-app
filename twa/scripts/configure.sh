@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 #
-# Render twa-manifest.json for one environment and regenerate the Android project.
+# Generate the webshell Android project for one environment into ./webshell (git-ignored).
 #
 #   ./scripts/configure.sh staging
 #   ./scripts/configure.sh production
 #
-# Everything under app/ plus the gradle files are generated output — this script is the only
-# supported way to produce them. Edit env/<env>.env or twa-manifest.template.json instead.
+# ./webshell is output: edit env/<env>.env and re-run, never patch it.
 set -euo pipefail
 
 ENV_NAME="${1:-}"
@@ -20,122 +19,68 @@ if [[ -z "$ENV_NAME" || ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
-command -v bubblewrap >/dev/null || { echo "bubblewrap not found — npm i -g @bubblewrap/cli" >&2; exit 1; }
-
 # shellcheck disable=SC1090
 set -a; source "$ENV_FILE"; set +a
 
-for VAR in HOST PACKAGE_ID APP_NAME LAUNCHER_NAME APP_VERSION_NAME APP_VERSION_CODE KEYSTORE_FILE KEYSTORE_ALIAS; do
-  [[ -n "${!VAR:-}" ]] || { echo "$VAR is not set in $ENV_FILE" >&2; exit 1; }
-done
-[[ "$APP_VERSION_CODE" =~ ^[0-9]+$ ]] || { echo "APP_VERSION_CODE must be a whole number" >&2; exit 1; }
-# Values are substituted into JSON by sed; keep them free of characters that would break either.
-for VAR in APP_NAME LAUNCHER_NAME; do
-  [[ "${!VAR}" != *[\\\"\&\#]* ]] || { echo "$VAR must not contain \\, \", & or #" >&2; exit 1; }
-done
-
-: "${ASSET_ORIGIN:=https://$HOST}"
 KEYSTORE_PATH="$ROOT/$KEYSTORE_FILE"
+# init would create a fresh keystore (a new signing identity) if this one were missing.
+[[ -f "$KEYSTORE_PATH" ]] || { echo "keystore not found: $KEYSTORE_PATH (README, Signing key)" >&2; exit 1; }
+command -v node >/dev/null || { echo "node/npx not found" >&2; exit 1; }
 
-# bubblewrap reads the web manifest and every icon over the network while generating, so they
-# have to be reachable. Fail here rather than halfway through generation.
-for ASSET in manifest.json app-icons/icon-512x512.png app-icons/icon-maskable-512x512.png; do
-  if ! curl -fsS -o /dev/null --max-time 15 "$ASSET_ORIGIN/$ASSET"; then
-    echo "cannot reach $ASSET_ORIGIN/$ASSET" >&2
-    echo "deploy it first, or serve this repo's web app locally on :3000 and run:" >&2
-    echo "  ASSET_ORIGIN=http://localhost:3000 ./scripts/configure.sh $ENV_NAME" >&2
-    exit 1
-  fi
-done
+# init reads colors and the icon from the site's web manifest, so $HOST has to be reachable.
+MANIFEST_URL="https://$HOST/manifest.json"
+curl -fsS -o /dev/null --max-time 15 "$MANIFEST_URL" || { echo "cannot reach $MANIFEST_URL" >&2; exit 1; }
 
-echo "configuring $ENV_NAME — host=$HOST package=$PACKAGE_ID assets=$ASSET_ORIGIN"
+echo "configuring $ENV_NAME - url=https://$HOST/?platform=seeker package=$PACKAGE_ID"
 
-# fingerprints is a JSON array in the manifest. Rendering it from the env file keeps it from
-# being wiped on the next configure run — `bubblewrap fingerprint add` writes to the generated
-# twa-manifest.json, which this script overwrites.
-FINGERPRINTS_JSON="[]"
-if [[ -n "${SHA256_FINGERPRINT:-}" ]]; then
-  FINGERPRINTS_JSON=$(FPS="$SHA256_FINGERPRINT" ENV_NAME="$ENV_NAME" node -e '
-    const fps = process.env.FPS.split(",").map(s => s.trim()).filter(Boolean);
-    for (const fp of fps) {
-      if (!/^([0-9A-F]{2}:){31}[0-9A-F]{2}$/i.test(fp)) {
-        console.error(`invalid SHA-256 fingerprint: ${fp}`);
-        console.error("expected 32 colon-separated hex bytes, as printed by keytool -list -v");
-        process.exit(1);
-      }
-    }
-    process.stdout.write(JSON.stringify(fps.map((value, i) => ({
-      name: fps.length > 1 ? `${process.env.ENV_NAME}-${i + 1}` : process.env.ENV_NAME,
-      value,
-    }))));
-  ') || exit 1
-fi
+rm -rf "$ROOT/webshell"
+npx --yes "solana-mobile@${SOLANA_MOBILE_CLI_VERSION:-$(<"$ROOT/scripts/cli-version")}" --skip-version-check webshell init "$ROOT/webshell" \
+  --manifest "$MANIFEST_URL" \
+  --url "https://$HOST/?platform=seeker" \
+  --application-id "$PACKAGE_ID" \
+  --app-name "$APP_NAME" \
+  --version-name "$APP_VERSION_NAME" \
+  --version-code "$APP_VERSION_CODE" \
+  --keystore-path "$KEYSTORE_PATH" \
+  --keystore-alias "$KEYSTORE_ALIAS"
 
-sed \
-  -e "s#__HOST__#$HOST#g" \
-  -e "s#__PACKAGE_ID__#$PACKAGE_ID#g" \
-  -e "s#__APP_NAME__#$APP_NAME#g" \
-  -e "s#__LAUNCHER_NAME__#$LAUNCHER_NAME#g" \
-  -e "s#__APP_VERSION_NAME__#$APP_VERSION_NAME#g" \
-  -e "s#__APP_VERSION_CODE__#$APP_VERSION_CODE#g" \
-  -e "s#__KEYSTORE_PATH__#$KEYSTORE_PATH#g" \
-  -e "s#__KEYSTORE_ALIAS__#$KEYSTORE_ALIAS#g" \
-  -e "s#__ASSET_ORIGIN__#$ASSET_ORIGIN#g" \
-  -e "s#__FINGERPRINTS__#$FINGERPRINTS_JSON#g" \
-  "$ROOT/twa-manifest.template.json" > "$ROOT/twa-manifest.json"
+# CLI always insets the launcher foreground 18dp. /app-icons/icon-maskable-512x512.png already keeps
+# the art inside the adaptive-icon safe zone, so that inset would shrink it twice.
+# Inset 0dp; fail if the CLI renames these files so the fix cannot silently vanish.
+RES="$ROOT/webshell/app/src/main/res"
+FG_XML="$RES/drawable/ic_launcher_foreground.xml"
+compgen -G "$RES/drawable-nodpi/ic_launcher_foreground_inner.*" >/dev/null && [[ -f "$FG_XML" ]] \
+  || { echo "launcher icon files not found under $RES (CLI layout changed? update the inset fix)" >&2; exit 1; }
+cat > "$FG_XML" <<'XML'
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_launcher_foreground_inner"
+    android:inset="0dp" />
+XML
 
-# --skipVersionUpgrade keeps bubblewrap from mutating the version — env/<env>.env owns it.
-(cd "$ROOT" && bubblewrap update --skipVersionUpgrade)
+# The site scrolls inside [data-scroll-container], not the window, so the CLI's canScrollVertically(-1) always reports "at top"
+# and pull-to-refresh steals the gesture. Add a JS bridge and patch MainActivity.kt; exact anchors, fail if the CLI changed.
+MAIN_KT="$(find "$ROOT/webshell/app/src/main/java" -name MainActivity.kt)"
+[[ -n "$MAIN_KT" ]] || { echo "MainActivity.kt not found (CLI layout changed? update the scroll patch)" >&2; exit 1; }
+PKG="$(sed -n 's/^package \(.*\)$/\1/p' "$MAIN_KT")"
+sed "s/PLACEHOLDER_PACKAGE/$PKG/" "$ROOT/scripts/patches/ScrollUpBridge.kt" > "$(dirname "$MAIN_KT")/ScrollUpBridge.kt"
+python3 - "$MAIN_KT" <<'PY'
+import sys
+path = sys.argv[1]
+src = open(path).read()
+patches = [
+    ("setOnChildScrollUpCallback { _, _ -> webView.canScrollVertically(-1) }",
+     "setOnChildScrollUpCallback { _, _ -> webView.canScrollVertically(-1) || ScrollUpBridge.canScrollUp }"),
+    ("settings.javaScriptEnabled = true\n",
+     "settings.javaScriptEnabled = true\n                addJavascriptInterface(ScrollUpBridge, ScrollUpBridge.NAME)\n"),
+    ("probeViewportAndMaybePatch(view, BuildConfig.DEBUG)\n",
+     "probeViewportAndMaybePatch(view, BuildConfig.DEBUG)\n                            ScrollUpBridge.install(view)\n"),
+]
+for old, new in patches:
+    if src.count(old) != 1:
+        sys.exit("scroll patch anchor not found exactly once (CLI changed MainActivity.kt?): " + old.strip())
+    src = src.replace(old, new)
+open(path, "w").write(src)
+PY
 
-# Chrome 152+ rejects the splash hand-off unless the app holds a grant on its own splash URI, and
-# a blank window shows before the page instead (android-browser-helper#623). Grant it in
-# LauncherActivity before the library sends the image. The folder and file name are the library's.
-LAUNCHER="$ROOT/app/src/main/java/${PACKAGE_ID//.//}/LauncherActivity.java"
-GRANT=$(cat <<'JAVA'
-        try {
-            android.net.Uri splashUri = androidx.core.content.FileProvider.getUriForFile(this,
-                    com.google.androidbrowserhelper.trusted.LauncherActivityMetadata
-                            .parse(this).fileProviderAuthority,
-                    new java.io.File(new java.io.File(getFilesDir(), "twa_splash"),
-                            "splash_image.png"));
-            grantUriPermission(getPackageName(), splashUri,
-                    android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        } catch (RuntimeException e) {
-            android.util.Log.w("SplashGrant", "Could not grant the splash image URI", e);
-        }
-JAVA
-)
-GRANT="$GRANT" perl -0pi -e '
-  my $n = s/^(        super\.onCreate\(savedInstanceState\);)$/$ENV{GRANT}\n$1/m;
-  die "LauncherActivity.java changed shape; cannot add the splash URI grant\n" unless $n == 1;
-' "$LAUNCHER"
-
-# ASSET_ORIGIN is only where the icons and manifest were *read from* at generation time. The
-# shipped app must resolve its web manifest from the host it actually opens, so rewrite the
-# one generated string that carries it. twa-manifest.json is left as rendered, so re-running
-# `bubblewrap update` stays idempotent and the checksum below stays valid.
-if [[ "$ASSET_ORIGIN" != "https://$HOST" ]]; then
-  echo "rewriting generated web_manifest_url from $ASSET_ORIGIN to https://$HOST"
-  FROM="$ASSET_ORIGIN" TO="https://$HOST" perl -pi -e 's/\Q$ENV{FROM}\E/$ENV{TO}/g' "$ROOT/app/build.gradle"
-fi
-
-# bubblewrap compares this checksum on `build` to detect an out-of-date project.
-node -e "const c=require('crypto'),f=require('fs');f.writeFileSync('$ROOT/manifest-checksum.txt',c.createHash('sha1').update(f.readFileSync('$ROOT/twa-manifest.json')).digest('hex'))"
-
-# Digital asset links: without a matching assetlinks.json on $HOST the app falls back to a
-# Custom Tab with a visible URL bar. The site serves public/.well-known/assetlinks.json.
-ASSETLINKS="$ROOT/assetlinks.$ENV_NAME.json"
-if [[ "$FINGERPRINTS_JSON" != "[]" ]]; then
-  (cd "$ROOT" && bubblewrap fingerprint generateAssetLinks --output="$ASSETLINKS" >/dev/null)
-  echo "wrote twa/$(basename "$ASSETLINKS") — make sure its entry is in public/.well-known/assetlinks.json"
-else
-  rm -f "$ASSETLINKS"
-  echo "note: SHA256_FINGERPRINT is empty in $ENV_FILE — no assetlinks.json generated."
-  echo "      the app will show a URL bar until $HOST serves matching asset links."
-fi
-
-echo
-echo "configured for $ENV_NAME. next:"
-echo "  ./gradlew assembleDebug   # debug-key-signed apk: shows a URL bar (asset links fail)"
-echo "  bubblewrap build          # signed apk + aab using $KEYSTORE_FILE"
+echo "configured $ENV_NAME. next: scripts/build.sh $ENV_NAME"

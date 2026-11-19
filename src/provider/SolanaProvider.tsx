@@ -20,6 +20,13 @@ import {
   useEffectiveRpcUrl,
   useNetworkMode,
 } from "@/stores/network.store";
+import { installUnloadGuard, isSolanaWebShell } from "@/utils/platform.utils";
+
+// Before WalletProvider mounts, so the guard's capture listener is in place when MWA first
+// opens the wallet. Web shell only: in a browser, beforeunload keeps its normal meaning.
+if (typeof window !== "undefined" && isSolanaWebShell(navigator.userAgent)) {
+  installUnloadGuard(window);
+}
 
 const SolanaProvider = ({ children }: PropsWithChildren) => {
   const endpoint = useEffectiveRpcUrl();

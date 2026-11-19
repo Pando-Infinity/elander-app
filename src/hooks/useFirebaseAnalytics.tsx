@@ -107,7 +107,7 @@ export const useFirebaseAnalytics = (
     // You can customize this detection based on your Seeker app's User-Agent or custom headers
     const userAgent = navigator.userAgent || "";
     const isSeeker =
-      isSeekerLaunch() || // Opened from the Seeker TWA (twa/)
+      isSeekerLaunch() || // Opened from the Seeker app (twa/)
       userAgent.includes("Seeker") || // Custom User-Agent for Seeker app
       (window as any).ReactNativeWebView !== undefined || // React Native WebView
       (window as any).isSeekerApp === true; // Custom flag set by Seeker app
