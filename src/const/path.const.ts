@@ -8,3 +8,5 @@ export const SNAPSHOT = "/snapshot";
 export const AIRDROP = "/airdrop";
 export const NFT_COLLECTION_GEN = "/nft-collection-gen";
 export const NFT_COLLECTION_MGR = "/nft-collection-mgr";
+export const TERMS = "/terms";
+export const PRIVACY_POLICY = "/privacy-policy";

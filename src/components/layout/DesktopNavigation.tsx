@@ -23,6 +23,7 @@ import { twJoin, twMerge } from "tailwind-merge";
 import Link from "next/link";
 import Image from "next/image";
 import BuyNftUtility from "../BuyNftUtility";
+import LegalLinks from "../legal/LegalLinks";
 import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 
 const DesktopNavigation = () => {
@@ -120,6 +121,7 @@ const DesktopNavigation = () => {
             <XIcon />
           </Link>
         </div>
+        <LegalLinks className="-mt-4" />
       </div>
     </div>
   );

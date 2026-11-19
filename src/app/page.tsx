@@ -15,6 +15,7 @@ import CommonInput from "@/components/CommonInput";
 import UtilityCard from "./_component/UtilityCard";
 import Introduction from "./_component/Introduction";
 import BuyNftUtility from "@/components/BuyNftUtility";
+import LegalLinks from "@/components/legal/LegalLinks";
 import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 
 export default function Home() {
@@ -91,6 +92,9 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* The desktop sidebar carries these links; mobile has no room in the bottom bar. */}
+      <LegalLinks className="sm:hidden justify-center" />
     </div>
   );
 }

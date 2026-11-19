@@ -1182,3 +1182,54 @@ export const CheckIcon: FC<SVGProps<SVGSVGElement>> = ({ ...otherProps }) => {
     </svg>
   );
 };
+
+const LineIcon: FC<SVGProps<SVGSVGElement>> = ({ children, ...otherProps }) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...otherProps}
+  >
+    {children}
+  </svg>
+);
+
+export const ShieldCheckIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+  <LineIcon {...props}>
+    <path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.3 7.5 9.5 4.3-1.2 7.5-5 7.5-9.5V6L12 3Z" />
+    <path d="m8.75 12 2.25 2.25 4.25-4.5" />
+  </LineIcon>
+);
+
+export const KeyIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+  <LineIcon {...props}>
+    <circle cx="8" cy="15" r="4" />
+    <path d="m10.85 12.15 8.65-8.65M16 7l2.5 2.5M14 9l2 2" />
+  </LineIcon>
+);
+
+export const DocumentIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+  <LineIcon {...props}>
+    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+    <path d="M14 3v5h5M9 13h6M9 17h4" />
+  </LineIcon>
+);
+
+export const EyeOffIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+  <LineIcon {...props}>
+    <path d="M3 3l18 18" />
+    <path d="M10.6 5.1A9.7 9.7 0 0 1 12 5c5 0 8.5 4.5 9.5 7a13 13 0 0 1-2.4 3.6M6.6 6.6C4.5 8 3.1 10.1 2.5 12c1 2.5 4.5 7 9.5 7 1.8 0 3.4-.6 4.8-1.4" />
+    <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+  </LineIcon>
+);
+
+export const BoltIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+  <LineIcon {...props}>
+    <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+  </LineIcon>
+);

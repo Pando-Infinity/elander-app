@@ -74,3 +74,6 @@ export const MAGIC_EDEN_ALCHEMIST_URL =
 export const ELANDER_STAKE_ALCHEMIST_URL =
   "https://e-lander.xyz/stake?collection=Alchemist";
 export const ELANDER_X_URL = "https://x.com/elander_nft";
+
+// Legal pages
+export const LEGAL_LAST_UPDATED = "November 19, 2026";
