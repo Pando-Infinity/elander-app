@@ -118,12 +118,52 @@ Without it, Step 1 Option B fails with `AccessDeniedException ... not authorized
 
 ### Option B — Create via AWS CLI
 
+> IAM changes can take a minute or two to propagate. If you just attached the bootstrap policy and still get `AccessDeniedException`, wait and retry.
+
+#### B1. Install the Amplify GitHub App on the org
+
+Amplify reads the repo through the **AWS Amplify GitHub App** (one per region). Install it once on the `Pando-Infinity` org:
+
+1. Open https://github.com/apps/aws-amplify-ap-southeast-1/installations/new
+2. Select the **Pando-Infinity** org → **Only select repositories** → `elander-app` → **Install & Authorize**
+3. If you are not an org owner, GitHub sends an install request — an owner must approve it
+
+#### B2. Create a GitHub personal access token (classic)
+
+The CLI needs a token so Amplify can connect the repo and register the build webhook. The token is used once and **not stored** by Amplify.
+
+1. GitHub → avatar → **Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)**
+2. **Note:** `amplify-elander-app-setup` · **Expiration:** 7 days (one-time use)
+3. **Scopes:** select only **`admin:repo_hook`** — the only scope Amplify requires
+4. **Generate token** and copy it (shown once)
+5. If the org restricts classic tokens, an org owner must allow it under **Org Settings → Personal access tokens**
+6. Your GitHub account must have **admin** access to `Pando-Infinity/elander-app` (needed to create webhooks)
+
+Delete the token after the branch is connected.
+
+#### B3. Create the app and connect the repo
+
 ```bash
+# Keep the token out of shell history
+read -rs GITHUB_PAT
+
+# New app with repo connected
 aws amplify create-app \
   --name "elander-app" \
   --platform WEB_COMPUTE \
+  --repository https://github.com/Pando-Infinity/elander-app \
+  --access-token "$GITHUB_PAT" \
   --region ap-southeast-1
 # add --profile <admin-profile> if your default profile is the deploy user
+
+# Or, if the app already exists without a repo (repository: null)
+aws amplify update-app \
+  --app-id <YOUR_APP_ID> \
+  --repository https://github.com/Pando-Infinity/elander-app \
+  --access-token "$GITHUB_PAT" \
+  --region ap-southeast-1
+
+unset GITHUB_PAT
 
 # Connect a branch
 aws amplify create-branch \
@@ -132,6 +172,8 @@ aws amplify create-branch \
   --framework "Next.js - SSR" \
   --stage PRODUCTION
 ```
+
+Once the branch exists, detach the bootstrap policy from the deploy user and delete the PAT.
 
 ---
 
