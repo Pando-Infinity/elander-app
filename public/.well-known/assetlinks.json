@@ -8,5 +8,15 @@
         "E8:60:ED:E8:C5:B6:EC:79:A0:A4:EA:A0:27:E5:49:8A:AF:3B:9E:DB:4F:D2:12:23:C9:F5:D7:F6:8C:74:8D:E3"
       ]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "xyz.e_lander.app.dev",
+      "sha256_cert_fingerprints": [
+        "9A:94:89:4C:BA:0A:1B:3E:94:81:A0:50:C9:8C:1F:73:BE:FD:80:D0:9B:04:C5:5B:44:8E:91:C0:2B:6A:2E:8B"
+      ]
+    }
   }
 ]
