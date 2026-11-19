@@ -7,7 +7,7 @@ import { twJoin, twMerge } from "tailwind-merge";
 import CommonButton from "./CommonButton";
 import useFirebaseAnalytics from "@/hooks/useFirebaseAnalytics";
 import { AppConstant } from "@/const";
-import useIsUnlocked from "@/hooks/useIsUnlocked";
+import { useAccessStatus } from "@/hooks/useIsUnlocked";
 
 const BuyNftUtility: FC<BuyNftUtilityProps> = ({
   className,
@@ -15,9 +15,11 @@ const BuyNftUtility: FC<BuyNftUtilityProps> = ({
   ...otherProps
 }) => {
   const analytics = useFirebaseAnalytics();
-  const isUnlocked = useIsUnlocked();
+  const accessStatus = useAccessStatus();
+  // Hidden while the check runs, so the card does not flash for a wallet that unlocks.
+  const isLocked = accessStatus !== "unlocked" && accessStatus !== "checking";
 
-  return !isUnlocked ? (
+  return isLocked ? (
     <div
       className={twMerge(
         "bg-surface-panel rounded-lg w-full sm:w-[200px] border border-white/20",
@@ -38,7 +40,7 @@ const BuyNftUtility: FC<BuyNftUtilityProps> = ({
           <p className="font-bold text-white/80">Utility</p>
         </div>
         <p className="text-xs font-medium text-white/60 mt-1 mb-4">
-          Use E-lander utilities with an NFT as a digital key.
+          Use E-lander utilities with an Alchemist NFT or a Seeker Genesis Token as your key.
         </p>
 
         <CommonButton

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   TOKEN_2022_PROGRAM_ID,
   getAssociatedTokenAddressSync,
@@ -27,6 +26,7 @@ import {
 } from "@/utils/connection-cache";
 
 import * as nacl from "tweetnacl";
+import { hasSeekerGenesisToken } from "@/utils/seeker.utils";
 import * as web3 from "@solana/web3.js";
 import * as splToken from "@solana/spl-token";
 
@@ -264,113 +264,15 @@ export function generateStealthWallet(
   return keypair;
 }
 
+/**
+ * Returns true when the wallet holds at least one Seeker Genesis Token. See
+ * `hasSeekerGenesisToken`. Throws on an RPC failure.
+ */
 export const checkWalletForSGT = async (
   walletAddress: string
 ): Promise<boolean> => {
-  try {
-    const connection = await BlockchainUtils.getConnection();
-
-    const response = await connection.getParsedTokenAccountsByOwner(
-      new PublicKey(walletAddress),
-      {
-        programId: TOKEN_2022_PROGRAM_ID,
-      }
-    );
-
-    const allTokenAccounts = response.value;
-
-    if (allTokenAccounts.length === 0) {
-      console.log("No Token-2022 accounts found for this wallet.");
-      return false;
-    }
-
-    // Extract mint addresses from token accounts
-    const mintPubkeys = allTokenAccounts
-      .map((accountInfo) => {
-        try {
-          if (accountInfo?.account?.data?.parsed?.info?.mint) {
-            return new PublicKey(accountInfo.account.data.parsed.info.mint);
-          } else {
-            console.log("No mint found for account:", accountInfo);
-            return null;
-          }
-        } catch (error) {
-          return null;
-        }
-      })
-      .filter((mintPubkey) => mintPubkey !== null);
-
-    // Fetch all mint account data in batches to avoid RPC limits
-    const BATCH_SIZE = AppConstant.RPC_BATCH_SIZE;
-    const mintAccountInfos = [];
-
-    for (let i = 0; i < mintPubkeys.length; i += BATCH_SIZE) {
-      const batch = mintPubkeys.slice(i, i + BATCH_SIZE);
-
-      const batchResults = await connection.getMultipleAccountsInfo(batch);
-      mintAccountInfos.push(...batchResults);
-    }
-
-    for (let i = 0; i < mintAccountInfos.length; i++) {
-      const mintInfo = mintAccountInfos[i];
-      if (mintInfo) {
-        const mintPubkey = mintPubkeys[i];
-
-        try {
-          // Unpack the raw mint account data
-          const mint = splToken.unpackMint(
-            mintPubkey,
-            mintInfo,
-            TOKEN_2022_PROGRAM_ID
-          );
-          const mintAuthority = mint.mintAuthority?.toBase58();
-
-          const hasCorrectMintAuthority =
-            mintAuthority === AppConstant.SGT_MINT_AUTHORITY;
-
-          // Check for correct SGT Metadata
-          const metadataPointer = splToken.getMetadataPointerState(mint);
-          const hasCorrectMetadata =
-            metadataPointer &&
-            metadataPointer.authority?.toBase58() ===
-              AppConstant.SGT_MINT_AUTHORITY &&
-            metadataPointer.metadataAddress?.toBase58() ===
-              AppConstant.SGT_METADATA_ADDRESS;
-
-          // Check for correct SGT Group Member
-          const tokenGroupMemberState = splToken.getTokenGroupMemberState(mint);
-          const hasCorrectGroupMember =
-            tokenGroupMemberState &&
-            tokenGroupMemberState.group?.toBase58() ===
-              AppConstant.SGT_GROUP_MINT_ADDRESS;
-
-          // If all extensions match and mint authority is correct, then it is an SGT
-          if (
-            hasCorrectMintAuthority &&
-            hasCorrectMetadata &&
-            hasCorrectGroupMember
-          ) {
-            console.log(
-              `\nVERIFIED SGT FOUND: Wallet holds a verified SGT (${mint.address.toBase58()}).`
-            );
-            return true;
-          }
-        } catch (mintError: any) {
-          // Skip this mint if we can't unpack it
-          console.log(
-            `Warning: Could not unpack mint ${mintPubkey.toBase58()}: ${
-              mintError.message
-            }`
-          );
-          continue;
-        }
-      }
-    }
-
-    return false;
-  } catch (error) {
-    return false;
-  }
+  const connection = await BlockchainUtils.getConnection();
+  return hasSeekerGenesisToken(connection, new PublicKey(walletAddress));
 };
 
 export function hashWalletAddressToUUID(walletAddress: string): string {

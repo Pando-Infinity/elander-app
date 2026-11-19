@@ -1,29 +1,33 @@
 "use client";
 
+import { useAppStore } from "@/stores/app.store";
 import { useActiveEndpoint } from "@/stores/network.store";
-import { useUserStore } from "@/stores/user.store";
-
-const isDevnetEndpoint = (endpoint: string): boolean => {
-  if (endpoint === "devnet") return true;
-  // Custom RPC URLs containing "devnet" are treated as devnet
-  try {
-    return new URL(endpoint).hostname.includes("devnet");
-  } catch {
-    return false;
-  }
-};
+import { AccessStatus, useUserStore } from "@/stores/user.store";
 
 /**
- * Returns true if the user has access to locked features.
- * On devnet (built-in or custom devnet RPC): always unlocked (for testing).
- * On mainnet: requires NFT holder or SGT seeker wallet.
+ * Where the connected wallet stands on locked features. On devnet (built-in, or a custom RPC whose
+ * genesis hash is devnet's) everything is open for testing. On mainnet the wallet needs an
+ * Alchemist NFT (held or staked) or a Seeker Genesis Token.
+ *
+ * This is a UI gate only: nothing on chain or in a backend enforces it.
  */
-const useIsUnlocked = (): boolean => {
+export const useAccessStatus = (): AccessStatus => {
   const activeEndpoint = useActiveEndpoint();
-  const { isHolderNft, isSeekerWallet } = useUserStore();
+  const isDevnetCluster = useAppStore((s) => s.isDevnetCluster);
+  const walletAddress = useUserStore((s) => s.walletAddress);
+  const accessStatus = useUserStore((s) => s.accessStatus);
 
-  if (isDevnetEndpoint(activeEndpoint)) return true;
-  return isHolderNft || isSeekerWallet;
+  // Built-in devnet is known synchronously; a custom RPC is resolved by its genesis hash.
+  if (activeEndpoint === "devnet" || isDevnetCluster) return "unlocked";
+
+  // A connected wallet whose check has not started yet (first paint, or just after a network
+  // switch reset it) is about to be checked: report "checking" so the locked UI does not flash.
+  if (walletAddress && accessStatus === "idle") return "checking";
+
+  return accessStatus;
 };
+
+/** True when the connected wallet may use locked features. */
+const useIsUnlocked = (): boolean => useAccessStatus() === "unlocked";
 
 export default useIsUnlocked;
