@@ -5,7 +5,7 @@ import { analytics } from "@/utils/firebase.config";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { useUserStore } from "@/stores/user.store";
 import { BlockchainUtils } from "@/utils";
-import { isSeekerLaunch } from "@/utils/platform.utils";
+import { isSolanaWebShell } from "@/utils/platform.utils";
 
 export interface UserPropertiesInterface {
   user_id_hashed?: string;
@@ -107,7 +107,7 @@ export const useFirebaseAnalytics = (
     // You can customize this detection based on your Seeker app's User-Agent or custom headers
     const userAgent = navigator.userAgent || "";
     const isSeeker =
-      isSeekerLaunch() || // Opened from the Seeker app (twa/)
+      isSolanaWebShell(userAgent) || // The Seeker app (twa/)
       userAgent.includes("Seeker") || // Custom User-Agent for Seeker app
       (window as any).ReactNativeWebView !== undefined || // React Native WebView
       (window as any).isSeekerApp === true; // Custom flag set by Seeker app

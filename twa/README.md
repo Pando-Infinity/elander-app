@@ -4,10 +4,9 @@ Android app that ships the E-Lander web app to Solana Seeker (dApp Store / sidel
 product code: the app is a WebView that opens the website full screen, so a web deploy is an app
 update.
 
-Generated with the Solana Mobile WebView shell (`npx solana-mobile webshell`), on the same layout
-as `tcg-miner_twa`. No CI/CD: builds are made locally. `twa/` holds no JS/TS, so the Next.js
-build, lint and typecheck never pick it up, and it is left out of the Docker context
-(`.dockerignore`).
+Generated with the Solana Mobile WebView shell (`npx solana-mobile webshell`). No CI/CD: builds
+are made locally. `twa/` holds no JS/TS, so the Next.js build, lint and typecheck never pick it
+up, and it is left out of the Docker context (`.dockerignore`).
 
 ## Why not a TWA
 
@@ -30,11 +29,15 @@ Links to another host open in the system browser; `solana-wallet:` links open th
 
 ## What the site does in the app
 
-- `?platform=seeker` and the `Solana Mobile Web Shell` user agent mark the session as the Seeker
-  app (`src/utils/platform.utils.ts`); analytics report `platform: "seeker"`.
+- The `Solana Mobile Web Shell` user agent marks the session as the Seeker app
+  (`src/utils/platform.utils.ts`); analytics report `platform: "seeker"`. `?platform=seeker` in the
+  start URL is not trusted for that, since the link can be opened in any browser.
 - `src/provider/SolanaProvider.tsx` installs a `beforeunload` guard in the web shell only.
-  wallet-adapter-react treats the WebView as desktop and stays "unloading" after MWA opens the
-  wallet with `location.assign`, which drops every later wallet error and disconnect.
+  wallet-adapter-react treats the WebView as desktop and stays "unloading" after any
+  `beforeunload` (MWA opening the wallet with `location.assign`, or a reload cancelled at a
+  leave-page warning), which drops every later wallet error and disconnect. The guard hides the
+  event from it and runs the app's own handlers (`addBeforeUnloadListener`) itself, except while
+  a wallet request is in flight (`src/utils/mwa-web-shell.ts`).
 - `@solana-mobile/wallet-standard-mobile` is 0.7.x: it handles Local Network Access itself and
   rejects a pending request when the wallet closes the session.
 
@@ -59,9 +62,9 @@ fires whenever the finger pulls down, even mid-page (touches on the fixed header
 
 ## Requirements
 
-Node (for `npx`), `curl`, `python3`, JDK 17 as `JAVA_HOME`, Android SDK as `ANDROID_HOME` with platform 37 and
-build-tools. The CLI version is pinned in `scripts/cli-version` (the one `tcg-miner_twa` was
-verified with); `SOLANA_MOBILE_CLI_VERSION` overrides it.
+Node (for `npx`), `curl`, `python3`, JDK 17 as `JAVA_HOME`, Android SDK as `ANDROID_HOME` with
+platform 37 and build-tools. The CLI version is pinned in `scripts/cli-version` (the version
+these scripts were verified with); `SOLANA_MOBILE_CLI_VERSION` overrides it.
 
 ## Signing key
 
@@ -106,8 +109,8 @@ adb install -r app-release.apk
 
 - Splash is the Android 12 splash: the maskable icon on the manifest's background color.
 - The app draws edge to edge inside system-bar padding; the bars follow the system theme.
-- The `beforeunload` guard also hides the leave-page warning during an airdrop or bulk transfer,
-  so pull-to-refresh mid-transfer reloads without asking. The back-button confirm still works.
+- While the wallet is open for a request, the `beforeunload` guard also hides the leave-page
+  warning of an airdrop or bulk transfer. Between requests the warning shows as in a browser.
 - `minSdk` is 28; the APK carries arm64-v8a, armeabi-v7a, x86 and x86_64 libs.
 
 ## Release checklist

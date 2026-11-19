@@ -21,12 +21,14 @@ import {
   useNetworkMode,
 } from "@/stores/network.store";
 import { installUnloadGuard, isSolanaWebShell } from "@/utils/platform.utils";
+import { MwaConfig, registerMwaInWebShell } from "@/utils/mwa-web-shell";
 
-// Before WalletProvider mounts, so the guard's capture listener is in place when MWA first
-// opens the wallet. Web shell only: in a browser, beforeunload keeps its normal meaning.
-if (typeof window !== "undefined" && isSolanaWebShell(navigator.userAgent)) {
-  installUnloadGuard(window);
-}
+const isWebShell =
+  typeof window !== "undefined" && isSolanaWebShell(navigator.userAgent);
+
+// Before WalletProvider mounts, so the guard's capture listener runs before wallet-adapter's.
+// Web shell only: in a browser, beforeunload keeps its normal meaning.
+if (isWebShell) installUnloadGuard(window);
 
 const SolanaProvider = ({ children }: PropsWithChildren) => {
   const endpoint = useEffectiveRpcUrl();
@@ -44,7 +46,7 @@ const SolanaProvider = ({ children }: PropsWithChildren) => {
       networkMode === "mainnet" ? "solana:mainnet" : "solana:devnet";
 
     try {
-      registerMwa({
+      const config: MwaConfig = {
         appIdentity: {
           name: "E-Lander",
           uri: window.location.origin,
@@ -53,7 +55,10 @@ const SolanaProvider = ({ children }: PropsWithChildren) => {
         chains: [chain],
         chainSelector: createDefaultChainSelector(),
         onWalletNotFound: createDefaultWalletNotFoundHandler(),
-      });
+      };
+      // In the web shell, wallet requests arm the unload guard (see installUnloadGuard).
+      if (isWebShell) registerMwaInWebShell(config);
+      else registerMwa(config);
 
       console.log("✅ Mobile Wallet Adapter registered successfully");
     } catch (error) {
