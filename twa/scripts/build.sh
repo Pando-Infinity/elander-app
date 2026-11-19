@@ -4,7 +4,7 @@
 # signed with the key env/<env>.env expects.
 #
 #   export SOLANA_MOBILE_KEYSTORE_PASSWORD=...   # key password defaults to the same value
-#   ./scripts/build.sh production [output-dir]
+#   ./scripts/build.sh staging [output-dir]
 #
 # Needs ANDROID_HOME (SDK with platform 37 + build-tools) and JAVA_HOME (JDK 17).
 set -euo pipefail

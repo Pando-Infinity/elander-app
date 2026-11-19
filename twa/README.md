@@ -4,10 +4,9 @@ Android app that ships the E-Lander web app to Solana Seeker (dApp Store / sidel
 product code: the app is a WebView that opens the website full screen, so a web deploy is an app
 update.
 
-Generated with the Solana Mobile WebView shell (`npx solana-mobile webshell`), on the same layout
-as `tcg-miner_twa`. No CI/CD: builds are made locally. `twa/` holds no JS/TS, so the Next.js
-build, lint and typecheck never pick it up, and it is left out of the Docker context
-(`.dockerignore`).
+Generated with the Solana Mobile WebView shell (`npx solana-mobile webshell`). No CI/CD: builds
+are made locally. `twa/` holds no JS/TS, so the Next.js build, lint and typecheck never pick it
+up, and it is left out of the Docker context (`.dockerignore`).
 
 ## Why not a TWA
 
@@ -59,9 +58,9 @@ fires whenever the finger pulls down, even mid-page (touches on the fixed header
 
 ## Requirements
 
-Node (for `npx`), `curl`, `python3`, JDK 17 as `JAVA_HOME`, Android SDK as `ANDROID_HOME` with platform 37 and
-build-tools. The CLI version is pinned in `scripts/cli-version` (the one `tcg-miner_twa` was
-verified with); `SOLANA_MOBILE_CLI_VERSION` overrides it.
+Node (for `npx`), `curl`, `python3`, JDK 17 as `JAVA_HOME`, Android SDK as `ANDROID_HOME` with
+platform 37 and build-tools. The CLI version is pinned in `scripts/cli-version` (the version
+these scripts were verified with); `SOLANA_MOBILE_CLI_VERSION` overrides it.
 
 ## Signing key
 

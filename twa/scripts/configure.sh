@@ -3,7 +3,6 @@
 # Generate the webshell Android project for one environment into ./webshell (git-ignored).
 #
 #   ./scripts/configure.sh staging
-#   ./scripts/configure.sh production
 #
 # ./webshell is output: edit env/<env>.env and re-run, never patch it.
 set -euo pipefail
