@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { addBeforeUnloadListener } from "@/utils/platform.utils";
 
 interface UsePreventNavigationOptions {
   when: boolean;
@@ -51,11 +52,11 @@ export const usePreventNavigation = ({
 
     window.history.pushState(null, "", window.location.href);
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    const removeBeforeUnload = addBeforeUnloadListener(handleBeforeUnload);
     window.addEventListener("popstate", handlePopState);
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      removeBeforeUnload();
       window.removeEventListener("popstate", handlePopState);
     };
   }, [when, onNavigationAttempt]);

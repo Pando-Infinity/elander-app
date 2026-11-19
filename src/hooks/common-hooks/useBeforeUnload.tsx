@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
+import { addBeforeUnloadListener } from '@/utils/platform.utils';
 
 const useBeforeUnload = (hasUnsavedChanges = false) => {
   const handleBeforeUnload = useCallback(
@@ -19,11 +20,8 @@ const useBeforeUnload = (hasUnsavedChanges = false) => {
 
   useEffect(() => {
     // Only add listener when there are unsaved changes
-    if (hasUnsavedChanges) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
-    }
-
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    if (!hasUnsavedChanges) return;
+    return addBeforeUnloadListener(handleBeforeUnload);
   }, [hasUnsavedChanges, handleBeforeUnload]);
 };
 

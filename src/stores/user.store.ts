@@ -22,6 +22,8 @@ export interface UserState {
   earnedReward: EarnedRewardInterface | null;
   connectSignature: string | null;
   accessStatus: AccessStatus;
+  // Bumped to run the access check again for the same wallet and network (after an "error").
+  accessCheckId: number;
 
   setWalletAddress: (walletAddress: string | null) => void;
   setWalletType: (walletType: string | null) => void;
@@ -32,6 +34,7 @@ export interface UserState {
   setEarnedReward: (earnedReward: EarnedRewardInterface | null) => void;
   setConnectSignature: (connectSignature: string | null) => void;
   setAccessStatus: (accessStatus: AccessStatus) => void;
+  recheckAccess: () => void;
 
   resetUserData: () => void;
   logout: () => void;
@@ -47,6 +50,7 @@ const init = {
   earnedReward: null,
   connectSignature: null,
   accessStatus: "idle" as AccessStatus,
+  accessCheckId: 0,
 };
 
 const useUserStore = create<UserState>()(
@@ -78,6 +82,9 @@ const useUserStore = create<UserState>()(
       setAccessStatus: (accessStatus) => {
         set({ accessStatus });
       },
+      recheckAccess: () => {
+        set((state) => ({ accessCheckId: state.accessCheckId + 1 }));
+      },
 
       resetUserData: () => {
         set((state) => ({
@@ -106,7 +113,7 @@ const useUserStore = create<UserState>()(
       storage: createJSONStorage(() => localStorage),
       // Access is re-checked on every load, never trusted from storage.
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      partialize: ({ accessStatus, ...rest }) => rest,
+      partialize: ({ accessStatus, accessCheckId, ...rest }) => rest,
       // v1 drops the access flags v0 stored (isHolderNft, isSeekerWallet).
       version: 1,
       migrate: (persisted) => {

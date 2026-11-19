@@ -34,6 +34,24 @@ import solanaNftStakingJson from "./ensofi_svm_nft_staking.json";
 const solanaStakingStr = JSON.stringify(solanaNftStakingJson);
 const solanaStakingJsonObj = JSON.parse(solanaStakingStr);
 
+// A StakeRecord account starts with this discriminator, then the staker's address.
+const STAKE_RECORD_DISCRIMINATOR = anchor.utils.bytes.bs58.encode(
+  Buffer.from(
+    solanaNftStakingJson.accounts.find((a) => a.name === "StakeRecord")!
+      .discriminator
+  )
+);
+
+const stakeRecordFilters = (staker: PublicKey) => [
+  { memcmp: { offset: 0, bytes: STAKE_RECORD_DISCRIMINATOR } },
+  {
+    memcmp: {
+      offset: AppConstant.ANCHOR_DISCRIMINATOR_BYTES,
+      bytes: staker.toBase58(),
+    },
+  },
+];
+
 /**
  * True while the wallet and RPC a request started with are still the active ones, so a late
  * response for a previous wallet or network never overwrites the current state.
@@ -451,9 +469,9 @@ class UserService {
   }
 
   /**
-   * Reads the wallet's stake records and their NFT metadata. `stakeRecordCount` comes from the
-   * on-chain records alone, so a staked NFT whose metadata the DAS API cannot return still counts
-   * for unlocking. Throws when the stake records themselves cannot be read.
+   * Reads the wallet's stake records and their NFT metadata, for `/profile`. `stakeRecordCount`
+   * comes from the on-chain records alone, so a staked NFT whose metadata the DAS API cannot
+   * return still counts. Throws when the stake records themselves cannot be read.
    */
   async getStakedNfts(
     walletAddress: string
@@ -472,20 +490,10 @@ class UserService {
       const program = getProgram(new anchor.web3.Connection(rpcUrl));
 
       const staker = new PublicKey(walletAddress);
-      const DISCRIMINATOR_BYTES = AppConstant.ANCHOR_DISCRIMINATOR_BYTES;
 
       const accounts = await connection.getParsedProgramAccounts(
         program.programId,
-        {
-          filters: [
-            {
-              memcmp: {
-                offset: DISCRIMINATOR_BYTES,
-                bytes: staker.toBase58(),
-              },
-            },
-          ],
-        }
+        { filters: stakeRecordFilters(staker) }
       );
 
       stakeRecordCount = accounts.length;
@@ -591,7 +599,7 @@ class UserService {
     } catch (error) {
       console.error("Error in handleGetStakedNfts:", error);
       if (isCurrentRequest(walletAddress, rpcUrl)) setStakedNfts(allNft);
-      // Stake records could not be read: rethrown so the access check reports it.
+      // Stake records could not be read: rethrown so the caller can report it.
       if (stakeRecordCount === 0) throw error;
       return { nfts: allNft, stakeRecordCount };
     }
@@ -599,6 +607,22 @@ class UserService {
     if (isCurrentRequest(walletAddress, rpcUrl)) setStakedNfts(allNft);
 
     return { nfts: allNft, stakeRecordCount };
+  }
+
+  /**
+   * How many Alchemist stake records the wallet has. Asks for no account data, so it costs one
+   * light `getProgramAccounts` whatever the number of stakes. Throws when the RPC cannot answer.
+   */
+  async countStakeRecords(walletAddress: string): Promise<number> {
+    const connection = await BlockchainUtils.getConnection();
+    const accounts = await connection.getProgramAccounts(
+      new PublicKey(solanaStakingJsonObj.address),
+      {
+        dataSlice: { offset: 0, length: 0 },
+        filters: stakeRecordFilters(new PublicKey(walletAddress)),
+      }
+    );
+    return accounts.length;
   }
 
   async getEarnedReward(walletAddress: string) {

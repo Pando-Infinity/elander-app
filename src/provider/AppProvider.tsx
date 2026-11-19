@@ -16,7 +16,10 @@ export const useAppInitialization = () => {
     walletAddress,
     walletBalances,
     logout,
+    accessStatus,
+    accessCheckId,
     setAccessStatus,
+    recheckAccess,
   } = useUserStore();
   const { setIsDevnetCluster } = useAppStore();
   const { publicKey, disconnect } = useWallet();
@@ -63,8 +66,15 @@ export const useAppInitialization = () => {
     );
   }, [publicKey, walletAddress, logout, disconnect]);
 
-  // Balances, and whether the wallet may use locked features: an Alchemist NFT held or staked, or
-  // a Seeker Genesis Token. A result that arrives after the wallet or network changed is dropped.
+  useEffect(() => {
+    if (!walletAddress) return;
+    userService.getAllTokenBalances(walletAddress).catch(() => {});
+  }, [walletAddress, activeEndpoint]);
+
+  // Whether the wallet may use locked features: an Alchemist NFT held or staked, or a Seeker
+  // Genesis Token. Stakes are only counted: `/profile` loads their metadata itself. A result
+  // that arrives after the wallet or network changed is dropped. Runs again when accessCheckId
+  // is bumped (Unlock's "Try again", or the effect below).
   useEffect(() => {
     if (!walletAddress) {
       setAccessStatus("idle");
@@ -74,21 +84,22 @@ export const useAppInitialization = () => {
     let cancelled = false;
     setAccessStatus("checking");
 
-    userService.getAllTokenBalances(walletAddress).catch(() => {});
-
     const checkAccess = async () => {
-      const [heldNfts, staked, seeker] = await Promise.allSettled([
-        userService.getAllAlchemistNft(walletAddress),
-        userService.getStakedNfts(walletAddress),
+      const results = await Promise.allSettled([
+        userService
+          .getAllAlchemistNft(walletAddress)
+          .then((nfts) => nfts.length > 0),
+        userService.countStakeRecords(walletAddress),
         BlockchainUtils.checkWalletForSGT(walletAddress),
       ]);
       if (cancelled) return;
 
-      if (seeker.status === "rejected") {
-        console.error("Seeker Genesis Token check failed:", seeker.reason);
-      }
+      const names = ["Alchemist NFT", "Alchemist stake", "Seeker Genesis Token"];
+      results.forEach((r, i) => {
+        if (r.status === "rejected") console.error(`${names[i]} check failed:`, r.reason);
+      });
 
-      setAccessStatus(resolveAccess(heldNfts, staked, seeker));
+      setAccessStatus(resolveAccess(...results));
     };
 
     checkAccess();
@@ -96,7 +107,27 @@ export const useAppInitialization = () => {
     return () => {
       cancelled = true;
     };
-  }, [walletAddress, activeEndpoint, setAccessStatus]);
+  }, [walletAddress, activeEndpoint, accessCheckId, setAccessStatus]);
+
+  // A failed check (RPC 429 or timeout) would otherwise lock the wallet out until a reload:
+  // re-check when the user comes back to the tab or app. Coming back fires both focus and
+  // visibilitychange, so only the first one re-checks.
+  useEffect(() => {
+    if (accessStatus !== "error") return;
+
+    let rechecked = false;
+    const onReturn = () => {
+      if (rechecked || document.visibilityState !== "visible") return;
+      rechecked = true;
+      recheckAccess();
+    };
+    window.addEventListener("focus", onReturn);
+    document.addEventListener("visibilitychange", onReturn);
+    return () => {
+      window.removeEventListener("focus", onReturn);
+      document.removeEventListener("visibilitychange", onReturn);
+    };
+  }, [accessStatus, recheckAccess]);
 
   useEffect(() => {
     if (!walletAddress || !walletBalances) return;
