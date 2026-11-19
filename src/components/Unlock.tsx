@@ -3,11 +3,13 @@
 import React, { ComponentPropsWithoutRef, FC, Fragment, useState } from "react";
 import { LockIcon } from "./icons";
 import { twMerge } from "tailwind-merge";
-import useIsUnlocked from "@/hooks/useIsUnlocked";
+import { useAccessStatus } from "@/hooks/useIsUnlocked";
 import CommonTooltip from "./CommonTooltip";
 
 const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
-  const isUnlocked = useIsUnlocked();
+  const accessStatus = useAccessStatus();
+  // Hidden while the check runs, so the button does not flash for a wallet that unlocks.
+  const isLocked = accessStatus !== "unlocked" && accessStatus !== "checking";
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -16,11 +18,11 @@ const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
     setIsOpen(!isOpen);
   };
 
-  return !isUnlocked ? (
+  return isLocked ? (
     <CommonTooltip
       isOpen={isOpen}
       contentProps={{
-        className: "w-[175px] z-[100]",
+        className: "w-[220px] z-[100]",
         onPointerDownOutside: () => setIsOpen(false),
         sideOffset: sideOffset,
       }}
@@ -39,7 +41,9 @@ const UnLock: FC<UnLockProps> = ({ sideOffset = 10, className }) => {
         </button>
       }
     >
-      No staked E-Lander or nft holder found!
+      {accessStatus === "error"
+        ? "Couldn't verify access. Check your RPC connection and try again."
+        : "Requires an E-Lander Alchemist NFT (held or staked) or a Seeker Genesis Token."}
     </CommonTooltip>
   ) : (
     <Fragment />

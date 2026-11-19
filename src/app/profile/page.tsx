@@ -22,8 +22,9 @@ const Profile = () => {
 
   const handleGetNftInfo = async () => {
     if (!walletAddress) return;
-    await userService.getAllAlchemistNft(walletAddress);
-    await userService.getStakedNfts(walletAddress);
+    // Each read logs its own failure; one failing must not stop the others.
+    await userService.getAllAlchemistNft(walletAddress).catch(() => {});
+    await userService.getStakedNfts(walletAddress).catch(() => {});
     await userService.getEarnedReward(walletAddress);
   };
 
