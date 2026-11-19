@@ -61,6 +61,7 @@ const MainLayout: FC<MainLayoutInterface> = ({ children, className }) => {
           <ConnectButton />
         </div>
         <div
+          data-scroll-container
           className={twMerge(
             "overflow-y-auto flex-1 relative w-full pt-20 pb-[112px] sm:py-8 px-4 sm:px-[46px]",
             className

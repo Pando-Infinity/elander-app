@@ -44,3 +44,5 @@ next-env.d.ts
 .claude
 .env.*
 !.env.example
+# Playwright MCP output
+.playwright-mcp/

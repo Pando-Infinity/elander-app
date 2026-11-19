@@ -43,13 +43,6 @@ export const STEALTH_SIGNING_MESSAGE =
 
 export const STEALTH_ADDRESS_DOMAIN = "E_LANDER_MASTER_VIEWING_KEY_SEED";
 
-export const SGT_MINT_AUTHORITY =
-  "GT2zuHVaZQYZSyQMgJPLzvkmyztfyXg2NJunqFp4p3A4";
-export const SGT_METADATA_ADDRESS =
-  "GT22s89nU4iWFkNXj1Bw6uYhJJWDRPpShHt4Bk8f99Te";
-export const SGT_GROUP_MINT_ADDRESS =
-  "GT22s89nU4iWFkNXj1Bw6uYhJJWDRPpShHt4Bk8f99Te";
-
 // Solana token
 export const SOL_NATIVE_MINT = "So11111111111111111111111111111111111111112";
 export const SOL_DECIMALS = 9;
@@ -81,3 +74,6 @@ export const MAGIC_EDEN_ALCHEMIST_URL =
 export const ELANDER_STAKE_ALCHEMIST_URL =
   "https://e-lander.xyz/stake?collection=Alchemist";
 export const ELANDER_X_URL = "https://x.com/elander_nft";
+
+// Legal pages
+export const LEGAL_LAST_UPDATED = "November 19, 2026";
