@@ -17,6 +17,7 @@ import { BlockchainUtils } from "@/utils";
 import { wait } from "@/utils/common.utils";
 import { useUserStore } from "@/stores/user.store";
 import { useWallet, Wallet, WalletContext } from "@solana/wallet-adapter-react";
+import { WalletReadyState } from "@solana/wallet-adapter-base";
 
 import bs58 from "bs58";
 import Image from "next/image";
@@ -33,37 +34,23 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>();
 
+  // Only wallets this browser or app can use: detected (Installed), or Ledger where WebHID is
+  // available (Loadable). Wallets that were not detected are left out, in the order of walletList.
   const walletListDisplay = useMemo(() => {
-    const installedWalletMap = new Map(
-      wallets.map((wallet) => [wallet.adapter.name as string, wallet])
+    const usableWallets = new Map(
+      wallets
+        .filter(
+          ({ readyState }) =>
+            readyState === WalletReadyState.Installed ||
+            readyState === WalletReadyState.Loadable
+        )
+        .map((wallet) => [wallet.adapter.name as string, wallet])
     );
 
-    const uniqueWallets = new Set<{
-      name: string;
-      wallet: Wallet | null;
-    }>();
-
-    const hasMobileWalletAdapter = installedWalletMap.has(
-      "Mobile Wallet Adapter"
-    );
-
-    walletList.forEach((name: string) => {
-      if (name === "Mobile Wallet Adapter" && !hasMobileWalletAdapter) {
-        return;
-      }
-
-      const wallet = installedWalletMap.get(name);
-      if (wallet) {
-        uniqueWallets.add({
-          name: name,
-          wallet: wallet,
-        });
-      } else {
-        uniqueWallets.add({ name: name, wallet: null });
-      }
+    return walletList.flatMap((name) => {
+      const wallet = usableWallets.get(name);
+      return wallet ? [{ name, wallet }] : [];
     });
-
-    return Array.from(uniqueWallets);
   }, [wallets]);
 
   const handleGetSolanaAddress = async (wallet: Wallet) => {
@@ -180,19 +167,22 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
   return (
     <>
       <div className={twJoin("w-full", "flex flex-col gap-y-4")}>
-        {walletListDisplay?.map((wallet, index) => (
+        {walletListDisplay.map(({ name, wallet }) => (
           <WalletItem
-            isInstalled={
-              wallet?.wallet?.readyState === "Installed" ||
-              wallet?.wallet?.adapter.name === "Ledger"
-            }
-            key={index}
-            title={wallet?.name}
+            isInstalled
+            key={name}
+            title={name}
             onClick={() => {
-              handleConnect(wallet.wallet);
+              handleConnect(wallet);
             }}
           />
         ))}
+
+        {walletListDisplay.length === 0 && (
+          <p className="text-sm text-white/60 text-center py-4">
+            No Solana wallet detected. Install a wallet, then reload this page.
+          </p>
+        )}
       </div>
 
       {isConnecting ? (
