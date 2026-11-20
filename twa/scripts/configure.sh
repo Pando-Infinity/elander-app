@@ -24,6 +24,7 @@ set -a; source "$ENV_FILE"; set +a
 KEYSTORE_PATH="$ROOT/$KEYSTORE_FILE"
 # init would create a fresh keystore (a new signing identity) if this one were missing.
 [[ -f "$KEYSTORE_PATH" ]] || { echo "keystore not found: $KEYSTORE_PATH (README, Signing key)" >&2; exit 1; }
+[[ -n "${SHA256_FINGERPRINT:-}" ]] || { echo "SHA256_FINGERPRINT is empty in $ENV_FILE (README, Signing key)" >&2; exit 1; }
 command -v node >/dev/null || { echo "node/npx not found" >&2; exit 1; }
 
 # init reads colors and the icon from the site's web manifest, so $HOST has to be reachable.
