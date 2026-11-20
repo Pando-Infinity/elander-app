@@ -35,7 +35,8 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
   const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>();
 
   // Only wallets this browser or app can use: detected (Installed), or Ledger where WebHID is
-  // available (Loadable). Wallets that were not detected are left out, in the order of walletList.
+  // available (Loadable). Wallets that were not detected are left out. Known wallets come first,
+  // in the order of walletList; other detected wallets follow with their own icon.
   const walletListDisplay = useMemo(() => {
     const usableWallets = new Map(
       wallets
@@ -47,10 +48,14 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
         .map((wallet) => [wallet.adapter.name as string, wallet])
     );
 
-    return walletList.flatMap((name) => {
+    const known = walletList.flatMap((name) => {
       const wallet = usableWallets.get(name);
       return wallet ? [{ name, wallet }] : [];
     });
+    const others = [...usableWallets]
+      .filter(([name]) => !walletList.includes(name))
+      .map(([name, wallet]) => ({ name, wallet }));
+    return [...known, ...others];
   }, [wallets]);
 
   const handleGetSolanaAddress = async (wallet: Wallet) => {
@@ -64,8 +69,8 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
     }
   };
 
-  const handleConnect = async (wallet: Wallet | null) => {
-    if (isConnecting || !wallet) return;
+  const handleConnect = async (wallet: Wallet) => {
+    if (isConnecting) return;
     setIsConnecting(true);
 
     try {
@@ -169,9 +174,9 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
       <div className={twJoin("w-full", "flex flex-col gap-y-4")}>
         {walletListDisplay.map(({ name, wallet }) => (
           <WalletItem
-            isInstalled
             key={name}
             title={name}
+            icon={wallet.adapter.icon}
             onClick={() => {
               handleConnect(wallet);
             }}
