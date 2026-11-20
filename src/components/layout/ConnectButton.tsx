@@ -26,7 +26,13 @@ const ConnectButton: FC<ComponentPropsWithoutRef<"button">> = ({
   const { setIsOpenConnectWallet } = useAppStore();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { disconnect } = useWallet();
+  const { disconnect, wallet } = useWallet();
+  // Wallets without a bundled image use their own icon (normally a data: URI); after a reload
+  // the adapter may not be selected yet, so there may be no icon at all.
+  const walletImage = handleGetWalletImageByName(
+    walletType ?? "",
+    wallet?.adapter.name === walletType ? wallet?.adapter.icon : undefined
+  );
 
   const handleLogout = async () => {
     await disconnect();
@@ -75,12 +81,15 @@ const ConnectButton: FC<ComponentPropsWithoutRef<"button">> = ({
         <p className="text-xs sm:text-sm leading-[24px] sm:leading-[30px] text-[#1A1A1A] font-medium text-white">
           {CommonUtils.truncateHash(walletAddress, 6, 4)}
         </p>
-        <Image
-          src={handleGetWalletImageByName(walletType)}
-          alt=""
-          width={24}
-          height={24}
-        />
+        {walletImage && (
+          <Image
+            src={walletImage}
+            alt=""
+            width={24}
+            height={24}
+            unoptimized={typeof walletImage === "string"}
+          />
+        )}
       </button>
 
       {isOpen && (

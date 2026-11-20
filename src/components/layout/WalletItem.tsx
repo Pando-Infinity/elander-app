@@ -11,6 +11,8 @@ const WalletItem: React.FC<WalletItemProps> = ({
   className,
   ...otherProps
 }) => {
+  const image = handleGetWalletImageByName(title, icon);
+
   return (
     <button
       className={twMerge(
@@ -28,9 +30,11 @@ const WalletItem: React.FC<WalletItemProps> = ({
           <Image
             width={40}
             height={40}
-            src={handleGetWalletImageByName(title) || icon}
+            src={image}
             alt={title}
             className="rounded-full"
+            // A wallet's own icon is not a bundled asset (normally a data: URI).
+            unoptimized={typeof image === "string"}
           />
 
           {/* Only detected wallets are listed */}
@@ -50,7 +54,8 @@ interface WalletItemProps extends React.ComponentPropsWithoutRef<"button"> {
   icon: string;
 }
 
-export const handleGetWalletImageByName = (name: string) => {
+/** The bundled image for a known wallet; otherwise `fallback` (the wallet's own icon), or "". */
+export const handleGetWalletImageByName = (name: string, fallback = "") => {
   switch (name) {
     case "Phantom":
       return ImageAssets.PhantomWalletImage;
@@ -76,6 +81,6 @@ export const handleGetWalletImageByName = (name: string) => {
       return ImageAssets.SalmonWalletImage;
 
     default:
-      return "";
+      return fallback;
   }
 };

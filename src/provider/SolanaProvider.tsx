@@ -20,6 +20,7 @@ import {
   useNetworkMode,
 } from "@/stores/network.store";
 import { useAppStore } from "@/stores/app.store";
+import { getMwaChain, MwaChain } from "@/utils/mwa-chain";
 import { installUnloadGuard, isSolanaWebShell } from "@/utils/platform.utils";
 import { MwaConfig, registerMwaInWebShell } from "@/utils/mwa-web-shell";
 
@@ -30,13 +31,11 @@ const isWebShell =
 // Web shell only: in a browser, beforeunload keeps its normal meaning.
 if (isWebShell) installUnloadGuard(window);
 
-type MwaChain = "solana:mainnet" | "solana:devnet";
-
 /**
  * Kept on window, not in module variables, so a Fast Refresh of this module in dev does not
- * register MWA a second time. `chain` is what MWA authorizes on and follows the network; a
- * session authorized before a network switch keeps its chain, which is harmless here because
- * the app only asks MWA to sign and sends through its own RPC.
+ * register MWA a second time. `chain` is what a new MWA authorization uses and follows the
+ * network. An existing authorization keeps the chain it was made on (MWA reauthorizes with it
+ * for every request), so useAppInitialization ends an MWA session when the chain changes.
  */
 const mwaState = (): { chain: MwaChain; registered: boolean } => {
   const w = window as typeof window & {
@@ -84,8 +83,9 @@ const SolanaProvider = ({ children }: PropsWithChildren) => {
   );
 
   useEffect(() => {
-    mwaState().chain =
-      networkMode === "devnet" || isDevnetCluster ? "solana:devnet" : "solana:mainnet";
+    // While a custom RPC's cluster is unknown, keep the last known chain.
+    const chain = getMwaChain(networkMode, isDevnetCluster);
+    if (chain) mwaState().chain = chain;
     try {
       registerMwaOnce();
     } catch (error) {

@@ -34,9 +34,10 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | undefined>();
 
-  // Only wallets this browser or app can use: detected (Installed), or Ledger where WebHID is
-  // available (Loadable). Wallets that were not detected are left out. Known wallets come first,
-  // in the order of walletList; other detected wallets follow with their own icon.
+  // Only wallets this browser or app can use: detected (Installed) or Loadable (of the configured
+  // adapters, only Ledger reports Loadable, when WebHID is available). Wallets that were not
+  // detected are left out. Known wallets come first, in the order of walletList; other detected
+  // wallets follow with their own icon.
   const walletListDisplay = useMemo(() => {
     const usableWallets = new Map(
       wallets
@@ -185,7 +186,7 @@ const SolanaWalletList: React.FC<SolanaWalletListProps> = ({ onClose }) => {
 
         {walletListDisplay.length === 0 && (
           <p className="text-sm text-white/60 text-center py-4">
-            No Solana wallet detected. Install a wallet, then reload this page.
+            No Solana wallet detected yet. Install or open a Solana wallet to connect.
           </p>
         )}
       </div>
