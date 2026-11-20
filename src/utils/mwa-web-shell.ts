@@ -50,40 +50,28 @@ class UnloadGuardedMwaWallet extends LocalSolanaMobileWalletAdapterWallet {
 
 type WalletsApi = { register: (wallet: object) => () => void };
 
-/**
- * Wallet Standard registration (as `@wallet-standard/wallet`'s `registerWallet`), returning a
- * function that unregisters the wallet again.
- */
-const registerWallet = (wallet: object): (() => void) => {
-  const unregisters: (() => void)[] = [];
-  const callback = ({ register }: WalletsApi) => {
-    unregisters.push(register(wallet));
-  };
-  const onAppReady = (event: Event) => callback((event as CustomEvent<WalletsApi>).detail);
+/** Wallet Standard registration (as `@wallet-standard/wallet`'s `registerWallet`). */
+const registerWallet = (wallet: object) => {
+  const callback = ({ register }: WalletsApi) => register(wallet);
   try {
     window.dispatchEvent(new CustomEvent("wallet-standard:register-wallet", { detail: callback }));
-    window.addEventListener("wallet-standard:app-ready", onAppReady);
+    window.addEventListener("wallet-standard:app-ready", (event) =>
+      callback((event as CustomEvent<WalletsApi>).detail)
+    );
   } catch (error) {
     console.error("MWA wallet could not be registered:", error);
   }
-  return () => {
-    window.removeEventListener("wallet-standard:app-ready", onAppReady);
-    unregisters.splice(0).forEach((unregister) => unregister());
-  };
 };
-
-let unregisterPrevious: (() => void) | undefined;
 
 /**
  * `registerMwa` for the Solana Mobile web shell, where MWA is always the local wallet (the
- * same branch `registerMwa` takes for the web shell user agent). Registering again (a network
- * switch changes the chain) replaces the previous wallet.
+ * same branch `registerMwa` takes for the web shell user agent). Call it once per page: see
+ * `registerMwaOnce` in SolanaProvider.
  */
 export const registerMwaInWebShell = (config: MwaConfig) => {
   if (!window.isSecureContext) {
     console.warn("MWA not registered: secure context required (https)");
     return;
   }
-  unregisterPrevious?.();
-  unregisterPrevious = registerWallet(new UnloadGuardedMwaWallet(config));
+  registerWallet(new UnloadGuardedMwaWallet(config));
 };
