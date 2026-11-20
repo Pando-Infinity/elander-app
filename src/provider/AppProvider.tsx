@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { BlockchainUtils } from "@/utils";
 import { useToast } from "@/stores/toast.store";
 import { useAppStore } from "@/stores/app.store";
@@ -9,7 +9,13 @@ import { getRpcCluster } from "@/utils/rpc-cluster";
 import { resolveAccess } from "@/utils/access.utils";
 import { userService } from "@/services/user-service";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { useActiveEndpoint, useEffectiveRpcUrl } from "@/stores/network.store";
+import { SolanaMobileWalletAdapterWalletName } from "@solana-mobile/wallet-standard-mobile";
+import {
+  useActiveEndpoint,
+  useEffectiveRpcUrl,
+  useNetworkMode,
+} from "@/stores/network.store";
+import { getMwaChain } from "@/utils/mwa-chain";
 
 export const useAppInitialization = () => {
   const {
@@ -21,8 +27,8 @@ export const useAppInitialization = () => {
     setAccessStatus,
     recheckAccess,
   } = useUserStore();
-  const { setIsDevnetCluster } = useAppStore();
-  const { publicKey, disconnect } = useWallet();
+  const { isDevnetCluster, setIsDevnetCluster } = useAppStore();
+  const { publicKey, disconnect, wallet, connected } = useWallet();
 
   const activeEndpoint = useActiveEndpoint();
   const rpcUrl = useEffectiveRpcUrl();
@@ -35,14 +41,16 @@ export const useAppInitialization = () => {
       return;
     }
 
+    // Unknown until the lookup answers; a failed lookup counts as not devnet (locked).
     let cancelled = false;
-    setIsDevnetCluster(false);
+    setIsDevnetCluster(null);
     getRpcCluster(rpcUrl)
       .then((cluster) => {
         if (!cancelled) setIsDevnetCluster(cluster === "devnet");
       })
       .catch((error) => {
         console.error("Could not identify the custom RPC's cluster:", error);
+        if (!cancelled) setIsDevnetCluster(false);
       });
 
     return () => {
@@ -65,6 +73,33 @@ export const useAppInitialization = () => {
       "Please connect your wallet again."
     );
   }, [publicKey, walletAddress, logout, disconnect]);
+
+  // An MWA authorization is tied to the chain it was made on: MWA reauthorizes with that chain
+  // for every request, so after a network switch the wallet would sign for the old cluster.
+  // End the session instead; the user connects again on the new network. MWA's disconnect is
+  // local (it clears the saved authorization) and does not open the wallet.
+  // Only known chains are compared: while a custom RPC's cluster is being looked up the chain is
+  // null, so a reload with a custom devnet RPC (unknown, then devnet) is not taken as a switch.
+  const mwaChain = getMwaChain(useNetworkMode(), isDevnetCluster);
+  const previousMwaChain = useRef(mwaChain);
+  useEffect(() => {
+    if (mwaChain === null) return;
+    const previous = previousMwaChain.current;
+    previousMwaChain.current = mwaChain;
+    if (previous === null || previous === mwaChain) return;
+    // A restored session whose MWA connect has not finished still holds the old authorization.
+    if (wallet?.adapter.name !== SolanaMobileWalletAdapterWalletName) return;
+    if (!connected && !walletAddress) return;
+
+    logout();
+    disconnect().catch((error) => {
+      console.error("Error disconnecting wallet:", error);
+    });
+    useToast.getState().message(
+      "Network changed",
+      "Please connect your wallet again for this network."
+    );
+  }, [mwaChain, connected, walletAddress, wallet, logout, disconnect]);
 
   useEffect(() => {
     if (!walletAddress) return;
