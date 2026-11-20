@@ -22,8 +22,9 @@ only there for an earlier TWA build.
 | Env | Opens | Package id | Name |
 | --- | --- | --- | --- |
 | `staging` | `https://www.beta.e-lander.xyz/?platform=seeker` | `xyz.e_lander.app.dev` | E-Lander dev |
+| `production` | `https://app.e-lander.xyz/?platform=seeker` | `xyz.elander.app` | E-Lander |
 
-Production gets its own `env/production.env`, package id and keystore when it ships.
+Each env has its own package id and keystore, so both apps can be installed side by side.
 
 Links to another host open in the system browser; `solana-wallet:` links open the wallet.
 
@@ -80,8 +81,10 @@ keytool -genkeypair -keystore elander-staging.keystore -alias elander-staging \
 keytool -list -v -keystore elander-staging.keystore -alias elander-staging | grep "SHA256:"
 ```
 
-Copy the fingerprint into `SHA256_FINGERPRINT` in `env/<env>.env`. Pass no `-storepass`, so it
-never lands in shell history.
+For production, replace `staging` with `production` in both commands.
+
+Copy the fingerprint into `SHA256_FINGERPRINT` in `env/<env>.env`; `configure.sh` refuses to run
+while it is empty. Pass no `-storepass`, so it never lands in shell history.
 
 ## Configure and build
 
