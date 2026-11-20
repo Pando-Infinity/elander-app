@@ -122,7 +122,14 @@ Without it, Step 1 Option B fails with `AccessDeniedException ... not authorized
 
 #### B1. Install the Amplify GitHub App on the org
 
-Amplify reads the repo through the **AWS Amplify GitHub App** (one per region). Install it once on the `Pando-Infinity` org:
+Amplify reads the repo through the **AWS Amplify GitHub App** (one per region, matching the region of the Amplify app).
+
+**Already installed on the org** (e.g. for another repo) — just grant this repo:
+
+1. Open https://github.com/organizations/Pando-Infinity/settings/installations → **aws-amplify-ap-southeast-1** → **Configure**
+2. **Repository access** → **Only select repositories** → add `elander-app` → **Save**
+
+**First install:**
 
 1. Open https://github.com/apps/aws-amplify-ap-southeast-1/installations/new
 2. Select the **Pando-Infinity** org → **Only select repositories** → `elander-app` → **Install & Authorize**
@@ -134,10 +141,19 @@ The CLI needs a token so Amplify can connect the repo and register the build web
 
 1. GitHub → avatar → **Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)**
 2. **Note:** `amplify-elander-app-setup` · **Expiration:** 7 days (one-time use)
-3. **Scopes:** select only **`admin:repo_hook`** — the only scope Amplify requires
+3. **Scopes:** select **`repo`** and **`admin:repo_hook`**
+   - `repo` is required for private repos — without it GitHub hides the repo and `create-app` fails with `BadRequestException ... "Not Found" ... "status":"404"`
 4. **Generate token** and copy it (shown once)
-5. If the org restricts classic tokens, an org owner must allow it under **Org Settings → Personal access tokens**
-6. Your GitHub account must have **admin** access to `Pando-Infinity/elander-app` (needed to create webhooks)
+5. If the org enforces SAML SSO, click **Configure SSO → Authorize** for Pando-Infinity next to the token
+6. If the org restricts classic tokens, an org owner must allow it under **Org Settings → Personal access tokens**
+7. Your GitHub account must have **admin** access to `Pando-Infinity/elander-app` (needed to create webhooks)
+
+Verify the token can see the repo before creating the app (expect `200`):
+```bash
+read -rs GITHUB_PAT
+curl -s -o /dev/null -w '%{http_code}\n' -H "Authorization: token $GITHUB_PAT" \
+  https://api.github.com/repos/Pando-Infinity/elander-app
+```
 
 Delete the token after the branch is connected.
 
